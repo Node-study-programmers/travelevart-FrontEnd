@@ -14,8 +14,15 @@ interface INotifyDrawer {
 }
 
 export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
-  const [isVisible, setIsVisible] = useState(open);
-  const [notifList, setNotifList] = useState(notifications);
+  const [isVisible, setIsVisible] = useState<boolean>(open);
+  const [notifList, setNotifList] = useState<
+    Array<{
+      id: number;
+      title: string;
+      content: string;
+      timeAgo: string;
+    }>
+  >(notifications);
 
   useEffect(() => {
     if (open) {
@@ -78,22 +85,34 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
               onClick={onClose}
             />
           </h2>
-          <ul className="flex flex-col gap-3 px-3">
-            {notifList.map((el) => (
-              <li
-                key={el.id}
-                className="bg-secondary rounded-lg text-sm p-3 w-full cursor-pointer relative shadow-lg hover:shadow-inner transition-transform duration-300"
-              >
-                <h3 className="font-semibold">{el.title}</h3>
-                <p>{el.content}</p>
-                <p className="text-xs text-gray-500">{el.timeAgo}</p>
-                <IoCloseSharp
-                  className="absolute bottom-2 right-2 cursor-pointer"
-                  onClick={() => handleDeleteNotification(el.id)}
-                />
-              </li>
-            ))}
-          </ul>
+          <div
+            className="mx-5 my-5 bg-fourth text-white px-5 py-2 rounded-lg text-center hover:bg-gray-500 cursor-pointer"
+            onClick={() => setNotifList([])}
+          >
+            <p>모두 지우기</p>
+          </div>
+          {notifList.length ? (
+            <ul className="flex flex-col gap-3 px-3">
+              {notifList.map((el) => (
+                <li
+                  key={el.id}
+                  className="bg-secondary rounded-lg text-sm p-3 w-full cursor-pointer relative shadow-lg hover:shadow-inner transition-transform duration-300"
+                >
+                  <h3 className="font-semibold">{el.title}</h3>
+                  <p>{el.content}</p>
+                  <p className="text-xs text-gray-500">{el.timeAgo}</p>
+                  <IoCloseSharp
+                    className="absolute bottom-2 right-2 cursor-pointer"
+                    onClick={() => handleDeleteNotification(el.id)}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="flex justify-center items-center h-[80%]">
+              알림이 없습니다.
+            </div>
+          )}
         </div>
       </div>
     </div>,

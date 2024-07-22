@@ -11,10 +11,15 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, account }) {
+      if (account?.provider) token.provider = account?.provider;
+
       return token;
     },
 
     async session({ session, token }) {
+      session.provider = token.provider as string;
+      session.uid = token.sub as string;
+
       return session;
     },
   },

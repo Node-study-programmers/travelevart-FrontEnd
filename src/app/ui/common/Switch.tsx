@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface ISwitchProps {
-  title?: string; // 모바일도 텍스트를 보여줘야할까?
+  title?: string;
 }
 
 export default function Switch({ title }: ISwitchProps) {

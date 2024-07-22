@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { IoCloseSharp, IoNotifications } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 
 interface INotifyDrawer {
   open: boolean;
@@ -20,9 +20,16 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
   useEffect(() => {
     if (open) {
       setIsVisible(true);
+      document.body.style.overflow = "hidden";
     } else {
-      const timeout = setTimeout(() => setIsVisible(false), 300); // 애니메이션 시간과 맞추기
-      return () => clearTimeout(timeout);
+      const timeout = setTimeout(() => {
+        setIsVisible(false);
+        document.body.style.overflow = "";
+      }, 300); // 애니메이션 시간과 맞추기
+      return () => {
+        clearTimeout(timeout);
+        document.body.style.overflow = "";
+      };
     }
   }, [open]);
 
@@ -36,13 +43,23 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
     );
   };
 
+  const handleBackgroundClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose?.();
+    }
+  };
+
   if (!isVisible) return null;
 
   return createPortal(
     <div
-      className={`fixed inset-0 top-0 right-0 z-50 bg-[rgba(0,0,0,0.8)] flex flex-col transition-opacity duration-300 items-end`}
+      className={`fixed inset-0 top-0 right-0 z-50 bg-[rgba(0,0,0,0.5)] flex flex-col transition-opacity duration-300 items-end`}
+      onClick={handleBackgroundClick}
     >
-      <div className={`sm:w-[500px] lg:h-full flex flex-col w-screen h-full`}>
+      <div
+        className={`sm:w-[500px] lg:h-full flex flex-col w-screen h-full`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div
           className={`${
             open

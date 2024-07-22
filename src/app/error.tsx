@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 
 export default function Error() {
   const router = useRouter();
+  const currentUrl = window.location.href;
+  const baseUrl = `${window.location.origin}/`;
 
   const handlePreviousPage = () => {
-    router.back();
+    currentUrl === baseUrl ? router.push("/") : router.back();
   };
 
   return (

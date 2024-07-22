@@ -1,25 +1,25 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import mainBg from "@/app/asset/img/mainBackground.jpg";
 import mainObj from "@/app/asset/img/mainSun.jpg";
 import { logoFont } from "@/font";
+import Tooltip from "./ui/common/Tooltip";
 
 export default function Home() {
   const { data: session } = useSession();
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const translateScene = Math.min(scrollY, 160); // 최대 160px까지 이동
-      const translateYH1 = Math.min(scrollY, 250); // 최대 40rem (640px)까지 이동
-      const translateYDiv = Math.min(scrollY, 270); // 최대 50rem (800px)까지 이동
-      // const translateYMainImg = Math.min(scrollY, 100); // 최대 50rem (800px)까지 이동
+      const translateScene = Math.min(scrollY, 160);
+      const translateYH1 = Math.min(scrollY, 250);
+      const translateYDiv = Math.min(scrollY, 270);
 
       const h1Element = document.getElementById("h1Element");
       const divElement = document.getElementById("divElement");
-      const mainImage = document.getElementById("mainImage");
       const sunsetScene = document.getElementById("sunsetScene");
       if (h1Element) {
         h1Element.style.transform = `translate3d(0, ${translateYH1}px, 0)`;
@@ -30,17 +30,22 @@ export default function Home() {
       if (sunsetScene) {
         sunsetScene.style.transform = `translate3d(0, ${translateScene}px, 0)`;
       }
-      // if (mainImage) {
-      //   mainImage.style.transform = `translate3d(0, ${translateYMainImg}px, 0)`;
-      // }
     };
+
+    if (imagesLoaded) {
+      handleScroll();
+    }
 
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [imagesLoaded]);
+
+  const handleImageLoad = () => {
+    setImagesLoaded(true);
+  };
 
   return (
     <main className="min-h-screen m-0">
@@ -54,6 +59,7 @@ export default function Home() {
             alt="MainBg"
             src={mainBg.src}
             className="max-w-full inline-block pointer-events-none w-full h-screen object-cover"
+            onLoadingComplete={handleImageLoad}
           />
           <h1
             id="h1Element"
@@ -78,10 +84,17 @@ export default function Home() {
             fill
             style={{ transformStyle: "preserve-3d" }}
             className="pointer-events-none absolute top-0 bottom-auto left-0 right-0 object-cover max-w-full inline-block will-change-transform transition-transform duration-200 ease-linear"
+            onLoadingComplete={handleImageLoad}
           />
         </div>
       </div>
-      <div className="h-screen w-full mt-[10rem]">qwe</div>
+      <div className="h-screen w-full mt-[10rem]">
+        <div className="flex justify-center">
+          <Tooltip direction="left" content="hover me">
+            qwe
+          </Tooltip>
+        </div>
+      </div>
     </main>
   );
 }

@@ -7,9 +7,7 @@ export default function Error() {
   const router = useRouter();
 
   const handlePreviousPage = () => {
-    const previousUrl = document.referrer;
-
-    previousUrl ? router.push(previousUrl) : router.back();
+    router.back();
   };
 
   return (

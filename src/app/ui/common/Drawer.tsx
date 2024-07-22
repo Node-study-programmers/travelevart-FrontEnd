@@ -109,7 +109,7 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
               ))}
             </ul>
           ) : (
-            <div className="flex justify-center items-center h-[80%]">
+            <div className="flex justify-center items-center h-[50%]">
               알림이 없습니다.
             </div>
           )}

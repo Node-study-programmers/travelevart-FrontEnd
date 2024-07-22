@@ -1,14 +1,11 @@
 "use client";
-import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import mainBg from "@/app/asset/img/mainBackground.jpg";
 import mainObj from "@/app/asset/img/mainSun.jpg";
 import { logoFont } from "@/font";
-import Tooltip from "./ui/common/Tooltip";
 
 export default function Home() {
-  const { data: session } = useSession();
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
@@ -86,13 +83,6 @@ export default function Home() {
             className="pointer-events-none absolute top-0 bottom-auto left-0 right-0 object-cover max-w-full inline-block will-change-transform transition-transform duration-200 ease-linear"
             onLoadingComplete={handleImageLoad}
           />
-        </div>
-      </div>
-      <div className="h-screen w-full mt-[10rem]">
-        <div className="flex justify-center">
-          <Tooltip direction="left" content="hover me">
-            qwe
-          </Tooltip>
         </div>
       </div>
     </main>

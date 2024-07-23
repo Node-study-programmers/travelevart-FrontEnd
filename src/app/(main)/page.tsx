@@ -4,10 +4,45 @@ import { useEffect, useState } from "react";
 import mainBg from "@/app/asset/img/mainBackground.jpg";
 import mainObj from "@/app/asset/img/mainSun.jpg";
 import { logoFont } from "@/font";
-import { NotifyDrawer } from "../ui/common/Drawer";
+import DropDown from "../ui/common/DropDown";
+import Select from "../ui/common/Select";
+
+const names = [
+  "김지수",
+  "이민호",
+  "박소연",
+  "최강석",
+  "홍진아",
+  "오세훈",
+  "정유진",
+  "강태현",
+  "서하늘",
+  "윤아영",
+  "김지수",
+  "이민호",
+  "박소연",
+  "최강석",
+  "홍진아",
+  "오세훈",
+  "정유진",
+  "강태현",
+  "서하늘dasdasdasadsdasdasadsdasadsadsdas",
+  "윤아영",
+  "김지수",
+  "이민호",
+  "박소연",
+  "최강석",
+  "홍진아",
+  "오세훈",
+  "정유진",
+  "강태현",
+  "서하늘",
+  "윤아영",
+];
 
 export default function Home() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [name, setName] = useState<string | number>("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +107,7 @@ export default function Home() {
             style={{ transformStyle: "preserve-3d" }}
           >
             <h1 className={`${logoFont.className} tracking-wider text-[9.3vw]`}>
-              Travelevart
+              TravelevarT
             </h1>
           </div>
           <Image
@@ -86,7 +121,18 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="h-screen w-screen">qwe</div>
+      <div className="h-screen w-screen mt-40 text-center justify-center">
+        qwe
+        <div className="flex justify-center">
+          <Select
+            items={names}
+            label={"최고의 학생"}
+            defaultValue={"kokokoko"}
+            placeholder={"학생을 선택하세요"}
+            onChange={setName}
+          />
+        </div>
+      </div>
     </main>
   );
 }

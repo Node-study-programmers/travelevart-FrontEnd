@@ -180,8 +180,11 @@ export default function Navbar() {
             마이페이지
           </Link>
         </li>
-        <li className="flex justify-center items-center bg-primary rounded-2xl px-7 py-3 text-black cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full">
+        <li className="flex justify-center items-center bg-primary rounded-2xl px-7 py-3 text-black cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full relative">
           <div onClick={() => setOpenNotification(true)}>알림</div>
+          <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center">
+            {notifications.length}
+          </div>
         </li>
       </ul>
       <NotifyDrawer

@@ -20,6 +20,8 @@ const config: Config = {
         "fade-out": "fadeOut 0.3s ease-out forwards",
         "slide-in-right": "slideInRight 0.3s ease-out forwards",
         "slide-out-right": "slideOutRight 0.3s ease-out forwards",
+        "dropDown-open": "dropDownOpen 0.2s ease-out forwards",
+        "dropDown-close": "dropDownClose 0.2s ease-out forwards",
       },
       keyframes: {
         fadeIn: {
@@ -37,6 +39,14 @@ const config: Config = {
         slideOutRight: {
           "0%": { transform: "translateX(0)", opacity: "1" },
           "100%": { transform: "translateX(10%)", opacity: "0" },
+        },
+        dropDownOpen: {
+          "0": { opacity: "0", transform: "scale(0.1)" },
+          "100%": { opacity: "1", transform: "scale(1.1)" },
+        },
+        dropDownClose: {
+          "0": { opacity: "1", transform: "scale(1.1)" },
+          "100%": { opacity: "0", transform: "scale(0.1)" },
         },
       },
     },

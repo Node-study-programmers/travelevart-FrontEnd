@@ -3,6 +3,7 @@ import "./globals.css";
 import Script from "next/script";
 import { noto } from "@/font";
 import SessionWrapper from "@/util/SessionWrapper";
+import Navbar from "./ui/common/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +18,10 @@ export default function RootLayout({
   return (
     <SessionWrapper>
       <html lang="en">
-        <body className={noto.className}>{children}</body>
+        <body className={noto.className}>
+          {children}
+          <Navbar />
+        </body>
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&libraries=services,clusterer&autoload=false`}
         />

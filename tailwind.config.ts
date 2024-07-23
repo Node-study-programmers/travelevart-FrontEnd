@@ -13,9 +13,34 @@ const config: Config = {
         secondary: "#CCF2F4",
         third: "#F4F9F9",
         fourth: "#AAAAAA",
+        overlay: "rgba(0, 0, 0, 0.5)",
+      },
+      animation: {
+        "fade-in": "fadeIn 0.3s ease-out forwards",
+        "fade-out": "fadeOut 0.3s ease-out forwards",
+        "slide-in-right": "slideInRight 0.3s ease-out forwards",
+        "slide-out-right": "slideOutRight 0.3s ease-out forwards",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(-20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(-20px)" },
+        },
+        slideInRight: {
+          "0%": { transform: "translateX(10%)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+        slideOutRight: {
+          "0%": { transform: "translateX(0)", opacity: "1" },
+          "100%": { transform: "translateX(10%)", opacity: "0" },
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };
 export default config;

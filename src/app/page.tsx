@@ -5,6 +5,7 @@ import mainBg from "@/app/asset/img/mainBackground.jpg";
 import mainObj from "@/app/asset/img/mainSun.jpg";
 import { logoFont } from "@/font";
 import { NotifyDrawer } from "./ui/common/Drawer";
+import DropDown from "./ui/common/DropDown";
 
 // 더미 데이터
 const notifications = [
@@ -100,6 +101,9 @@ const notifications = [
   },
 ];
 
+// 드롭다운 더미 데이터
+const dropDummy = ["public", "private"];
+
 export default function Home() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [open, setOpen] = useState(false);
@@ -190,6 +194,7 @@ export default function Home() {
           onClose={() => setOpen(false)}
           notifications={notifications}
         />
+        <DropDown toggleTitle={"open dropdown"} contents={dropDummy} />
       </div>
     </main>
   );

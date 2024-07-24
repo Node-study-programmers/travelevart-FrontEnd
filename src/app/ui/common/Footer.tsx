@@ -6,11 +6,11 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full flex justify-center bg-slate-50 text-rgb-primary py-6">
-      <div className="max-w-[60%] w-full">
-        <div className="flex flex-col lg:flex-row justify-between border-b border-fourth">
-          <div className="w-full max-w-80 text-4xl text-rgb-primary">
-            <div className="flex items-center gap-2">
+    <footer className="relative w-full flex justify-center bg-slate-50 text-rgb-primary pt-6 pb-24">
+      <div className="max-w-[1280px] w-full mx-auto">
+        <div className="flex flex-col lg:flex-row justify-between border-b border-fourth mx-10 lg:mx-0">
+          <div className="w-full max-w-80 text-4xl text-rgb-primary text-center">
+            <div className="flex items-center gap-2 justify-center">
               <IoEarthOutline />
               <h1 className={`${logoFont.className} tracking-wider`}>
                 TravelevarT
@@ -20,7 +20,7 @@ export default function Footer() {
               TravelevarT는 여행지 추천 기반 커뮤니티 서비스입니다.
             </span>
           </div>
-          <div className="flex gap-8 mb-6">
+          <div className="flex gap-8 mb-6 justify-around">
             <div className="font-bold">
               Back-end
               <div className="flex flex-col justify-center items-center text-rgb-secondary font-light text-[0.875rem]">
@@ -62,10 +62,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        {/* <span className="text-xs text-rgb-secondary mb-6">
-          Travelevart는 여행지 추천 기반 커뮤니티 서비스입니다.
-        </span> */}
-        <div className="flex justify-between items-center mt-6">
+        <div className="flex justify-between items-center mt-6 mb-16 mx-10 lg:mx-0">
           <span className="text-[0.65rem] text-rgb-secondary">
             ⓒ 2024. TravelevarT. All rights reserved
           </span>
@@ -77,17 +74,18 @@ export default function Footer() {
               <RiNotionFill className="text-3xl" />
             </Link>
             <Link
-              href="https://github.com/Node-study-programmers/travelevart-BackEnd"
+              href="https://github.com/orgs/Node-study-programmers/repositories"
               target="_blank"
             >
               <FaGithub className="text-3xl" />
             </Link>
-            <Link
+
+            {/* <Link
               href="https://github.com/Node-study-programmers/travelevart-FrontEnd"
               target="_blank"
             >
               <FaGithub className="text-3xl" />
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

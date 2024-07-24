@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RiCloseFill } from "react-icons/ri";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NotifyDrawer } from "./Drawer";
+import { useTypedDispatch, useTypedSelector } from "@/app/hooks/reduxHooks";
+import { signIn, useSession } from "next-auth/react";
+import { setUser } from "@/redux/slices/userSlice";
+import Loading from "@/app/loading";
+
 // 더미 데이터
 const notifications = [
   {
@@ -50,54 +55,6 @@ const notifications = [
     content: "서비스 점검 안내입니다. 서비스가 잠시 중단됩니다.",
     timeAgo: "30분 전",
   },
-  {
-    id: 8,
-    title: "알림 8",
-    content: "계정 보안 업데이트가 있습니다. 즉시 확인하세요.",
-    timeAgo: "45분 전",
-  },
-  {
-    id: 9,
-    title: "알림 9",
-    content: "이벤트가 시작되었습니다. 참여해보세요!",
-    timeAgo: "1시간 전",
-  },
-  {
-    id: 10,
-    title: "알림 10",
-    content: "시스템 오류가 발생했습니다. 문제를 확인 중입니다.",
-    timeAgo: "2시간 전",
-  },
-  {
-    id: 11,
-    title: "알림 11",
-    content: "회원님을 위한 특별 할인 쿠폰이 도착했습니다.",
-    timeAgo: "3시간 전",
-  },
-  {
-    id: 12,
-    title: "알림 12",
-    content: "새로운 콘텐츠가 업데이트되었습니다. 확인해보세요.",
-    timeAgo: "4시간 전",
-  },
-  {
-    id: 13,
-    title: "알림 13",
-    content: "시스템 유지보수가 예정되어 있습니다. 참고해 주세요.",
-    timeAgo: "5시간 전",
-  },
-  {
-    id: 14,
-    title: "알림 14",
-    content: "신규 기능 출시 안내입니다. 자세한 내용을 확인하세요.",
-    timeAgo: "6시간 전",
-  },
-  {
-    id: 15,
-    title: "알림 15",
-    content: "사용자 리뷰가 도착했습니다. 확인해보세요.",
-    timeAgo: "7시간 전",
-  },
 ];
 
 const menuItems = [
@@ -112,6 +69,22 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
+  const { user } = useTypedSelector((state) => state.userInfo);
+  const dispatch = useTypedDispatch();
+  const { data: userData } = useSession();
+
+  // session 으로 store 저장
+  useEffect(() => {
+    if (userData) {
+      dispatch(setUser(userData));
+    }
+    console.log(userData);
+  }, [userData, dispatch, user]);
+
+  const handleLogin = () => {
+    signIn("kakao");
+  };
+
   const handleShowMenu = () => {
     setOpen(!open);
   };
@@ -151,10 +124,16 @@ export default function Navbar() {
           </li>
         ))}
         <li className="flex justify-center items-center bg-primary rounded-2xl px-7 py-3 text-black cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full relative">
-          <div onClick={() => setOpenNotification(true)}>알림</div>
-          <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center">
-            {notifications.length}
-          </div>
+          {userData ? (
+            <>
+              <div onClick={() => setOpenNotification(true)}>알림</div>
+              <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center w-7 h-7">
+                {notifications.length}
+              </div>
+            </>
+          ) : (
+            <div onClick={handleLogin}>로그인</div>
+          )}
         </li>
       </ul>
       <NotifyDrawer

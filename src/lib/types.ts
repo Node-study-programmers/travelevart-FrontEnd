@@ -6,3 +6,9 @@ export interface IAuthUser {
   name: string;
   image: string;
 }
+
+export interface IUser {
+  provider: string;
+  uid: string;
+  user: IAuthUser;
+}

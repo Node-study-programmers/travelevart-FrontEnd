@@ -4,6 +4,7 @@ import Script from "next/script";
 import { noto } from "@/font";
 import SessionWrapper from "@/util/SessionWrapper";
 import Navbar from "./ui/common/Navbar";
+import Footer from "./ui/common/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,8 @@ export default function RootLayout({
       <html lang="en">
         <body className={noto.className}>
           {children}
-          <Navbar />
+          {/* <Navbar /> */}
+          <Footer />
         </body>
         <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&libraries=services,clusterer&autoload=false`}

@@ -1,0 +1,96 @@
+import { logoFont } from "@/font";
+import { IoEarthOutline } from "react-icons/io5";
+import { RiNotionFill } from "react-icons/ri";
+import { FaGithub } from "react-icons/fa";
+import Link from "next/link";
+
+export default function Footer() {
+  return (
+    <footer className="relative w-full flex justify-center bg-slate-50 text-rgb-primary py-6">
+      <div className="max-w-[60%] w-full">
+        <div className="flex flex-col lg:flex-row justify-between border-b border-fourth">
+          <div className="w-full max-w-80 text-4xl text-rgb-primary">
+            <div className="flex items-center gap-2">
+              <IoEarthOutline />
+              <h1 className={`${logoFont.className} tracking-wider`}>
+                TravelevarT
+              </h1>
+            </div>
+            <span className="text-[0.65rem] text-rgb-secondary">
+              TravelevarT는 여행지 추천 기반 커뮤니티 서비스입니다.
+            </span>
+          </div>
+          <div className="flex gap-8 mb-6">
+            <div className="font-bold">
+              Back-end
+              <div className="flex flex-col justify-center items-center text-rgb-secondary font-light text-[0.875rem]">
+                <span>
+                  <Link href="https://github.com/jacknafa" target="_blank">
+                    김준서
+                  </Link>
+                </span>
+                <span>
+                  <Link href="https://github.com/nyh98" target="_blank">
+                    남용환
+                  </Link>
+                </span>
+                <span>
+                  <Link href="https://github.com/chansik0504" target="_blank">
+                    박성률
+                  </Link>
+                </span>
+              </div>
+            </div>
+            <div className="font-bold">
+              Front-end
+              <div className="flex flex-col justify-center items-center text-rgb-secondary font-light text-[0.875rem]">
+                <span>
+                  <Link href="https://github.com/kwonsuhyuk" target="_blank">
+                    권수혁
+                  </Link>
+                </span>
+                <span>
+                  <Link
+                    href="https://github.com/choongnyeong6215"
+                    target="_blank"
+                  >
+                    이충녕
+                  </Link>
+                </span>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <span className="text-xs text-rgb-secondary mb-6">
+          Travelevart는 여행지 추천 기반 커뮤니티 서비스입니다.
+        </span> */}
+        <div className="flex justify-between items-center mt-6">
+          <span className="text-[0.65rem] text-rgb-secondary">
+            ⓒ 2024. TravelevarT. All rights reserved
+          </span>
+          <div className="flex justify-center items-center gap-2">
+            <Link
+              href="https://living-flower-b1f.notion.site/cab58e81efe649b8bfa3a275e2d654e7"
+              target="_blank"
+            >
+              <RiNotionFill className="text-3xl" />
+            </Link>
+            <Link
+              href="https://github.com/Node-study-programmers/travelevart-BackEnd"
+              target="_blank"
+            >
+              <FaGithub className="text-3xl" />
+            </Link>
+            <Link
+              href="https://github.com/Node-study-programmers/travelevart-FrontEnd"
+              target="_blank"
+            >
+              <FaGithub className="text-3xl" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

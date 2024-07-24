@@ -14,6 +14,9 @@ const config: Config = {
         third: "#F4F9F9",
         fourth: "#AAAAAA",
         overlay: "rgba(0, 0, 0, 0.5)",
+        "rgb-background": "rgb(255, 255, 255)",
+        "rgb-primary": "rgb(102, 109, 117)",
+        "rgb-secondary": "rgb(132, 140, 148)",
       },
       animation: {
         "fade-in": "fadeIn 0.3s ease-out forwards",

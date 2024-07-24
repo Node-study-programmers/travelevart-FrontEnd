@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import mainBg from "@/app/asset/img/mainBackground.jpg";
 import mainObj from "@/app/asset/img/mainSun.jpg";
 import { logoFont } from "@/font";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Home() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -87,6 +88,7 @@ export default function Home() {
       </div>
       <div className="h-screen w-screen mt-40 text-center justify-center">
         qwe
+        <button onClick={() => signOut({ callbackUrl: "/" })}>로그아웃</button>
       </div>
     </main>
   );

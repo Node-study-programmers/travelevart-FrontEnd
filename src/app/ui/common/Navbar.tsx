@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RiCloseFill } from "react-icons/ri";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NotifyDrawer } from "./Drawer";
+import { useTypedDispatch, useTypedSelector } from "@/app/hooks/reduxHooks";
+import { signIn, useSession } from "next-auth/react";
+import { setUser } from "@/redux/slices/userSlice";
+import Loading from "@/app/loading";
+
 // 더미 데이터
 const notifications = [
   {
@@ -50,59 +55,36 @@ const notifications = [
     content: "서비스 점검 안내입니다. 서비스가 잠시 중단됩니다.",
     timeAgo: "30분 전",
   },
-  {
-    id: 8,
-    title: "알림 8",
-    content: "계정 보안 업데이트가 있습니다. 즉시 확인하세요.",
-    timeAgo: "45분 전",
-  },
-  {
-    id: 9,
-    title: "알림 9",
-    content: "이벤트가 시작되었습니다. 참여해보세요!",
-    timeAgo: "1시간 전",
-  },
-  {
-    id: 10,
-    title: "알림 10",
-    content: "시스템 오류가 발생했습니다. 문제를 확인 중입니다.",
-    timeAgo: "2시간 전",
-  },
-  {
-    id: 11,
-    title: "알림 11",
-    content: "회원님을 위한 특별 할인 쿠폰이 도착했습니다.",
-    timeAgo: "3시간 전",
-  },
-  {
-    id: 12,
-    title: "알림 12",
-    content: "새로운 콘텐츠가 업데이트되었습니다. 확인해보세요.",
-    timeAgo: "4시간 전",
-  },
-  {
-    id: 13,
-    title: "알림 13",
-    content: "시스템 유지보수가 예정되어 있습니다. 참고해 주세요.",
-    timeAgo: "5시간 전",
-  },
-  {
-    id: 14,
-    title: "알림 14",
-    content: "신규 기능 출시 안내입니다. 자세한 내용을 확인하세요.",
-    timeAgo: "6시간 전",
-  },
-  {
-    id: 15,
-    title: "알림 15",
-    content: "사용자 리뷰가 도착했습니다. 확인해보세요.",
-    timeAgo: "7시간 전",
-  },
 ];
+
+const menuItems = [
+  { path: "/", label: "홈" },
+  { path: "/search-trip", label: "여행지검색" },
+  { path: "/community", label: "커뮤니티" },
+  { path: "/mytrip", label: "여행일기" },
+  { path: "/mypage", label: "마이페이지" },
+];
+
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
+  const { user } = useTypedSelector((state) => state.userInfo);
+  const dispatch = useTypedDispatch();
+  const { data: userData } = useSession();
+
+  // session 으로 store 저장
+  useEffect(() => {
+    if (userData) {
+      dispatch(setUser(userData));
+    }
+    console.log(userData);
+  }, [userData, dispatch, user]);
+
+  const handleLogin = () => {
+    signIn("kakao");
+  };
+
   const handleShowMenu = () => {
     setOpen(!open);
   };
@@ -111,12 +93,12 @@ export default function Navbar() {
     <nav
       className={`z-[30] fixed bottom-0 left-1/2 -translate-x-1/2 bg-white w-full 
         flex justify-center items-center rounded-t-xl shadow-[0_0_20px_11px_rgba(40,70,65,0.14)] 
-        transition-all duration-200 ${open ? "h-36" : "h-16"} sm:bottom-[3.5rem] 
+        transition-all duration-200 ${open ? "h-36" : "h-12"} sm:bottom-[3.5rem] 
         sm:top-auto sm:left-0 sm:right-0 sm:mx-auto sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16`}
     >
       <div
-        className={`absolute flex justify-center bottom-10 bg-primary rounded-full p-2 transition-transform duration-200 ${
-          open ? "-translate-y-20" : "translate-y-0"
+        className={`absolute flex justify-center bottom-6 bg-primary rounded-full p-2 transition-transform duration-200 ${
+          open ? "-translate-y-24" : "translate-y-0"
         } sm:hidden`}
         onClick={handleShowMenu}
       >
@@ -130,61 +112,28 @@ export default function Navbar() {
         className={`${open ? "grid" : "hidden"} grid-cols-3 gap-3 w-[80%] font-extralight text-base 
         sm:flex sm:justify-center sm:items-center sm:pl-7 sm:pr-2 sm:gap-5`}
       >
-        <li
-          className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest`}
-        >
-          <Link
-            href="/"
-            className={` ${pathname === "/" && "border-b-4 border-primary"}`}
+        {menuItems.map((item) => (
+          <li
+            key={item.path}
+            className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest relative`}
           >
-            홈
-          </Link>
-        </li>
-        <li
-          className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest`}
-        >
-          <Link
-            href="/search-trip"
-            className={` ${pathname === "/search-trip" && "border-b-4 border-primary"}`}
-          >
-            여행지검색
-          </Link>
-        </li>
-        <li
-          className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest`}
-        >
-          <Link
-            href="/community"
-            className={` ${pathname === "/community" && "border-b-4 border-primary"}`}
-          >
-            커뮤니티
-          </Link>
-        </li>
-        <li
-          className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest`}
-        >
-          <Link
-            href="/mytrip"
-            className={` ${pathname === "/mytrip" && "border-b-4 border-primary"}`}
-          >
-            여행일기
-          </Link>
-        </li>
-        <li
-          className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest`}
-        >
-          <Link
-            href="/mypage"
-            className={` ${pathname === "/mypage" && "border-b-4 border-primary"}`}
-          >
-            마이페이지
-          </Link>
-        </li>
+            <Link href={item.path}>{item.label}</Link>
+            {pathname === item.path && (
+              <span className="absolute w-full -bottom-2 bg-primary h-1"></span>
+            )}
+          </li>
+        ))}
         <li className="flex justify-center items-center bg-primary rounded-2xl px-7 py-3 text-black cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full relative">
-          <div onClick={() => setOpenNotification(true)}>알림</div>
-          <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center">
-            {notifications.length}
-          </div>
+          {userData ? (
+            <>
+              <div onClick={() => setOpenNotification(true)}>알림</div>
+              <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center w-7 h-7">
+                {notifications.length}
+              </div>
+            </>
+          ) : (
+            <div onClick={handleLogin}>로그인</div>
+          )}
         </li>
       </ul>
       <NotifyDrawer

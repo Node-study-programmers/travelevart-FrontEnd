@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 
@@ -21,6 +21,23 @@ export default function Select({
 }: ISelectProps) {
   const [listOpen, setListOpen] = useState<boolean>(false);
   const [selectValue, setSelectValue] = useState<string | number>();
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOverlay = (e: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(e.target as Node) // Ref 영역 밖 부분
+      ) {
+        setListOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOverlay);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOverlay);
+    };
+  }, [selectRef]);
 
   const handleChange = (item: string | number) => {
     setSelectValue(item);
@@ -34,6 +51,7 @@ export default function Select({
 
   return (
     <div
+      ref={selectRef}
       className={`${className} bg-primary flex w-full max-w-80 rounded-md shadow-lg`}
     >
       <div className="w-full flex flex-col relative">
@@ -46,7 +64,7 @@ export default function Select({
             {label}
           </label>
           <div
-            className={`inline-flex h-full min-h-4 items-end gap-1.5 box-border text-sm ${selectValue || defaultValue ? "text-black" : "text-gray-500"} overflow-hidden text-ellipsis whitespace-nowrap`}
+            className={`inline-flex h-full min-h-4 items-end gap-1.5 box-border text-sm ${selectValue || defaultValue ? "text-black" : "text-gray-500"} overflow-hidden text-ellipsis whitespace-nowrap font-bold`}
           >
             {selectValue
               ? selectValue

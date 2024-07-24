@@ -21,7 +21,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={noto.className}>
           {children}
-          {/* <Navbar /> */}
+          <Navbar />
           <Footer />
         </body>
         <Script

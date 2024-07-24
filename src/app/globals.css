@@ -6,3 +6,26 @@
   scroll-behavior: smooth;
   box-sizing: border-box;
 }
+
+.range-thumb {
+  position: absolute;
+  top: -10px;
+  width: 100%;
+
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+
+  &::-webkit-slider-thumb {
+    pointer-events: auto;
+  }
+}
+
+.range-thumb::-webkit-slider-thumb {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: #a4ebf3;
+  -webkit-appearance: none;
+}

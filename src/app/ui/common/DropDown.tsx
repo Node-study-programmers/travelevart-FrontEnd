@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 interface IDropDownProps {
   toggleTitle: React.ReactNode | string; // react icons & text 모두 사용 가능
   openStatus?: boolean;
-  contents: string[];
+  contents: string[] | number[];
 }
 
 export default function DropDown({
@@ -14,8 +14,6 @@ export default function DropDown({
 }: IDropDownProps) {
   const [isOpen, setIsOpen] = useState(openStatus);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  console.log(contents);
 
   useEffect(() => {
     const handleClickOverlay = (e: MouseEvent) => {
@@ -50,8 +48,8 @@ export default function DropDown({
       </button>
       {isOpen && (
         <div
-          className={`absolute top-8 p-2 w-32 bg-primary shadow-md rounded-xl flex justify-start items-center  ${
-            isOpen ? "animate-dropDown-open" : "animate-dropDown-close"
+          className={`absolute top-8 p-2 w-32 bg-primary shadow-md rounded-xl flex justify-start items-center transition-all duration-100 ${
+            isOpen ? "animate-fade-in" : "animate-fade-out"
           }`}
         >
           <ul className="w-full">

@@ -7,8 +7,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NotifyDrawer } from "./Drawer";
 import { useTypedDispatch, useTypedSelector } from "@/app/hooks/reduxHooks";
-import { setUser } from "@/redux/slices/userSlice";
-import useLogin from "@/app/hooks/auth/useKaKaoLogin";
+import useLogin from "@/app/hooks/auth/useLogin";
+import { signIn } from "next-auth/react";
 
 // 더미 데이터
 const notifications = [
@@ -68,9 +68,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
-  const { user } = useTypedSelector((state) => state.userInfo);
-  const { handleLogin, status, handleLogout } = useLogin();
+  // const { user } = useTypedSelector((state) => state.userInfo);
+  const { status, handleLogout, handleLogin, userData } = useLogin();
   const dispatch = useTypedDispatch();
+
+  console.log(userData);
 
   // // session 으로 store 저장
   // useEffect(() => {
@@ -122,7 +124,7 @@ sm:top-auto sm:left-0 sm:right-0 sm:mx-auto sm:translate-x-0 sm:translate-y-0 sm
           </li>
         ))}
         <li className="flex justify-center items-center bg-primary rounded-2xl px-7 py-3 text-black cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full relative">
-          {/* {userData ? (
+          {userData ? (
             <>
               <div onClick={() => setOpenNotification(true)}>알림</div>
               <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center w-7 h-7">
@@ -130,9 +132,8 @@ sm:top-auto sm:left-0 sm:right-0 sm:mx-auto sm:translate-x-0 sm:translate-y-0 sm
               </div>
             </>
           ) : (
-            <div onClick={() => login()}>로그인</div>
-          )} */}
-          <div onClick={() => handleLogout({ callbackUrl: "/" })}>로그아웃</div>
+            <div onClick={() => signIn()}>로그인</div>
+          )}
         </li>
       </ul>
       <NotifyDrawer

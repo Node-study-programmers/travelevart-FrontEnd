@@ -2,9 +2,18 @@ import { NextAuthOptions } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { IAuthKaKaoUser, IAuthUser, IUser } from "./types";
+import { User as NextAuthUser } from "next-auth";
 
-// src/lib/authOptions.ts
+// 기존 `User` 타입을 확장하여 필요한 속성을 추가
+interface CustomUser extends NextAuthUser {
+  accessToken?: string;
+  refreshToken?: string;
+  userInfo?: IAuthUser; // `IAuthUser`는 사용자 정보 타입
+  provider: string;
+}
+
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   providers: [
     KakaoProvider({
       clientId: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID as string,
@@ -26,9 +35,8 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          console.log("kakao login");
           const res = await fetch(
-            "https://7d3e-220-125-131-244.ngrok-free.app/auth/local/login",
+            "https://f771-220-125-131-244.ngrok-free.app/auth/local/login",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -44,13 +52,11 @@ export const authOptions: NextAuthOptions = {
           }
 
           const user = await res.json();
-
-          if (user) {
-            return user;
-          }
+          console.log(user, "useruser");
+          if (user) return user;
         } catch (error) {
           console.log("Authorization Error:", error);
-          return error;
+          return null;
         }
       },
     }),
@@ -58,30 +64,53 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/login",
   },
-  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, account }) {
-      console.log(account, "account");
-      if (account?.provider) token.provider = account?.provider;
-      console.log(token, "auth");
+    async jwt({ token, account, user }) {
+      if (account?.provider === "kakao") {
+        token.user = {
+          name: token.name,
+          profileImg: token.picture,
+          userId: token.sub,
+          provider: account.provider,
+          accessToken: account.access_token,
+          refreshToken: account.refresh_token,
+        };
+        delete token.name;
+        delete token.picture;
+        delete token.sub;
+      } else if (user) {
+        token.user = {
+          accessToken: (user as CustomUser).accessToken,
+          refreshToken: (user as CustomUser).refreshToken,
+          email: (user as CustomUser).userInfo?.email,
+          name: (user as CustomUser).userInfo?.name,
+          profileImg: (user as CustomUser).userInfo?.profileImg,
+          userId: (user as CustomUser).userInfo?.userId,
+          provider: (user as CustomUser).provider,
+        };
+      }
+
       return token;
     },
-
     async session({ session, token }) {
-      if (token.provider === "credentials") {
-        session.provider = token.provider as string;
+      console.log(token, "local token!!!!!!!!");
+
+      if ((token.user as IAuthKaKaoUser).provider === "kakao") {
+        session.user = token.user as IAuthKaKaoUser;
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
-        session.user = token.userInfo as IAuthUser;
-        console.log("session", session);
-        return session;
       } else {
-        session.provider = token.provider as string;
-        session.user = token.user as IAuthKaKaoUser;
-        console.log("kakaotoken", token);
-        console.log("kakao", session);
-        return session;
+        // session.provider = token.provider as string;
+        // session.accessToken = token.accessToken as string;
+        // session.refreshToken = token.refreshToken as string;
+        session.user = token.user as IAuthUser;
+
+        delete token.userInfo;
       }
+
+      // console.log(session);
+
+      return session;
     },
   },
 };

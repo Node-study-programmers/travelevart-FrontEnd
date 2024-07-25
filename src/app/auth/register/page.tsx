@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import useLogin from "@/app/hooks/auth/useKaKaoLogin";
+import useLogin from "@/app/hooks/auth/useLogin";
 import { logoFont } from "@/font";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import Link from "next/link";
@@ -34,7 +34,7 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       const { data } = await axios.post(
-        "https://7d3e-220-125-131-244.ngrok-free.app/auth/local/join",
+        "https://f771-220-125-131-244.ngrok-free.app/auth/local/join",
         body,
       );
       console.log(data);

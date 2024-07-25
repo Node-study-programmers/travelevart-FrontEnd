@@ -1,12 +1,15 @@
 import NextAuth, { DefaultSession } from "next-auth";
-import { IAuthUser } from "./types";
+import { IAuthKaKaoUser, IAuthUser } from "./types";
 
 declare module "next-auth" {
   interface Session {
     provider: string;
-    user: IAuthUser;
-    accessToken: string;
+    user: IAuthUser | IAuthKaKaoUser;
+    accessToken?: string;
     refreshToken?: string;
     uid: string;
+    email: string;
+    profileImg: string;
+    userId: number;
   }
 }

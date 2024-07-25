@@ -8,7 +8,7 @@ import {
 } from "next-auth/react";
 
 export default function useLogin() {
-  const { status } = useSession();
+  const { status, data: userData } = useSession();
 
   const handleLogout = (options?: SignOutParams) => {
     // localStorage.removeItem(accessToken);
@@ -22,5 +22,6 @@ export default function useLogin() {
     handleLogout,
     handleLogin,
     status,
+    userData,
   };
 }

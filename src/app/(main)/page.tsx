@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import mainBg from "@/app/asset/img/mainBackground.jpg";
 import mainObj from "@/app/asset/img/mainSun.jpg";
 import { logoFont } from "@/font";
-import useKaKaoLogin from "../hooks/auth/useKaKaoLogin";
+import useKaKaoLogin from "../hooks/auth/useLogin";
 import { signIn, signOut } from "next-auth/react";
+import getCurrentUser from "@/util/getCurrentUser";
 
 export default function Home() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+
   // const { logout, status } = useKaKaoLogin();
 
   useEffect(() => {

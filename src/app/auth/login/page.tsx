@@ -1,6 +1,6 @@
 "use client";
 
-import useLogin from "@/app/hooks/auth/useKaKaoLogin";
+import useLogin from "@/app/hooks/auth/useLogin";
 import { logoFont } from "@/font";
 import { signIn } from "next-auth/react";
 import Link from "next/link";

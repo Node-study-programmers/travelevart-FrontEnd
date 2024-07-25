@@ -1,10 +1,17 @@
-import { IUser } from "@/lib/types";
+import { IAuthUser, IUser } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: IUser = {
-  provider: "",
-  uid: "",
+interface UserStoreProps {
   user: {
+    uid: string;
+    name: string;
+    image: string;
+  };
+}
+
+const initialState: UserStoreProps = {
+  user: {
+    uid: "",
     name: "",
     image: "",
   },
@@ -14,15 +21,13 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<IUser>) => {
-      state.provider = action.payload.provider;
-      state.uid = action.payload.uid;
-      state.user.name = action.payload.user.name;
-      state.user.image = action.payload.user.image;
+    setUser: (state, action: PayloadAction<IAuthUser>) => {
+      state.user.uid = String(action.payload.userId);
+      state.user.name = action.payload.name;
+      state.user.image = action.payload.profileImg;
     },
     removeUser: (state) => {
-      state.provider = "";
-      state.uid = "";
+      state.user.uid = "";
       state.user.name = "";
       state.user.image = "";
     },

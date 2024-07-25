@@ -7,9 +7,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NotifyDrawer } from "./Drawer";
 import { useTypedDispatch, useTypedSelector } from "@/app/hooks/reduxHooks";
-import { signIn, useSession } from "next-auth/react";
-import { setUser } from "@/redux/slices/userSlice";
-import Loading from "@/app/loading";
+import useLogin from "@/app/hooks/auth/useLogin";
+import { signIn } from "next-auth/react";
 
 // 더미 데이터
 const notifications = [
@@ -69,32 +68,33 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
-  const { user } = useTypedSelector((state) => state.userInfo);
+  // const { user } = useTypedSelector((state) => state.userInfo);
+  const { status, handleLogout, handleLogin, userData } = useLogin();
   const dispatch = useTypedDispatch();
-  const { data: userData } = useSession();
 
-  // session 으로 store 저장
-  useEffect(() => {
-    if (userData) {
-      dispatch(setUser(userData));
-    }
-    console.log(userData);
-  }, [userData, dispatch, user]);
+  console.log(userData);
 
-  const handleLogin = () => {
-    signIn("kakao");
-  };
+  // // session 으로 store 저장
+  // useEffect(() => {
+  //   if (userData) {
+  //     console.log(userData);
+  //     // dispatch(setUser(userData.user));
+  //   }
+
+  //   console.log(user, "user data");
+  // }, [userData, dispatch, user]);
 
   const handleShowMenu = () => {
     setOpen(!open);
   };
+  console.log(status);
 
   return (
     <nav
-      className={`z-[30] fixed bottom-0 left-1/2 -translate-x-1/2 bg-white w-full 
-        flex justify-center items-center rounded-t-xl shadow-[0_0_20px_11px_rgba(40,70,65,0.14)] 
-        transition-all duration-200 ${open ? "h-36" : "h-12"} sm:bottom-[3.5rem] 
-        sm:top-auto sm:left-0 sm:right-0 sm:mx-auto sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16`}
+      className={`z-[30] fixed bottom-0 left-1/2 -translate-x-1/2 bg-white w-full
+flex justify-center items-center rounded-t-xl shadow-[0_0_20px_11px_rgba(40,70,65,0.14)]
+transition-all duration-200 ${open ? "h-36" : "h-12"} sm:bottom-[3.5rem]
+sm:top-auto sm:left-0 sm:right-0 sm:mx-auto sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16`}
     >
       <div
         className={`absolute flex justify-center bottom-6 bg-primary rounded-full p-2 transition-transform duration-200 ${
@@ -132,7 +132,7 @@ export default function Navbar() {
               </div>
             </>
           ) : (
-            <div onClick={handleLogin}>로그인</div>
+            <div onClick={() => signIn()}>로그인</div>
           )}
         </li>
       </ul>

@@ -6,11 +6,11 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full flex justify-center bg-slate-50 text-rgb-primary pt-6 pb-24">
+    <footer className="relative w-full flex justify-center bg-slate-50 text-rgb-primary pt-6 pb-5">
       <div className="max-w-[1280px] w-full mx-auto">
-        <div className="flex flex-col lg:flex-row justify-between border-b border-fourth mx-10 lg:mx-0">
-          <div className="w-full max-w-80 text-4xl text-rgb-primary text-center">
-            <div className="flex items-center gap-2 justify-center">
+        <div className="flex flex-col lg:flex-row items-center justify-between border-b border-fourth mx-10 lg:mx-0">
+          <div className="w-full max-w-80 text-4xl text-rgb-primary text-center lg:text-left">
+            <div className="flex items-center gap-2 justify-center lg:justify-start">
               <IoEarthOutline />
               <h1 className={`${logoFont.className} tracking-wider`}>
                 TravelevarT
@@ -79,13 +79,6 @@ export default function Footer() {
             >
               <FaGithub className="text-3xl" />
             </Link>
-
-            {/* <Link
-              href="https://github.com/Node-study-programmers/travelevart-FrontEnd"
-              target="_blank"
-            >
-              <FaGithub className="text-3xl" />
-            </Link> */}
           </div>
         </div>
       </div>

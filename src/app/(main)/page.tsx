@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import mainBg from "@/app/asset/img/mainBackground.jpg";
 import mainObj from "@/app/asset/img/mainSun.jpg";
 import { logoFont } from "@/font";
-import { signIn, signOut, useSession } from "next-auth/react";
+import useKaKaoLogin from "../hooks/auth/useLogin";
+import { signIn, signOut } from "next-auth/react";
+import getCurrentUser from "@/util/getCurrentUser";
 
 export default function Home() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // const { logout, status } = useKaKaoLogin();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +61,7 @@ export default function Home() {
             alt="MainBg"
             src={mainBg.src}
             className="max-w-full inline-block pointer-events-none w-full h-screen object-cover"
-            onLoadingComplete={handleImageLoad}
+            onLoad={handleImageLoad}
           />
           <h1
             id="h1Element"
@@ -82,12 +86,21 @@ export default function Home() {
             fill
             style={{ transformStyle: "preserve-3d" }}
             className="pointer-events-none absolute top-0 bottom-auto left-0 right-0 object-cover max-w-full inline-block will-change-transform transition-transform duration-200 ease-linear"
-            onLoadingComplete={handleImageLoad}
+            onLoad={handleImageLoad}
           />
         </div>
       </div>
       <div className="h-screen w-screen mt-40 text-center justify-center">
+        {/* <Video
+          src={mainVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          controls={false}
+        ></Video> */}
         qwe
+        <button onClick={() => signIn()}>로그인</button>
         <button onClick={() => signOut({ callbackUrl: "/" })}>로그아웃</button>
       </div>
     </main>

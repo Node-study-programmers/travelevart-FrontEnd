@@ -25,8 +25,8 @@ export default async function RootLayout({
       <html lang="en">
         <body className={noto.className}>
           <StoreProvider>
-            {children}
             <Navbar />
+            {children}
             <Footer />
           </StoreProvider>
         </body>

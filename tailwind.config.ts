@@ -17,6 +17,7 @@ const config: Config = {
         "rgb-background": "rgb(255, 255, 255)",
         "rgb-primary": "rgb(102, 109, 117)",
         "rgb-secondary": "rgb(132, 140, 148)",
+        "slide-btn": "rgba(0, 0, 0, 0.5)",
       },
       animation: {
         "fade-in": "fadeIn 0.3s ease-out forwards",

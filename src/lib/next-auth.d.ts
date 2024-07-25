@@ -6,6 +6,7 @@ declare module "next-auth" {
     provider: string;
     user: IAuthUser;
     accessToken: string;
+    refreshToken?: string;
     uid: string;
   }
 }

@@ -7,9 +7,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NotifyDrawer } from "./Drawer";
 import { useTypedDispatch, useTypedSelector } from "@/app/hooks/reduxHooks";
-import { signIn, useSession } from "next-auth/react";
 import { setUser } from "@/redux/slices/userSlice";
-import Loading from "@/app/loading";
+import useLogin from "@/app/hooks/auth/useKaKaoLogin";
 
 // 더미 데이터
 const notifications = [
@@ -70,20 +69,18 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
   const { user } = useTypedSelector((state) => state.userInfo);
+  const { handleLogin, status, handleLogout } = useLogin();
   const dispatch = useTypedDispatch();
-  const { data: userData } = useSession();
 
-  // session 으로 store 저장
-  useEffect(() => {
-    if (userData) {
-      dispatch(setUser(userData));
-    }
-    console.log(userData);
-  }, [userData, dispatch, user]);
+  // // session 으로 store 저장
+  // useEffect(() => {
+  //   if (userData) {
+  //     console.log(userData);
+  //     // dispatch(setUser(userData.user));
+  //   }
 
-  const handleLogin = () => {
-    signIn("kakao");
-  };
+  //   console.log(user, "user data");
+  // }, [userData, dispatch, user]);
 
   const handleShowMenu = () => {
     setOpen(!open);
@@ -94,7 +91,9 @@ export default function Navbar() {
       className={`z-[30] fixed bottom-0 left-1/2 -translate-x-1/2 bg-white w-full 
         flex justify-center items-center rounded-t-xl shadow-[0_0_20px_11px_rgba(40,70,65,0.14)] 
         transition-all duration-200 ${open ? "h-36" : "h-12"} sm:bottom-[3.5rem] 
-        sm:top-auto sm:left-0 sm:right-0 sm:mx-auto sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16`}
+        sm:top-auto sm:left-0 sm:right-0 sm:mx-auto sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16 transition-all duration-75 ${
+          status !== "loading" ? "animate-fade-in" : "animate-fade-out"
+        }`}
     >
       <div
         className={`absolute flex justify-center bottom-6 bg-primary rounded-full p-2 transition-transform duration-200 ${
@@ -124,7 +123,7 @@ export default function Navbar() {
           </li>
         ))}
         <li className="flex justify-center items-center bg-primary rounded-2xl px-7 py-3 text-black cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full relative">
-          {userData ? (
+          {/* {userData ? (
             <>
               <div onClick={() => setOpenNotification(true)}>알림</div>
               <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center w-7 h-7">
@@ -132,8 +131,9 @@ export default function Navbar() {
               </div>
             </>
           ) : (
-            <div onClick={handleLogin}>로그인</div>
-          )}
+            <div onClick={() => login()}>로그인</div>
+          )} */}
+          <div onClick={() => handleLogout({ callbackUrl: "/" })}>로그아웃</div>
         </li>
       </ul>
       <NotifyDrawer

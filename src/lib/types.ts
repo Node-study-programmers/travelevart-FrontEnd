@@ -25,3 +25,12 @@ export interface IUser {
   provider: string;
   user: IAuthUser | IAuthKaKaoUser;
 }
+
+export interface ICarouselContents {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  linkUrl: string;
+  target: string;
+}

@@ -12,6 +12,7 @@ interface SignupFormInputs {
   nickname: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 export default function SignupPage() {
@@ -21,12 +22,14 @@ export default function SignupPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SignupFormInputs>({
     defaultValues: {
       nickname: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -50,13 +53,13 @@ export default function SignupPage() {
     <div className="bg-[whitesmoke]">
       <div className="w-screen lg:max-w-screen-md mx-auto border-2 border-gray-300">
         <h1
-          className={`p-5 bg-white text-left my-auto flex items-center text-3xl ${logoFont.className} border-gray-300 border-b-2`}
+          className={`p-5 bg-white text-left my-auto flex items-center text-3xl ${logoFont.className} border-gray-300 border-b-2 cursor-pointer`}
         >
-          TravelevarT
+          <Link href="/">TravelevarT</Link>
         </h1>
-        <div className="flex justify-center items-center bg-white flex-col py-10 px-auto">
-          <div className="lg:w-1/2 mx-auto flex flex-col gap-10">
-            <div className="flex justify-center items-center flex-col">
+        <div className="flex justify-center items-center bg-white flex-col py-20 px-auto">
+          <div className="w-full lg:w-1/2 mx-auto flex flex-col gap-10 px-5 lg:px-1">
+            <div className="flex justify-center items-center flex-col w-full">
               <span className="text-3xl font-bold">
                 나만의 여행 계획 사이트
               </span>
@@ -125,6 +128,28 @@ export default function SignupPage() {
                 />
                 {errors.password && (
                   <p className="text-red-500">{errors.password.message}</p>
+                )}
+              </div>
+              <div className="pb-5">
+                <label htmlFor="confirmPassword" className="block pb-2">
+                  비밀번호 확인
+                </label>
+                <input
+                  placeholder="비밀번호 확인 입력"
+                  id="confirmPassword"
+                  type="password"
+                  {...register("confirmPassword", {
+                    required: "비밀번호 확인을 입력해주세요.",
+                    validate: (value) =>
+                      value === watch("password") ||
+                      "비밀번호가 일치하지 않습니다.",
+                  })}
+                  className="border border-gray-300 p-2 w-full rounded-lg py-3"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-500">
+                    {errors.confirmPassword.message}
+                  </p>
                 )}
               </div>
               <button

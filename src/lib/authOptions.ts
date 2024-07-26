@@ -100,9 +100,6 @@ export const authOptions: NextAuthOptions = {
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
       } else {
-        // session.provider = token.provider as string;
-        // session.accessToken = token.accessToken as string;
-        // session.refreshToken = token.refreshToken as string;
         session.user = token.user as IAuthUser;
 
         delete token.userInfo;

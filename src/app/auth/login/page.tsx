@@ -39,11 +39,11 @@ export default function LoginPage() {
 
   return (
     <div className="bg-[whitesmoke] min-h-screen flex flex-col justify-center items-center">
-      <div className="w-screen lg:max-w-screen-md mx-auto border-2 border-gray-300 bg-white rounded-lg">
+      <div className="w-screen lg:max-w-screen-md mx-auto border-2 border-gray-300 bg-white">
         <h1
-          className={`p-5 bg-white text-left my-auto flex items-center text-3xl ${logoFont.className} border-gray-300 border-b-2`}
+          className={`p-5 bg-white text-left my-auto flex items-center text-3xl ${logoFont.className} border-gray-300 border-b-2 cursor-pointer`}
         >
-          TravelevarT
+          <Link href="/">TravelevarT</Link>
         </h1>
         <div className="flex flex-col py-10 px-6 lg:px-12">
           <div className="flex flex-col gap-10">
@@ -61,15 +61,15 @@ export default function LoginPage() {
                     id="email"
                     type="email"
                     placeholder="이메일 입력"
-                    {...register("email", { required: "Email is required" })}
+                    {...register("email", {
+                      required: "이메일을 입력해주세요.",
+                    })}
                     disabled={isLoading}
                     className="border border-gray-300 p-2 w-full rounded-lg py-3"
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm">
-                      {typeof errors.email === "string"
-                        ? errors.email
-                        : errors.email?.message}
+                      {String(errors.email.message)}
                     </p>
                   )}
                 </div>
@@ -83,16 +83,14 @@ export default function LoginPage() {
                     type="password"
                     placeholder="비밀번호 입력"
                     {...register("password", {
-                      required: "Password is required",
+                      required: "비밀번호를 입력해주세요.",
                     })}
                     disabled={isLoading}
                     className="border border-gray-300 p-2 w-full rounded-lg py-3"
                   />
                   {errors.password && (
                     <p className="text-red-500 text-sm">
-                      {typeof errors.password === "string"
-                        ? errors.password
-                        : errors.password?.message}
+                      {String(errors.password.message)}
                     </p>
                   )}
                 </div>

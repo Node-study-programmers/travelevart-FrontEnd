@@ -12,7 +12,6 @@ export interface IAuthUser {
   provider: string;
   accessToken: string;
   refreshToken: string;
-  accessTokenExpires: number;
 }
 
 export interface IAuthKaKaoUser {
@@ -22,7 +21,6 @@ export interface IAuthKaKaoUser {
   provider: string;
   accessToken: string;
   refreshToken: string;
-  accessTokenExpires: number;
 }
 
 // export interface IUser {

@@ -47,11 +47,9 @@ export const authOptions: NextAuthOptions = {
               }),
             },
           );
-
           if (!res.ok) {
             throw new Error("Failed to fetch");
           }
-
           const user = await res.json();
           console.log(user, "useruser");
           if (user) return user;
@@ -86,10 +84,6 @@ export const authOptions: NextAuthOptions = {
             },
           );
 
-          if (response.status !== 201) {
-            throw new Error("session is over!");
-          }
-
           token.user = {
             userId: token.sub,
             name: token.name,
@@ -97,7 +91,6 @@ export const authOptions: NextAuthOptions = {
             provider: account.provider,
             accessToken: account.access_token,
             refreshToken: account.refresh_token,
-            accessTokenExpires: Date.now() + 1 * 60 * 1000,
           };
           delete token.name;
           delete token.picture;
@@ -114,54 +107,12 @@ export const authOptions: NextAuthOptions = {
           provider: (user as CustomUser).provider,
           accessToken: (user as CustomUser).accessToken,
           refreshToken: (user as CustomUser).refreshToken,
-          accessTokenExpires: Date.now() + 1 * 60 * 1000,
         };
-      }
-
-      const currentLoginUser = token.user as IAuthUser | IAuthKaKaoUser;
-
-      if (Date.now() < currentLoginUser.accessTokenExpires) {
-        return token;
-      } else {
-        try {
-          const response = await axios.post(
-            "https://a951-220-125-131-244.ngrok-free.app/auth/token",
-            {
-              // 서버 : 카카오 토큰인지 먼저 체크 (로컬, 카카오 모두 refesh token 전달)
-              refreshToken: currentLoginUser.refreshToken,
-              provider: currentLoginUser.provider,
-              userId: Number(currentLoginUser.userId),
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            },
-          );
-
-          if (response.status !== 201) {
-            throw new Error(response.data.message);
-          }
-
-          // 토큰 업데이트
-          token.user = {
-            ...currentLoginUser,
-            accessToken: response.data.accessToken,
-            accessTokenExpires: Date.now() + 1 * 60 * 1000,
-          };
-        } catch (err) {
-          console.log(err);
-
-          // 오류 발생시 기존 토큰 반환
-          return token;
-        }
       }
 
       return token;
     },
     async session({ session, token }) {
-      // console.log(token, "local token!!!!!!!!");
-
       if ((token.user as IAuthKaKaoUser).provider === "kakao") {
         session.user = token.user as IAuthKaKaoUser;
         session.accessToken = token.accessToken as string;
@@ -171,8 +122,6 @@ export const authOptions: NextAuthOptions = {
 
         delete token.userInfo;
       }
-
-      // console.log(session);
 
       return session;
     },

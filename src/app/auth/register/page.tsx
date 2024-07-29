@@ -7,6 +7,7 @@ import useLogin from "@/app/hooks/auth/useLogin";
 import { logoFont } from "@/font";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import Link from "next/link";
+import { post } from "@/lib/api";
 
 interface SignupFormInputs {
   nickname: string;
@@ -36,11 +37,10 @@ export default function SignupPage() {
   const onSubmit: SubmitHandler<SignupFormInputs> = async (body) => {
     setIsLoading(true);
     try {
-      const { data } = await axios.post(
+      await post(
         "https://f771-220-125-131-244.ngrok-free.app/auth/local/join",
         body,
       );
-      console.log(data);
       router.push("/auth/login");
     } catch (error) {
       console.log(error);

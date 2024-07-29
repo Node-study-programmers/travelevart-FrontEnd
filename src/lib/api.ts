@@ -5,7 +5,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-const BASE_URL = "http://";
+const BASE_URL = "https://a951-220-125-131-244.ngrok-free.app";
 
 const instance = axios.create({
   baseURL: BASE_URL,

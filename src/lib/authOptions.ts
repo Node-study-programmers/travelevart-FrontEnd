@@ -3,7 +3,7 @@ import KakaoProvider from "next-auth/providers/kakao";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { IAuthKaKaoUser, IAuthUser } from "./types";
 import { User as NextAuthUser } from "next-auth";
-import axios from "axios";
+import { post } from "./api";
 
 // 기존 `User` 타입을 확장하여 필요한 속성을 추가
 interface CustomUser extends NextAuthUser {
@@ -36,23 +36,17 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(
-            "https://a951-220-125-131-244.ngrok-free.app/auth/local/login",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: credentials?.email,
-                password: credentials?.password,
-              }),
-            },
-          );
-          if (!res.ok) {
-            throw new Error("Failed to fetch");
+          const requestData = {
+            email: credentials?.email,
+            password: credentials?.password,
+          };
+          const user = await post<CustomUser>("/auth/local/login", requestData);
+
+          if (user) {
+            return user;
+          } else {
+            return null;
           }
-          const user = await res.json();
-          console.log(user, "useruser");
-          if (user) return user;
         } catch (error) {
           console.log("Authorization Error:", error);
           return null;
@@ -68,22 +62,13 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "kakao") {
         // 서버 저장용
         try {
-          const response = await axios.post(
-            "https://a951-220-125-131-244.ngrok-free.app/auth/kakao/login",
-            {
-              uid: token.sub,
-              user: {
-                image: token.picture,
-                name: token.name,
-              },
+          const requestData = {
+            uid: token.sub,
+            user: {
+              image: token.picture,
+              name: token.name,
             },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            },
-          );
-
+          };
           token.user = {
             userId: token.sub,
             name: token.name,
@@ -95,6 +80,7 @@ export const authOptions: NextAuthOptions = {
           delete token.name;
           delete token.picture;
           delete token.sub;
+          await post("/auth/kako/login", requestData);
         } catch (err) {
           console.log(err);
         }
@@ -113,10 +99,9 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      console.log(token, "session");
       if ((token.user as IAuthKaKaoUser).provider === "kakao") {
         session.user = token.user as IAuthKaKaoUser;
-        session.accessToken = token.accessToken as string;
-        session.refreshToken = token.refreshToken as string;
       } else {
         session.user = token.user as IAuthUser;
 

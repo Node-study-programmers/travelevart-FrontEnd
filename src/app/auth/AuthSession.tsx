@@ -12,7 +12,7 @@ export default function AuthSession({ children }: AuthSessionProps) {
   const { status, data } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "authenticated" && data.user) {
       localStorage.setItem(
         LOCAL_STORAGE_KEY.refreshToken,
         data.user.refreshToken,

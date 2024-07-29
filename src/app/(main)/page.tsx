@@ -7,11 +7,11 @@ import { logoFont } from "@/font";
 import useKaKaoLogin from "../hooks/auth/useLogin";
 import { signIn, signOut } from "next-auth/react";
 import getCurrentUser from "@/util/getCurrentUser";
+import useLogin from "../hooks/auth/useLogin";
 
 export default function Home() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
-
-  // const { logout, status } = useKaKaoLogin();
+  const { handleLogout } = useLogin();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,7 +101,9 @@ export default function Home() {
         ></Video> */}
         qwe
         <button onClick={() => signIn()}>로그인</button>
-        <button onClick={() => signOut({ callbackUrl: "/" })}>로그아웃</button>
+        <button onClick={() => handleLogout({ callbackUrl: "/" })}>
+          로그아웃
+        </button>
       </div>
     </main>
   );

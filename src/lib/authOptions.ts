@@ -1,8 +1,9 @@
 import { NextAuthOptions } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { IAuthKaKaoUser, IAuthUser, IUser } from "./types";
+import { IAuthKaKaoUser, IAuthUser } from "./types";
 import { User as NextAuthUser } from "next-auth";
+import { post } from "./api";
 
 // 기존 `User` 타입을 확장하여 필요한 속성을 추가
 interface CustomUser extends NextAuthUser {
@@ -35,25 +36,17 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(
-            "https://f771-220-125-131-244.ngrok-free.app/auth/local/login",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: credentials?.email,
-                password: credentials?.password,
-              }),
-            },
-          );
+          const requestData = {
+            email: credentials?.email,
+            password: credentials?.password,
+          };
+          const user = await post<CustomUser>("/auth/local/login", requestData);
 
-          if (!res.ok) {
-            throw new Error("Failed to fetch");
+          if (user) {
+            return user;
+          } else {
+            return null;
           }
-
-          const user = await res.json();
-          console.log(user, "useruser");
-          if (user) return user;
         } catch (error) {
           console.log("Authorization Error:", error);
           return null;
@@ -67,45 +60,53 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account, user }) {
       if (account?.provider === "kakao") {
-        token.user = {
-          name: token.name,
-          profileImg: token.picture,
-          userId: token.sub,
-          provider: account.provider,
-          accessToken: account.access_token,
-          refreshToken: account.refresh_token,
-        };
-        delete token.name;
-        delete token.picture;
-        delete token.sub;
+        // 서버 저장용
+        try {
+          const requestData = {
+            uid: token.sub,
+            user: {
+              image: token.picture,
+              name: token.name,
+            },
+          };
+          token.user = {
+            userId: token.sub,
+            name: token.name,
+            profileImg: token.picture,
+            provider: account.provider,
+            accessToken: account.access_token,
+            refreshToken: account.refresh_token,
+          };
+          delete token.name;
+          delete token.picture;
+          delete token.sub;
+          await post("/auth/kako/login", requestData);
+        } catch (err) {
+          console.log(err);
+        }
       } else if (user) {
         token.user = {
+          userId: (user as CustomUser).userInfo?.userId,
+          name: (user as CustomUser).userInfo?.name,
+          email: (user as CustomUser).userInfo?.email,
+          profileImg: (user as CustomUser).userInfo?.profileImg,
+          provider: (user as CustomUser).provider,
           accessToken: (user as CustomUser).accessToken,
           refreshToken: (user as CustomUser).refreshToken,
-          email: (user as CustomUser).userInfo?.email,
-          name: (user as CustomUser).userInfo?.name,
-          profileImg: (user as CustomUser).userInfo?.profileImg,
-          userId: (user as CustomUser).userInfo?.userId,
-          provider: (user as CustomUser).provider,
         };
       }
 
       return token;
     },
     async session({ session, token }) {
-      console.log(token, "local token!!!!!!!!");
-
+      console.log(token, "session");
       if ((token.user as IAuthKaKaoUser).provider === "kakao") {
         session.user = token.user as IAuthKaKaoUser;
-        session.accessToken = token.accessToken as string;
-        session.refreshToken = token.refreshToken as string;
       } else {
         session.user = token.user as IAuthUser;
 
         delete token.userInfo;
       }
-
-      // console.log(session);
 
       return session;
     },

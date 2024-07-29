@@ -7,6 +7,7 @@ import Navbar from "./ui/common/Navbar";
 import Footer from "./ui/common/Footer";
 import StoreProvider from "./StoreProvider";
 import getCurrentUser from "@/util/getCurrentUser";
+import AuthSession from "./auth/AuthSession";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,18 +23,20 @@ export default async function RootLayout({
   console.log("currentUser", currentUser);
   return (
     <SessionWrapper>
-      <html lang="en">
-        <body className={noto.className}>
-          <StoreProvider>
-            <Navbar />
-            {children}
-            <Footer />
-          </StoreProvider>
-        </body>
-        {/* <Script
+      <AuthSession>
+        <html lang="en">
+          <body className={noto.className}>
+            <StoreProvider>
+              <Navbar />
+              {children}
+              <Footer />
+            </StoreProvider>
+          </body>
+          {/* <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&libraries=services,clusterer&autoload=false`}
         /> */}
-      </html>
+        </html>
+      </AuthSession>
     </SessionWrapper>
   );
 }

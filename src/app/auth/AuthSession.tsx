@@ -13,11 +13,14 @@ export default function AuthSession({ children }: AuthSessionProps) {
 
   useEffect(() => {
     if (status === "authenticated") {
-      const tokens = {
-        accessToken: data.user.accessToken,
-        refreshToken: data.user.refreshToken,
-      };
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tokens));
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY.refreshToken,
+        data.user.refreshToken,
+      );
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY.accessToken,
+        data.user.accessToken,
+      );
     }
   }, [status, data]);
 

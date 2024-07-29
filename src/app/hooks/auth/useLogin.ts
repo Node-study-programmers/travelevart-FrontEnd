@@ -12,7 +12,8 @@ export default function useLogin() {
   const { status, data: userData } = useSession();
 
   const handleLogout = (options?: SignOutParams) => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
+    localStorage.removeItem(LOCAL_STORAGE_KEY.refreshToken);
     signOut(options);
   };
 

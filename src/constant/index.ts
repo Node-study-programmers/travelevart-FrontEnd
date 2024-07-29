@@ -1,1 +1,4 @@
-export const LOCAL_STORAGE_KEY = "Travel_access_token";
+export const LOCAL_STORAGE_KEY = {
+  accessToken: "tlac",
+  refreshToken: "tlre",
+};

@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_KEY } from "@/constant";
 import { TLoginWay } from "@/lib/types";
 import {
   signIn,
@@ -11,7 +12,7 @@ export default function useLogin() {
   const { status, data: userData } = useSession();
 
   const handleLogout = (options?: SignOutParams) => {
-    // localStorage.removeItem(accessToken);
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
     signOut(options);
   };
 

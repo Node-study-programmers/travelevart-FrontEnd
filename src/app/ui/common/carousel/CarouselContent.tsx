@@ -1,4 +1,5 @@
 import { ICarouselContents } from "@/lib/types";
+import Image from "next/image";
 
 interface ICarouselContentProps {
   content: ICarouselContents;
@@ -7,7 +8,7 @@ interface ICarouselContentProps {
 export default function CarouselContent({ content }: ICarouselContentProps) {
   return (
     <div className="flex flex-shrink-0 flex-grow-0 basis-full justify-center items-center text-center relative">
-      <img
+      <Image
         src={content.imageUrl}
         alt={content.title}
         className="w-full max-w-full"

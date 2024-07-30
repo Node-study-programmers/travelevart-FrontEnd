@@ -99,7 +99,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log(token, "session");
       if ((token.user as IAuthKaKaoUser).provider === "kakao") {
         session.user = token.user as IAuthKaKaoUser;
       } else {

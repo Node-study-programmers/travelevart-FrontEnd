@@ -19,8 +19,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const currentUser = await getCurrentUser();
-  console.log("currentUser", currentUser);
+  // const currentUser = await getCurrentUser();
+
   return (
     <SessionWrapper>
       <AuthSession>

@@ -56,7 +56,7 @@ export default function DropDown({
             {contents.map((content) => (
               <li
                 key={content}
-                className=" hover:bg-secondary rounded-xl py-2 cursor-pointer pl-2"
+                className=" hover:bg-secondary rounded-xl py-2 cursor-pointer pl-2 text-white"
               >
                 {/* 연동 이후 링크 재설정 필요 */}
                 <Link href={`/`}>{content}</Link>

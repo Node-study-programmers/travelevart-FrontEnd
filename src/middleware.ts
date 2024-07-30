@@ -9,12 +9,11 @@ export default async function middleware(req: NextRequest) {
   // 로그인 페이지 유저 정보가 있을때 접근 못하게 함
   if (pathname.startsWith("/auth") && session) {
     const referer = req.headers.get("referer") || "/";
-
     return NextResponse.redirect(new URL(referer, req.url));
   }
 
   // 여행지
-  if (!pathname.includes("/place/?region=&id=") && !session) {
+  if (pathname.includes("/place/?region=&id=") && !session) {
     const referer = req.headers.get("referer") || "/";
 
     return NextResponse.redirect(new URL(referer, req.url));

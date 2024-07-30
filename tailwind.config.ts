@@ -9,10 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#A4EBF3",
-        secondary: "#CCF2F4",
-        third: "#F4F9F9",
-        fourth: "#AAAAAA",
+        primary: "#00A9FF",
+        secondary: "#89CFF3",
+        third: "#A0E9FF",
+        fourth: "#CDF5FD",
         overlay: "rgba(0, 0, 0, 0.5)",
         "rgb-background": "rgb(255, 255, 255)",
         "rgb-primary": "rgb(102, 109, 117)",

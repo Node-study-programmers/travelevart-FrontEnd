@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
           delete token.name;
           delete token.picture;
           delete token.sub;
-          await post("/auth/kako/login", requestData);
+          await post("/auth/kakao/login", requestData);
         } catch (err) {
           console.log(err);
         }

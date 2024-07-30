@@ -8,6 +8,20 @@ import useKaKaoLogin from "../hooks/auth/useLogin";
 import { signIn, signOut } from "next-auth/react";
 import getCurrentUser from "@/util/getCurrentUser";
 import useLogin from "../hooks/auth/useLogin";
+import DropDown from "../ui/common/DropDown";
+
+const dummyData = [
+  "Dummy Data 1",
+  "Dummy Data 2",
+  "Dummy Data 3",
+  "Dummy Data 4",
+  "Dummy Data 5",
+  "Dummy Data 6",
+  "Dummy Data 7",
+  "Dummy Data 8",
+  "Dummy Data 9",
+  "Dummy Data 10",
+];
 
 export default function Home() {
   const [imagesLoaded, setImagesLoaded] = useState(false);

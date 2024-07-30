@@ -39,7 +39,7 @@ export default function Tooltip({
     >
       {children}
       <div
-        className={`absolute whitespace-nowrap bg-primary text-black text-sm py-1 px-2 rounded transition-opacity duration-500 ${getTooltipStyles(direction)} ${hover ? "opacity-100" : "opacity-0"}`}
+        className={`absolute whitespace-nowrap bg-primary text-white text-sm py-1 px-2 rounded transition-opacity duration-500 ${getTooltipStyles(direction)} ${hover ? "opacity-100" : "opacity-0"}`}
       >
         {content}
       </div>

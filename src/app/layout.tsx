@@ -6,8 +6,8 @@ import SessionWrapper from "@/util/SessionWrapper";
 import Navbar from "./ui/common/Navbar";
 import Footer from "./ui/common/Footer";
 import StoreProvider from "./StoreProvider";
-import getCurrentUser from "@/util/getCurrentUser";
 import AuthSession from "./auth/AuthSession";
+import QueryProvider from "./QueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,24 +19,24 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const currentUser = await getCurrentUser();
-
   return (
-    <SessionWrapper>
-      <AuthSession>
-        <html lang="en">
-          <body className={noto.className}>
-            <StoreProvider>
-              <Navbar />
-              {children}
-              <Footer />
-            </StoreProvider>
-          </body>
-          {/* <Script
+    <QueryProvider>
+      <SessionWrapper>
+        <AuthSession>
+          <html lang="en">
+            <body className={noto.className}>
+              <StoreProvider>
+                <Navbar />
+                {children}
+                <Footer />
+              </StoreProvider>
+            </body>
+            {/* <Script
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&libraries=services,clusterer&autoload=false`}
         /> */}
-        </html>
-      </AuthSession>
-    </SessionWrapper>
+          </html>
+        </AuthSession>
+      </SessionWrapper>
+    </QueryProvider>
   );
 }

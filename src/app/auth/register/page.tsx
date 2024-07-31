@@ -17,7 +17,6 @@ interface SignupFormInputs {
 }
 
 export default function SignupPage() {
-  const [isLoading, setIsLoading] = useState(false);
   const { handleLogin } = useLogin();
   const router = useRouter();
   const {
@@ -35,7 +34,6 @@ export default function SignupPage() {
   });
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (body) => {
-    setIsLoading(true);
     try {
       await post(
         "https://f771-220-125-131-244.ngrok-free.app/auth/local/join",
@@ -44,8 +42,6 @@ export default function SignupPage() {
       router.push("/auth/login");
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

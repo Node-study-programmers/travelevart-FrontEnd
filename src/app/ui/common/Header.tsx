@@ -2,12 +2,13 @@
 
 import { logoFont } from "@/font";
 import Link from "next/link";
-import { IoEarthOutline, IoNotifications } from "react-icons/io5";
+import { IoEarthOutline } from "react-icons/io5";
 import { NotifyDrawer } from "./Drawer";
 import { useState } from "react";
 import { RxExit } from "react-icons/rx";
 import Tooltip from "./Tooltip";
 import useLogin from "@/app/hooks/auth/useLogin";
+import { IoMdNotificationsOutline } from "react-icons/io";
 
 // 더미 데이터
 const notifications = [
@@ -69,16 +70,18 @@ export default function Header() {
           <IoEarthOutline />
           TravelevarT
         </Link>
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-7 items-center">
           <div className="relative">
             <div onClick={() => setOpenNotification(true)}>
               <Tooltip direction="bottom" content="알림">
-                <IoNotifications className="text-3xl" />
+                <IoMdNotificationsOutline className="text-3xl" />
               </Tooltip>
             </div>
-            <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 flex justify-center items-center w-5 h-5">
-              {notifications.length}
-            </div>
+            {notifications && (
+              <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 flex justify-center items-center w-4 h-4 text-xs">
+                {notifications.length}
+              </div>
+            )}
           </div>
           <div
             className="text-2xl"

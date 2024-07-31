@@ -72,13 +72,13 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
             open
               ? "sm:animate-slide-in-right animate-fade-in"
               : "sm:animate-slide-out-right animate-fade-out"
-          } overflow-auto scrollbar-hide pb-10 lg:pb-10 bg-primary flex-1`}
+          } overflow-auto scrollbar-hide pb-10 lg:pb-10 bg-white flex-1`}
         >
           <h2
-            className={`text-xl mb-5 flex items-center px-3 justify-between lg:ml-0 sticky top-0 z-50 bg-primary w-full h-16`}
+            className={`text-xl mb-5 flex items-center px-3 justify-between lg:ml-0 sticky top-0 z-50 bg-white w-full h-16`}
           >
-            <div className="flex gap-2 items-center px-3 text-white">
-              알림 <IoNotifications />
+            <div className="flex gap-2 items-center px-3 text-black font-bold">
+              알림
             </div>
             <IoCloseSharp
               className="text-3xl text-fourth cursor-pointer"
@@ -86,7 +86,7 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
             />
           </h2>
           <div
-            className="mx-5 my-5 bg-third text-black px-5 py-2 rounded-lg text-center hover:bg-fourth cursor-pointer"
+            className="mx-5 my-5 bg-gray-500 text-white px-5 py-2 rounded-lg text-center hover:bg-gray-400 cursor-pointer"
             onClick={() => setNotifList([])}
           >
             <p>모두 지우기</p>
@@ -96,7 +96,7 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
               {notifList.map((el) => (
                 <li
                   key={el.id}
-                  className="bg-secondary rounded-lg text-sm p-3 w-full cursor-pointer relative shadow-lg hover:shadow-inner transition-transform duration-300"
+                  className="bg-[whitesmoke] rounded-lg text-sm p-3 w-full cursor-pointer relative shadow-xl hover:shadow-inner transition-transform duration-300"
                 >
                   <h3 className="font-semibold">{el.title}</h3>
                   <p>{el.content}</p>

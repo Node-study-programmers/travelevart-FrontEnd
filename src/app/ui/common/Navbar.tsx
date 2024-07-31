@@ -1,14 +1,12 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RiCloseFill } from "react-icons/ri";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NotifyDrawer } from "./Drawer";
-import { useTypedDispatch, useTypedSelector } from "@/app/hooks/reduxHooks";
-import useLogin from "@/app/hooks/auth/useLogin";
 import { signIn } from "next-auth/react";
+import useLogin from "@/app/hooks/auth/useLogin";
 
 const menuItems = [
   { path: "/", label: "홈" },
@@ -26,15 +24,15 @@ export default function Navbar() {
   const handleShowMenu = () => {
     setOpen(!open);
   };
-  console.log(status);
 
   return (
     <nav
       className={`z-[30] fixed bottom-0 left-1/2 -translate-x-1/2 bg-white w-full
-flex justify-center items-center rounded-t-xl shadow-[0_0_20px_11px_rgba(40,70,65,0.14)]
-transition-all duration-200 ${open ? "h-36" : "h-12"} sm:bottom-[3.5rem] 
-sm: ${status === "authenticated" ? "animate-fade-in" : "hidden"} sm:top-auto sm:left-0 sm:right-0 sm:mx-auto 
-sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16`}
+        flex justify-center items-center rounded-t-xl shadow-[0_0_20px_11px_rgba(40,70,65,0.14)]
+        transition-all duration-200 ${open ? "h-36" : "h-12"} sm:bottom-[3.5rem] 
+        ${status === "authenticated" ? "sm:animate-fade-in sm:flex" : "hidden"} 
+        sm:top-auto sm:left-0 sm:right-0 sm:mx-auto 
+        sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16`}
     >
       <div
         className={`absolute flex justify-center bottom-6 bg-primary rounded-full p-2 transition-transform duration-200 ${

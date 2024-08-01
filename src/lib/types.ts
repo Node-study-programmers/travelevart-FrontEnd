@@ -5,17 +5,18 @@ export type TCheckBoxGroupDirecion = "horizontal" | "vertical";
 export type TLoginWay = "kakao" | "credentials";
 
 export interface IAuthUser {
-  userId: number;
+  userId: number; // primary key
   name: string;
   email: string;
   profileImg: string;
   provider: string;
   accessToken: string;
   refreshToken: string;
+  uid: string; // token.sub
 }
 
 export interface IAuthKaKaoUser {
-  userId: string;
+  userId: number;
   name: string;
   profileImg: string;
   provider: string;

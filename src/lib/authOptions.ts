@@ -13,6 +13,12 @@ interface CustomUser extends NextAuthUser {
   provider: string;
 }
 
+interface SocialUser {
+  userId: number;
+  provider: string;
+  uid: string;
+}
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   providers: [
@@ -69,18 +75,23 @@ export const authOptions: NextAuthOptions = {
               name: token.name,
             },
           };
+          const socialUser = await post<SocialUser>(
+            "/auth/kakao/login",
+            requestData,
+          );
+
           token.user = {
-            userId: token.sub,
+            uid: token.sub,
             name: token.name,
             profileImg: token.picture,
             provider: account.provider,
             accessToken: account.access_token,
             refreshToken: account.refresh_token,
+            userId: socialUser.userId,
           };
           delete token.name;
           delete token.picture;
           delete token.sub;
-          await post("/auth/kakao/login", requestData);
         } catch (err) {
           console.log(err);
         }

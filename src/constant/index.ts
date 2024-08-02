@@ -1,6 +1,6 @@
 export const LOCAL_STORAGE_KEY = {
-  accessToken: "tlac",
-  refreshToken: "tlre",
+  accessToken: "accessToken",
+  refreshToken: "refreshToken",
 };
 
 // 커뮤니티 post api offset (여행게시판 , 자유게시판)

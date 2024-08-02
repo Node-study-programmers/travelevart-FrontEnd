@@ -7,17 +7,18 @@ export type TLoginWay = "kakao" | "credentials";
 export type TFocusBoard = "여행게시판" | "자유게시판";
 
 export interface IAuthUser {
-  userId: number;
+  userId: number; // primary key
   name: string;
   email: string;
   profileImg: string;
   provider: string;
   accessToken: string;
   refreshToken: string;
+  uid: string; // token.sub
 }
 
 export interface IAuthKaKaoUser {
-  userId: string;
+  userId: number;
   name: string;
   profileImg: string;
   provider: string;

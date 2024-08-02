@@ -3,13 +3,14 @@ import { IoEarthOutline } from "react-icons/io5";
 import { RiNotionFill } from "react-icons/ri";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
+import FeedbackForm from "./FeedbackForm";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full flex justify-center bg-slate-50 text-rgb-primary pt-6 pb-5">
-      <div className="max-w-[1280px] w-full mx-auto">
+    <footer className="relative w-full flex justify-center bg-gray-100 text-rgb-primary pt-6 pb-5">
+      <div className="max-w-[1280px] w-full mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center justify-between border-b-[1px] border-gray-500 mx-10 lg:mx-0">
-          <div className="w-full max-w-80 text-4xl text-rgb-primary text-center lg:text-left">
+          <div className="w-full text-4xl text-rgb-primary text-center lg:text-left flex flex-col">
             <div className="flex items-center gap-2 justify-center lg:justify-start">
               <IoEarthOutline />
               <h1 className={`${logoFont.className} tracking-wider`}>
@@ -20,46 +21,11 @@ export default function Footer() {
               TravelevarT는 여행지 추천 기반 커뮤니티 서비스입니다.
             </span>
           </div>
-          <div className="flex gap-8 mb-6 justify-around">
-            <div className="font-bold">
-              Back-end
-              <div className="flex flex-col justify-center items-center text-rgb-secondary font-light text-[0.875rem]">
-                <span>
-                  <Link href="https://github.com/jacknafa" target="_blank">
-                    김준서
-                  </Link>
-                </span>
-                <span>
-                  <Link href="https://github.com/nyh98" target="_blank">
-                    남용환
-                  </Link>
-                </span>
-                <span>
-                  <Link href="https://github.com/chansik0504" target="_blank">
-                    박성률
-                  </Link>
-                </span>
-              </div>
+          <div className="w-full max-w-96 my-4">
+            <div className="flex justify-center lg:justify-start text-green-700 font-semibold">
+              소원수리함 📮
             </div>
-            <div className="font-bold">
-              Front-end
-              <div className="flex flex-col justify-center items-center text-rgb-secondary font-light text-[0.875rem]">
-                <span>
-                  <Link href="https://github.com/kwonsuhyuk" target="_blank">
-                    권수혁
-                  </Link>
-                </span>
-                <span>
-                  <Link
-                    href="https://github.com/choongnyeong6215"
-                    target="_blank"
-                  >
-                    이충녕
-                  </Link>
-                </span>
-                <br />
-              </div>
-            </div>
+            <FeedbackForm />
           </div>
         </div>
         <div className="flex justify-between items-center mt-6 mb-16 mx-10 lg:mx-0">

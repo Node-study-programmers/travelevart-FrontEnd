@@ -7,7 +7,7 @@ import FeedbackForm from "./FeedbackForm";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full flex justify-center bg-gray-100 text-rgb-primary pt-6 pb-5">
+    <footer className="relative w-full flex justify-center bg-slate-200 text-rgb-primary pt-6 pb-5">
       <div className="max-w-[1280px] w-full mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center justify-between border-b-[1px] border-gray-500 mx-10 lg:mx-0">
           <div className="w-full text-4xl text-rgb-primary text-center lg:text-left flex flex-col">

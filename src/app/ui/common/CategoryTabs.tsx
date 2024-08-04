@@ -12,7 +12,7 @@ export default function CategoryTabs({
   setFocusTab,
 }: ICategoryTabsProps) {
   return (
-    <div className="flex flex-col w-full md:justify-center mt-12 md:mt-0">
+    <div className="flex flex-col w-full md:justify-center lg:mt-12 md:mt-0">
       <div className="relative border-b border-gray-200">
         <div className="flex justify-around">
           {categories.map((category, idx) => (

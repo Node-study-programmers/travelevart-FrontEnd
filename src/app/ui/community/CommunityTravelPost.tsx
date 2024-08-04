@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export interface ICommunityPostContainerProps {
+export interface ICommunityTravelPostProps {
   id: number;
   author: string;
   commentCount: number;
@@ -8,11 +8,12 @@ export interface ICommunityPostContainerProps {
   like: number;
   profileImg: string;
   title: string;
-  travelRoute_id: number;
+  travelRoute_id?: number;
   views: number;
+  contents: string;
 }
 
-export default function CommunityPostContainer({
+export default function CommunityTravelPost({
   id,
   author,
   commentCount,
@@ -22,7 +23,8 @@ export default function CommunityPostContainer({
   title,
   travelRoute_id,
   views,
-}: ICommunityPostContainerProps) {
+  contents,
+}: ICommunityTravelPostProps) {
   const formattedDate = new Date(created_at).toLocaleString("ko-KR", {
     year: "numeric",
     month: "long",
@@ -30,20 +32,23 @@ export default function CommunityPostContainer({
   });
 
   return (
-    <div className="p-6 rounded-xl shadow-md h-96 w-full">
-      <div className="flex items-center">
-        {/* <Image
+    <div className="p-6 rounded-xl shadow-md h-auto w-full">
+      <div className="flex items-center w-full">
+        <Image
           src={profileImg}
           alt="profile"
-          fill
-          className="w-10 h-10 rounded-full border-[1px] border-transparent"
-        /> */}
+          width={40}
+          loading="lazy"
+          height={40}
+          className="rounded-full border-[1px] border-transparent w-10 h-10"
+        />
         <div className="ml-4">
           <div className="text-sm text-gray-500">
             {author}
             <span className="ml-2 text-xs text-gray-400">{formattedDate}</span>
           </div>
           <div className="text-xl font-bold text-gray-800">{title}</div>
+          <div className="text-left text-base">{contents}</div>
         </div>
       </div>
     </div>

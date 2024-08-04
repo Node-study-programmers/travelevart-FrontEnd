@@ -5,10 +5,8 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-const BASE_URL = "https://a951-220-125-131-244.ngrok-free.app";
-
 const instance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 15000,
 });
 
@@ -37,9 +35,12 @@ function interceptorResponseFulfilled(res: AxiosResponse) {
 
 async function getNewAccessToken(refreshToken: string): Promise<string> {
   try {
-    const response = await axios.post(`${BASE_URL}/auth/token`, {
-      refreshToken,
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/token`,
+      {
+        refreshToken,
+      },
+    );
     return response.data.accessToken;
   } catch (error) {
     throw new Error("Failed to refresh access token");

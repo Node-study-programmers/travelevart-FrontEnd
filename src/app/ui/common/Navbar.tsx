@@ -30,7 +30,7 @@ export default function Navbar() {
       className={`z-[30] fixed bottom-0 left-1/2 -translate-x-1/2 bg-white w-full
         flex justify-center items-center rounded-t-xl shadow-[0_0_20px_11px_rgba(40,70,65,0.14)]
         transition-all duration-200 ${open ? "h-36" : "h-12"} sm:bottom-[3.5rem] 
-        ${status === "authenticated" ? "sm:animate-fade-in sm:flex" : "hidden"} 
+        ${status === "loading" ? "hidden" : "sm:animate-fade-in sm:flex"}      
         sm:top-auto sm:left-0 sm:right-0 sm:mx-auto 
         sm:translate-x-0 sm:translate-y-0 sm:rounded-full sm:w-fit sm:h-16`}
     >

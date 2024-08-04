@@ -29,3 +29,11 @@
   background-color: #a4ebf3;
   -webkit-appearance: none;
 }
+
+.scroll-none {
+  -ms-overflow-style: none;
+}
+
+.scroll-none::-webkit-scrollbar {
+  display: none;
+}

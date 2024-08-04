@@ -31,6 +31,7 @@ export default function usePopularPost({ focusBoard }: IPopularPostProps) {
           },
         },
       );
+
       return response;
     } catch (error) {
       const errorMessage =

@@ -5,10 +5,11 @@ import Link from "next/link";
 import { IoEarthOutline } from "react-icons/io5";
 import { NotifyDrawer } from "./Drawer";
 import { useState } from "react";
-import { RxExit } from "react-icons/rx";
 import Tooltip from "./Tooltip";
 import useLogin from "@/app/hooks/auth/useLogin";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import { IoIosLogOut, IoMdNotificationsOutline } from "react-icons/io";
+import { MdLogin, MdLogout } from "react-icons/md";
+import { signIn } from "next-auth/react";
 
 // 더미 데이터
 const notifications = [
@@ -58,16 +59,16 @@ const notifications = [
 ];
 
 export default function Header() {
-  const { handleLogout } = useLogin();
+  const { handleLogout, status } = useLogin();
   const [openNotification, setOpenNotification] = useState(false);
   return (
     <div className="border-b-[1px] border-gray-300 w-full sticky z-[48] top-0 bg-white">
       <div className="max-w-[1280px] w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-3">
         <Link
           href="/"
-          className={`${logoFont.className} text-3xl flex items-center gap-2 cursor-pointer`}
+          className={`${logoFont.className} text-3xl flex items-center gap-2 cursor-pointer text-blue-500`}
         >
-          <IoEarthOutline />
+          <IoEarthOutline className="text-blue-500" />
           TravelevarT
         </Link>
         <div className="flex gap-7 items-center">
@@ -83,13 +84,17 @@ export default function Header() {
               </div>
             )}
           </div>
-          <div
-            className="text-2xl"
-            onClick={() => handleLogout({ callbackUrl: "/" })}
-          >
-            <Tooltip direction="bottom" content="로그아웃">
-              <RxExit />
-            </Tooltip>
+          <div className="text-2xl">
+            {status === "authenticated" && (
+              <Tooltip direction="bottom" content="로그아웃">
+                <MdLogout onClick={() => handleLogout({ callbackUrl: "/" })} />
+              </Tooltip>
+            )}
+            {status === "unauthenticated" && (
+              <Tooltip direction="bottom" content="로그인">
+                <MdLogin onClick={() => signIn()} />
+              </Tooltip>
+            )}
           </div>
         </div>
       </div>

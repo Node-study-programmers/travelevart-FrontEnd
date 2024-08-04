@@ -24,18 +24,20 @@ interface PostResponseData {
 
 interface IPostInfinitiQueryProps {
   focusBoard: TFocusBoard;
+  searchName?: string | null;
 }
 
 //https://95b7-118-176-13-136.ngrok-free.app
 export default function usePostInfinitiQuery({
   focusBoard,
+  searchName = "",
 }: IPostInfinitiQueryProps) {
   async function getCommunityPost(
     pageParam: number,
   ): Promise<PostResponseData> {
     try {
       const response = await get<PostResponseData>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/posts?target=${focusBoard}&searchName=&page=${pageParam}&pageSize=3`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/posts?target=${focusBoard}&searchName=${searchName}&page=${pageParam}&pageSize=3`,
         {
           headers: {
             "ngrok-skip-browser-warning": "true",
@@ -51,24 +53,22 @@ export default function usePostInfinitiQuery({
     }
   }
 
-  const { data, hasNextPage, fetchNextPage, status } = useInfiniteQuery<
-    PostResponseData,
-    Error
-  >({
-    queryKey: ["communitypost", focusBoard],
-    queryFn: ({ pageParam = 1 }) => getCommunityPost(pageParam),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      const page = lastPage?.currentPage;
-      if (page) {
-        const totalPages = lastPage?.totalPage;
-        if (totalPages === page) return null;
-        return page + 1;
-      }
-      return false;
-    },
-    retry: 0,
-  });
+  const { data, hasNextPage, fetchNextPage, status, isFetchingNextPage } =
+    useInfiniteQuery<PostResponseData, Error>({
+      queryKey: ["communitypost", focusBoard, searchName],
+      queryFn: ({ pageParam = 1 }) => getCommunityPost(pageParam),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        const page = lastPage?.currentPage;
+        if (page) {
+          const totalPages = lastPage?.totalPage;
+          if (totalPages === page) return null;
+          return page + 1;
+        }
+        return false;
+      },
+      retry: 0,
+    });
 
   const postData = data?.pages.flatMap((page) => page.posts) ?? [];
 
@@ -77,5 +77,6 @@ export default function usePostInfinitiQuery({
     hasNextPage,
     fetchNextPage,
     status,
+    isFetchingNextPage,
   };
 }

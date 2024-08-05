@@ -42,7 +42,6 @@ export function useProfile(userId: number) {
 
       const response = await patch<IUpdateProfileResponse>("/users", formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
           "ngrok-skip-browser-warning": "true",
           "Content-Type": "multipart/form-data",
         },

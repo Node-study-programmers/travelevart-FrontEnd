@@ -27,7 +27,7 @@ export default function Profile() {
 
   return (
     <div className="relative flex flex-col items-start w-full md:w-[30%] md:justify-center bg-white rounded-xl shadow-md p-6 lg:mt-5 md:mt-0">
-      {userData && (
+      {profileImg ? (
         <Image
           src={profileImg}
           alt={userName || "Profile Image"}
@@ -35,6 +35,8 @@ export default function Profile() {
           width={80}
           height={80}
         />
+      ) : (
+        <div className="w-20 h-20 rounded-full bg-gray-200 mb-4" />
       )}
       <p className="text-base font-semibold">닉네임</p>
       <p className="text-sm text-rgb-secondary">{userName}</p>

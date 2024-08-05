@@ -34,15 +34,8 @@ export function useProfile(userId: number) {
 
   async function updateProfile(formData: FormData) {
     try {
-      const token = localStorage.getItem("accessToken");
-
-      if (!token) {
-        throw new Error("Unauthorized!!!");
-      }
-
       const response = await patch<IUpdateProfileResponse>("/users", formData, {
         headers: {
-          "ngrok-skip-browser-warning": "true",
           "Content-Type": "multipart/form-data",
         },
       });

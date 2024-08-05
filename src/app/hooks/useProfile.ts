@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
 import { get, patch } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 interface IUserInfo {
   userId: number;
@@ -14,57 +15,61 @@ interface IUpdateProfileResponse {
   profileImg?: string;
 }
 
-export async function getUserInfo(userId: number) {
-  const response = await get<IUserInfo>(`/users/${userId}`, {
-    headers: {
-      "ngrok-skip-browser-warning": "true",
+export function useProfile(userId: number) {
+  const router = useRouter();
+
+  async function getUserInfo(userId: number) {
+    try {
+      if (!userId) {
+        throw new Error("Unauthorized!!!");
+      }
+
+      const response = await get<IUserInfo>(`/users/${userId}`);
+
+      return response;
+    } catch (err) {
+      throw new Error("Failed to get user profile");
+    }
+  }
+
+  async function updateProfile(formData: FormData) {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+        throw new Error("Unauthorized!!!");
+      }
+
+      const response = await patch<IUpdateProfileResponse>("/users", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "true",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (err) {
+      console.log("프로필 업데이트 실패", err);
+      throw err;
+    }
+  }
+
+  const { isLoading, data } = useQuery<
+    Pick<IUserInfo, "profileImg" | "userName" | "userId">
+  >({
+    queryKey: ["userProfile", userId],
+    queryFn: () => getUserInfo(userId),
+  });
+
+  const updateProfileMutation = useMutation({
+    mutationFn: (formData: FormData) => updateProfile(formData),
+    onSuccess: () => {
+      alert("프로필이 수정되었습니다.");
+      router.replace("/mypage");
+    },
+    onError: (err) => {
+      console.log("프로필 업데이트 실패", err);
     },
   });
 
-  return response;
-}
-
-export async function updateProfile(formData: FormData) {
-  try {
-    const token = localStorage.getItem("accessToken");
-
-    if (!token) {
-      throw new Error("Unauthorized!!!");
-    }
-
-    const response = await patch<IUpdateProfileResponse>("/users", formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "ngrok-skip-browser-warning": "true",
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    console.log("프로필 업데이트 성공:", response);
-    alert("프로필이 수정되었습니다.");
-  } catch (err) {
-    console.error("프로필 업데이트 실패:", err);
-    throw err;
-  }
-}
-
-export function useProfile(userId: number | undefined) {
-  const [userInfo, setUserInfo] = useState<IUserInfo | undefined>(undefined);
-
-  useEffect(() => {
-    if (userId === undefined) return;
-
-    const fetchUserInfo = async () => {
-      try {
-        const data = await getUserInfo(userId);
-        setUserInfo(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchUserInfo();
-  }, [userId]);
-
-  return { userInfo };
+  return { isLoading, data, updateProfileMutation };
 }

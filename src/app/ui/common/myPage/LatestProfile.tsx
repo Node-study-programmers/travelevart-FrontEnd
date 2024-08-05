@@ -1,7 +1,7 @@
 "use client";
 
 import useLogin from "@/app/hooks/auth/useLogin";
-import { updateProfile, useProfile } from "@/app/hooks/useProfile";
+import { useProfile } from "@/app/hooks/useProfile";
 import { convertImgFormat } from "@/util/convertImgFormat";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -11,21 +11,21 @@ import Tooltip from "../Tooltip";
 export default function NewProfile() {
   const { userData } = useLogin();
   const router = useRouter();
-  const { userInfo } = useProfile(userData?.user.userId);
+  const { data, updateProfileMutation } = useProfile(
+    userData?.user.userId as number,
+  );
   const [userName, setUserName] = useState<string>("");
   const [profileImg, setProfileImg] = useState<string>("");
   const profileImgRef = useRef<HTMLInputElement>(null);
-
   const isDisabled =
-    userName === userInfo?.userName && profileImg === userInfo?.profileImg;
+    userName === data?.userName && profileImg === data?.profileImg;
 
   useEffect(() => {
-    if (userInfo) {
-      setUserName(userInfo.userName);
-      setProfileImg(userInfo.profileImg);
+    if (data) {
+      setProfileImg(data?.profileImg);
+      setUserName(data.userName);
     }
-  }, [userInfo]);
-
+  }, [data]);
   const handleFileUpload = () => {
     profileImgRef.current?.click();
   };
@@ -61,16 +61,16 @@ export default function NewProfile() {
   const handleUpdateProfile = () => {
     const formData = new FormData();
 
-    if (profileImg && profileImg !== userInfo?.profileImg) {
+    if (profileImg && profileImg !== data?.profileImg) {
       const profileImgFile = convertImgFormat(profileImg, "profile-image.jpg");
       formData.append("profileImg", profileImgFile);
     }
 
-    if (userName !== userInfo?.userName) {
+    if (userName !== data?.userName) {
       formData.append("userName", userName);
     }
 
-    updateProfile(formData);
+    updateProfileMutation.mutate(formData);
   };
 
   return (
@@ -113,9 +113,9 @@ export default function NewProfile() {
           onChange={handleEditUserName}
         />
       </div>
-      <div className="w-[60%] mx-auto mt-20 flex justify-center gap-12 md:gap-16 text-sm md:text-base mb-4">
+      <div className="w-[60%] mx-auto flex justify-center gap-8 md:gap-16  text-sm md:text-base my-12 rounded-full">
         <button
-          className="bg-[whitesmoke] rounded-xl py-4 px-4 md:px-8 shadow-sm hover:shadow-inner transition-transform duration-300"
+          className="bg-primary rounded-full text-white py-4 px-4 md:px-8 shadow-sm transition-transform duration-300"
           onClick={handleCancelUpdateProfile}
         >
           취소하기
@@ -123,7 +123,7 @@ export default function NewProfile() {
         {isDisabled ? (
           <Tooltip direction="top" content="프로필 수정 이후 저장 가능합니다.">
             <button
-              className={`rounded-xl py-4 px-4 md:px-8 bg-[whitesmoke]`}
+              className={`bg-secondary rounded-full text-white py-4 px-4 md:px-8`}
               onClick={handleUpdateProfile}
               disabled={isDisabled}
             >
@@ -132,7 +132,7 @@ export default function NewProfile() {
           </Tooltip>
         ) : (
           <button
-            className={`rounded-xl py-4 px-4 md:px-8 bg-[whitesmoke] shadow-sm hover:shadow-inner transition-transform duration-300`}
+            className={`bg-primary rounded-full text-white py-4 px-4 md:px-8  shadow-sm transition-transform duration-300`}
             onClick={handleUpdateProfile}
             disabled={isDisabled}
           >

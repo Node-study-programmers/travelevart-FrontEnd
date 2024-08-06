@@ -3,9 +3,18 @@ import { TFocusBoard } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 
+export interface PostContent {
+  id: number;
+  postId: number;
+  order: number;
+  text: string;
+  image: string;
+}
+
 export interface Post {
   id: number;
   author: string;
+  authorId: number;
   profileImg: string;
   title: string;
   views: number;
@@ -13,7 +22,8 @@ export interface Post {
   created_at: string;
   travelRoute_id: number;
   like: number;
-  contents: string;
+  contents: PostContent[];
+  isLiked: boolean;
 }
 
 interface PostResponseData {
@@ -27,7 +37,6 @@ interface IPostInfinitiQueryProps {
   searchName?: string | null;
 }
 
-//https://95b7-118-176-13-136.ngrok-free.app
 export default function usePostInfinitiQuery({
   focusBoard,
   searchName = "",

@@ -1,9 +1,8 @@
-import { formatDistanceToNow } from "date-fns";
-import { ko } from "date-fns/locale";
 import Image from "next/image";
-import { FaCommentAlt } from "react-icons/fa";
-import { GrLike } from "react-icons/gr";
-import { PiEyesFill } from "react-icons/pi";
+import Link from "next/link";
+import { convertTimeAgo } from "@/util/convertTimeAgo";
+import { PostBottoms } from "./PostBottoms";
+import { IContent } from "./CommunityPopularPost";
 
 export interface ICommunityFreePostProps {
   id: number;
@@ -14,7 +13,7 @@ export interface ICommunityFreePostProps {
   profileImg: string;
   title: string;
   views: number;
-  contents: string;
+  contents: IContent[];
 }
 
 export default function CommunityFreePost({
@@ -28,14 +27,11 @@ export default function CommunityFreePost({
   views,
   contents,
 }: ICommunityFreePostProps) {
-  const formattedDate = formatDistanceToNow(new Date(created_at), {
-    addSuffix: true,
-    locale: ko,
-  });
+  const formattedCreatedAt = convertTimeAgo(created_at);
 
   return (
     <div className="p-6 rounded-xl shadow-md h-auto w-full cursor-pointer">
-      <div className="flex items-start w-full">
+      <Link className="flex items-start w-full" href={`/community/free/${id}`}>
         <Image
           src={profileImg}
           alt="profile"
@@ -45,25 +41,19 @@ export default function CommunityFreePost({
           className="rounded-full border-[1px] border-transparent w-10 h-10"
         />
         <div className="ml-4 w-full">
-          <div className="text-sm text-gray-500 mb-1.5">
+          <div className="text-sm text-gray-500 mb-1.5 flex justify-between">
             {author}
-            <span className="ml-2 text-xs text-gray-400">{formattedDate}</span>
+            <span className="ml-2 text-xs text-gray-400">
+              {formattedCreatedAt}
+            </span>
           </div>
           <div className="text-xl font-semibold mb-3">{title}</div>
-          <div className="text-left text-sm line-clamp-2 mb-3">{contents}</div>
-          <div className="flex justify-end gap-3 text-xs">
-            <div className="flex gap-1 items-center text-gray-500">
-              <FaCommentAlt /> {commentCount}
-            </div>
-            <div className="flex gap-1 items-center text-gray-500">
-              <GrLike /> {like}
-            </div>
-            <div className="flex gap-1 items-center text-gray-500">
-              <PiEyesFill /> {views}
-            </div>
+          <div className="text-left text-sm line-clamp-2 mb-4">
+            {contents[0].text}
           </div>
+          <PostBottoms commentCount={commentCount} like={like} views={views} />
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

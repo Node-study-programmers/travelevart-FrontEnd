@@ -1,15 +1,27 @@
+import { TFocusBoard } from "@/lib/types";
 import Image from "next/image";
+import Link from "next/link";
+
+export interface IContent {
+  id: number;
+  postId: number;
+  order: number;
+  text: string;
+  image: string;
+}
 
 export interface ICommunityPopularPostProps {
+  focusBoard: TFocusBoard;
   index: number;
   id: number;
   author: string;
   title: string;
   profileImg: string;
-  contents: string;
+  contents: IContent[];
 }
 
 export default function CommunityPopularPost({
+  focusBoard,
   index,
   id,
   author,
@@ -17,9 +29,23 @@ export default function CommunityPopularPost({
   profileImg,
   contents,
 }: ICommunityPopularPostProps) {
+  const getLinkPath = () => {
+    switch (focusBoard) {
+      case "자유게시판":
+        return `/community/free/${id}`;
+      case "여행게시판":
+        return `/community/travel/${id}`;
+      default:
+        return "/";
+    }
+  };
+
   return (
-    <div
-      className={`flex gap-4 py-3 rounded-xl w-full ${index !== 5 ? "border-b-[1px] border-gray-300" : ""}`}
+    <Link
+      href={getLinkPath()}
+      className={`flex gap-4 py-3 rounded-xl w-full ${
+        index !== 5 ? "border-b-[1px] border-gray-300" : ""
+      }`}
     >
       <h2>{index}</h2>
       <div className="flex flex-col">
@@ -37,12 +63,14 @@ export default function CommunityPopularPost({
           </div>
         </div>
         <div className="flex-grow max-w-full">
-          <div className="text-sm font-bold text-gray-800 line-clamp-1 my-1.5">
+          <div className="text-sm font-semibold line-clamp-1 my-1.5">
             {title}
           </div>
-          <div className="text-sm text-gray-500 line-clamp-2">{contents}</div>
+          {contents.length > 0 && (
+            <div className="text-sm line-clamp-2">{contents[0].text}</div>
+          )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

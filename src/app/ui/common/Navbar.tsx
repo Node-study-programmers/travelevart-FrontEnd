@@ -11,7 +11,7 @@ import useLogin from "@/app/hooks/auth/useLogin";
 const menuItems = [
   { path: "/", label: "홈" },
   { path: "/search-trip", label: "여행지검색" },
-  { path: "/community", label: "커뮤니티" },
+  { path: "/community/travel", label: "커뮤니티" },
   { path: "/mytrip", label: "여행일기" },
   { path: "/recommend-trip", label: "여행지추천" },
 ];
@@ -56,7 +56,8 @@ export default function Navbar() {
             className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest relative`}
           >
             <Link href={item.path}>{item.label}</Link>
-            {pathname === item.path && (
+            {(pathname === item.path ||
+              (item.path !== "/" && pathname.startsWith(item.path))) && (
               <span className="absolute w-full -bottom-2 bg-primary h-1"></span>
             )}
           </li>

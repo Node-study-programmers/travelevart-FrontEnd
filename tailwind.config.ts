@@ -13,7 +13,7 @@ const config: Config = {
         secondary: "#89CFF3",
         third: "#A0E9FF",
         fourth: "#CDF5FD",
-        skeleton: "#e2e8f0",
+        skeleton: "rgba(165, 165, 165, 0.5)",
         overlay: "rgba(0, 0, 0, 0.5)",
         "rgb-background": "rgb(255, 255, 255)",
         "rgb-primary": "rgb(102, 109, 117)",

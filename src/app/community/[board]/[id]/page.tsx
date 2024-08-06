@@ -97,6 +97,17 @@ export default function CommunityDetailPage({
     }
   };
 
+  const handleDeletePost = async () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      await del(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${postId}`, {
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+        },
+      });
+      router.push("/community");
+    }
+  };
+
   let focusBoard: TFocusBoard = "자유게시판";
   if (pathname.includes("/community/travel")) {
     focusBoard = "여행게시판";
@@ -157,12 +168,18 @@ export default function CommunityDetailPage({
                 </span>
               </div>
             </div>
-            <div
-              className="bg-primary text-white rounded-lg flex justify-center text-sm
-      items-center px-2 py-0.5 cursor-pointer hover:bg-secondary"
-            >
-              <Link href={`/mypage/${authorId}`}>유저 정보</Link>
-            </div>
+            {userData?.user.userId === authorId ? (
+              <div
+                className="bg-red-500 text-white rounded-lg flex justify-center text-sm items-center px-2 py-0.5 cursor-pointer hover:bg-red-600"
+                onClick={handleDeletePost}
+              >
+                게시글 삭제
+              </div>
+            ) : (
+              <div className="bg-primary text-white rounded-lg flex justify-center text-sm items-center px-2 py-0.5 cursor-pointer hover:bg-secondary">
+                <Link href={`/mypage/${authorId}`}>유저 정보</Link>
+              </div>
+            )}
           </div>
           {/* 본문,제목 */}
           <div className="p-4 w-full">

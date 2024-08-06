@@ -1,5 +1,13 @@
 import Image from "next/image";
 
+export interface PostContent {
+  id: number;
+  postId: number;
+  order: number;
+  text: string;
+  image: string;
+}
+
 export interface ICommunityTravelPostProps {
   id: number;
   author: string;
@@ -10,7 +18,7 @@ export interface ICommunityTravelPostProps {
   title: string;
   travelRoute_id?: number;
   views: number;
-  contents: string;
+  contents: PostContent[];
 }
 
 export default function CommunityTravelPost({
@@ -30,7 +38,7 @@ export default function CommunityTravelPost({
     month: "long",
     day: "numeric",
   });
-
+  console.log(contents);
   return (
     <div className="p-6 rounded-xl shadow-md h-auto w-full">
       <div className="flex items-center w-full">
@@ -48,7 +56,25 @@ export default function CommunityTravelPost({
             <span className="ml-2 text-xs text-gray-400">{formattedDate}</span>
           </div>
           <div className="text-xl font-bold text-gray-800">{title}</div>
-          <div className="text-left text-base">{contents}</div>
+          <div className="text-left text-base">
+            {/* {contents.map(({ id, text, image }: PostContent) => (
+              <div key={id} className="my-4">
+                <p>{text}</p>
+                {image && (
+                  <div className="my-2">
+                    <Image
+                      src={image}
+                      alt={`image-${id}`}
+                      width={600}
+                      height={400}
+                      className="rounded-lg"
+                      objectFit="cover"
+                    />
+                  </div>
+                )}
+              </div>
+            ))} */}
+          </div>
         </div>
       </div>
     </div>

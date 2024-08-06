@@ -1,5 +1,4 @@
 import React from "react";
-import ScrollShadow from "../common/ScrollShadow";
 import { IContent } from "./CommunityPopularPost";
 import Image from "next/image";
 

@@ -45,6 +45,8 @@ export default function CommunityPage({ board }: CommunityPageProps) {
       searchName,
     });
 
+  console.log(status);
+
   const moreRef = useIntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting) {
@@ -89,7 +91,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
         {/* 글 목록 보여줄 곳 */}
         <div className="relative lg:pr-12 flex flex-col gap-5 py-8">
           {/* 글 쓰는 페이지 이동 */}
-          <button className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-xl rounded-xl">
+          <button className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-lg rounded-xl">
             <Image
               src={dummyimg}
               alt="hi"

@@ -2,7 +2,7 @@ import React from "react";
 
 function CommunityFreePostSkeleton() {
   return (
-    <div className="p-6 rounded-xl shadow-md h-auto w-full animate-pulse">
+    <div className="p-6 rounded-xl h-auto w-full animate-pulse">
       <div className="flex items-center w-full">
         <div className="rounded-full bg-skeleton w-10 h-10"></div>
         <div className="ml-4 flex flex-col w-full">
@@ -31,7 +31,7 @@ export function CommunityFreePostSkeletons() {
 
 function CommunityTravelPostSkeleton() {
   return (
-    <div className="p-6 rounded-xl shadow-md h-auto w-full animate-pulse">
+    <div className="p-6 rounded-xl h-auto w-full animate-pulse">
       <div className="flex items-center w-full">
         <div className="rounded-full bg-skeleton w-10 h-10" />
         <div className="ml-4 w-full">
@@ -136,7 +136,7 @@ export function DetailPageSkeleton() {
         </div>
 
         {/* 좋아요, 조회수, 댓글수 */}
-        <div className="w-full py-5 shadow-xl mb-7">
+        <div className="w-full py-5 shadow-lg mb-7">
           <div className="flex justify-between items-center mb-2">
             <div className="h-4 bg-skeleton rounded w-1/4" />
             <div className="h-4 bg-skeleton rounded w-1/4" />
@@ -145,9 +145,7 @@ export function DetailPageSkeleton() {
         </div>
 
         {/* 댓글 입력 */}
-        <div className="p-4 mb-6 bg-skeleton rounded">
-          <div className="h-6 bg-skeleton rounded w-full mb-3" />
-        </div>
+        <div className="p-4 mb-6 bg-skeleton rounded"></div>
 
         {/* 댓글 목록 */}
         <div className="space-y-4 mb-10 h-auto overflow-scroll">

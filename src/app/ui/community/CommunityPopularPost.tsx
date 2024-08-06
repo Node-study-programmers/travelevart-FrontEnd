@@ -43,7 +43,7 @@ export default function CommunityPopularPost({
   return (
     <Link
       href={getLinkPath()}
-      className={`flex gap-4 py-3 rounded-xl w-full ${
+      className={`flex gap-4 py-3 w-full ${
         index !== 5 ? "border-b-[1px] border-gray-300" : ""
       }`}
     >

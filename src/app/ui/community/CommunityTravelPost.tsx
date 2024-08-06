@@ -38,9 +38,9 @@ export default function CommunityTravelPost({
     month: "long",
     day: "numeric",
   });
-  console.log(contents);
+
   return (
-    <div className="p-6 rounded-xl shadow-md h-auto w-full">
+    <div className="p-6 rounded-xl h-auto w-full">
       <div className="flex items-center w-full">
         <Image
           src={profileImg}

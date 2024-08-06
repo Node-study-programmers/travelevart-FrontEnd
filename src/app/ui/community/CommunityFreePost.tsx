@@ -30,7 +30,7 @@ export default function CommunityFreePost({
   const formattedCreatedAt = convertTimeAgo(created_at);
 
   return (
-    <div className="p-6 rounded-xl shadow-md h-auto w-full cursor-pointer">
+    <div className="p-6 rounded-xl h-auto w-full cursor-pointer">
       <Link className="flex items-start w-full" href={`/community/free/${id}`}>
         <Image
           src={profileImg}

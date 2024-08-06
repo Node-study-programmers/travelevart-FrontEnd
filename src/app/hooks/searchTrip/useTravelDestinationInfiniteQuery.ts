@@ -1,5 +1,6 @@
 import { get } from "@/lib/api";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { headers } from "next/headers";
 
 interface ITravelDestination {
   placeId: number;
@@ -21,6 +22,11 @@ export default function useTravelDestinationInfiniteQuery() {
     try {
       const response = await get<ITravelDestinationResponse>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&page=${pageParam}&limit=9`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        },
       );
 
       return response;
@@ -31,7 +37,7 @@ export default function useTravelDestinationInfiniteQuery() {
     }
   }
 
-  const { data, hasNextPage, fetchNextPage } =
+  const { data, isLoading, hasNextPage, fetchNextPage } =
     useInfiniteQuery<ITravelDestinationResponse>({
       queryKey: ["travelDestination"],
       queryFn: ({ pageParam = 1 }) => getTravelDestination(Number(pageParam)),
@@ -47,5 +53,5 @@ export default function useTravelDestinationInfiniteQuery() {
 
   const travelDestinationData = data?.pages.flatMap((page) => page.items) ?? [];
 
-  return { travelDestinationData, hasNextPage, fetchNextPage };
+  return { travelDestinationData, hasNextPage, fetchNextPage, isLoading };
 }

@@ -193,7 +193,7 @@ export default function CommunityDetailPage({
             </div>
           </div>
           {/* 좋아요, 조회수 ,댓글수 */}
-          <div className="w-full py-5 shadow-xl mb-7">
+          <div className="w-full py-5 shadow-lg mb-7">
             <PostBottomsInPost
               postId={postId}
               commentCount={commentCount}
@@ -253,7 +253,7 @@ export default function CommunityDetailPage({
                 ),
               )
             ) : (
-              <div className="text-gray-500">댓글이 없습니다.</div>
+              <div className="text-gray-500 p-4">댓글이 없습니다.</div>
             )}
 
             {/* 마지막 댓글의 아래에 위치할 ref */}

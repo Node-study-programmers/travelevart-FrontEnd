@@ -1,9 +1,10 @@
 import LatestProfile from "@/app/ui/common/myPage/LatestProfile";
+import PageContainer from "@/app/ui/common/PageContainer";
 
 export default function EditProfile() {
   return (
-    <div className="max-w-screen-lg h-auto w-auto mx-auto">
+    <PageContainer>
       <LatestProfile />
-    </div>
+    </PageContainer>
   );
 }

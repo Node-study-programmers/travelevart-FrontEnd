@@ -6,6 +6,7 @@ const nextConfig = {
       "t1.kakaocdn.net",
       "example.com",
       "tong.visitkorea.or.kr",
+      "cdn.pixabay.com",
     ],
   },
 };

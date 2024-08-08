@@ -32,7 +32,7 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
       const timeout = setTimeout(() => {
         setIsVisible(false);
         document.body.style.overflow = "";
-      }, 300); // 애니메이션 시간과 맞추기
+      }, 300);
       return () => {
         clearTimeout(timeout);
         document.body.style.overflow = "";
@@ -81,7 +81,7 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
               알림
             </div>
             <IoCloseSharp
-              className="text-3xl text-fourth cursor-pointer"
+              className="text-3xl text-black cursor-pointer"
               onClick={onClose}
             />
           </h2>

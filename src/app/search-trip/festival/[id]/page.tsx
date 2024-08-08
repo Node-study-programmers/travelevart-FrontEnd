@@ -9,6 +9,7 @@ import { FaArrowRight, FaShareAlt } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import Tooltip from "@/app/ui/common/Tooltip";
 import { PiEyesFill } from "react-icons/pi";
+import FestivalSkeleton from "@/app/ui/travelDestination/skeleton/FestivalSkeleton";
 
 export default function FestivalDetailPage({
   params,
@@ -19,7 +20,11 @@ export default function FestivalDetailPage({
   const [showEventInfo, setShowEventInfo] = useState(false);
 
   if (isLoading) {
-    return <PageContainer>Loading...</PageContainer>;
+    return (
+      <PageContainer>
+        <FestivalSkeleton />
+      </PageContainer>
+    );
   }
 
   if (isError) {
@@ -83,8 +88,6 @@ export default function FestivalDetailPage({
       });
   };
 
-  console.log(data);
-
   return (
     <PageContainer>
       <div className="flex flex-col lg:flex-row gap-12 justify-center mb-20 lg:mb-0">
@@ -137,7 +140,7 @@ export default function FestivalDetailPage({
               <p className="text-sm lg:text-base -mt-5 lg:mt-0 mb-10">
                 {startDate} ~ {endDate}
               </p>
-              <div className="flex justify-between items-start mb-10">
+              <div className="flex justify-between items-start lg:mb-5">
                 <div className="text-lg font-semibold bg-primary text-white w-24 text-center py-1 px-2 rounded-xl">
                   {dDayText}
                 </div>
@@ -152,6 +155,7 @@ export default function FestivalDetailPage({
                   />
                 </button>
               </div>
+
               <div className="relative w-full h-[400px]">
                 <div
                   className={`absolute inset-0 transition-transform duration-500 ${showEventInfo ? "rotate-y-180" : ""}`}

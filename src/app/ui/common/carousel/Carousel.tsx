@@ -1,6 +1,6 @@
 import { ICarouselContents } from "@/lib/types";
 import CarouselContent from "./CarouselContent";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 interface ICarouselProps {
@@ -11,13 +11,15 @@ export default function Carousel({ contents }: ICarouselProps) {
   const [currentActiveContent, setCurrentActiveContent] = useState(0);
 
   const handlePrevContent = () => {
-    if (currentActiveContent === 0) return;
-    setCurrentActiveContent(currentActiveContent - 1);
+    setCurrentActiveContent((prev) =>
+      prev === 0 ? contents.length - 1 : prev - 1,
+    );
   };
 
   const handleNextContent = () => {
-    if (currentActiveContent === contents.length - 1) return;
-    setCurrentActiveContent(currentActiveContent + 1);
+    setCurrentActiveContent((prev) =>
+      prev === contents.length - 1 ? 0 : prev + 1,
+    );
   };
 
   const transformValue = useMemo(() => {
@@ -28,8 +30,18 @@ export default function Carousel({ contents }: ICarouselProps) {
     setCurrentActiveContent(idx);
   };
 
+  // 자동 슬라이드 전환 설정
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handleNextContent();
+    }, 5000);
+
+    // 컴포넌트 언마운트 시 interval 클리어
+    return () => clearInterval(intervalId);
+  }, [contents.length]);
+
   return (
-    <div className="relative w-full group overflow-hidden">
+    <div className="relative w-full group overflow-hidden h-[50vh]">
       <div
         className="flex"
         style={{
@@ -62,7 +74,7 @@ export default function Carousel({ contents }: ICarouselProps) {
           <span
             onClick={() => handleIndicator(idx)}
             key={idx}
-            className={`inline-block w-4 h-4 rounded-full cursor-pointer ${idx === currentActiveContent ? "bg-primary" : "bg-white"}`}
+            className={`inline-block w-2 h-2 rounded-full cursor-pointer ${idx === currentActiveContent ? "bg-primary" : "bg-white"}`}
           ></span>
         ))}
       </div>

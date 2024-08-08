@@ -7,6 +7,11 @@ const nextConfig = {
       "example.com",
       "tong.visitkorea.or.kr",
       "cdn.pixabay.com",
+      "cdn.visitkorea.or.kr",
+      "image.xn--ok0b236bp0a.com",
+      "www.iusm.co.kr",
+      "lh3.googleusercontent.com",
+      "encrypted-tbn0.gstatic.com",
     ],
   },
 };

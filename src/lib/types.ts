@@ -32,9 +32,32 @@ export interface IAuthKaKaoUser {
 
 export interface ICarouselContents {
   id: number;
+  startDay: string;
+  endDay: string;
   title: string;
-  description: string;
-  imageUrl: string;
-  linkUrl: string;
-  target: string;
+  region: string;
+  image: string;
+}
+
+export interface IFestival {
+  id: number;
+  startDay: string;
+  endDay: string;
+  title: string;
+  region: string;
+  image: string;
+  summary: string;
+  detailInfo: string;
+  eventInfo: string;
+  tel: string;
+  address: string;
+  eventAddress: string;
+  site: string;
+  price: string;
+  host: string;
+  viewCount: number;
+}
+
+export interface IGetFestivalResponse {
+  item: IFestival | null;
 }

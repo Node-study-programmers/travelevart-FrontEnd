@@ -27,6 +27,13 @@ const config: Config = {
         "slide-in-right": "slideInRight 0.3s ease-out forwards",
         "slide-out-right": "slideOutRight 0.3s ease-out forwards",
       },
+      rotate: {
+        "y-180": "rotateY(180deg)",
+      },
+      transitionProperty: {
+        transform: "transform",
+        opacity: "opacity",
+      },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0", transform: "translateY(-20px)" },

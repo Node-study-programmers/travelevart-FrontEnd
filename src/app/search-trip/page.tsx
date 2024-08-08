@@ -7,6 +7,9 @@ import TravelDestinationSkeletons from "../ui/travelDestination/skeleton/TravelD
 import PageContainer from "../ui/common/PageContainer";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
+import Carousel from "../ui/common/carousel/Carousel";
+import useBannerContents from "../hooks/searchTrip/useBannerContents";
+import CarouselSkeleton from "../ui/common/carousel/CarouselSkeleton";
 
 export default function SearchTripPage() {
   // const [isDefaultLoaded, setIsDefaultLoaded] = useState(false);
@@ -19,6 +22,8 @@ export default function SearchTripPage() {
     isFetchingNextPage,
     currentPage,
   } = useTravelDestinationInfiniteQuery();
+
+  const { data: bannerData, isLoading: BannerIsLoading } = useBannerContents();
 
   useEffect(() => {
     // if (currentPage >= 10) setIsDefaultLoaded(true);
@@ -45,9 +50,19 @@ export default function SearchTripPage() {
   };
 
   return (
-    <PageContainer>
-      <div className="mt-20">
-        <div className="text-center text-2xl py-4">대한민국 내 여행지</div>
+    <div>
+      {/* 핫한 행사 케러셀 */}
+      <div>
+        {/* <div className="text-2xl font-bold pb-2 lg:pb-5">인기 행사🔥</div> */}
+        {isLoading ? (
+          <CarouselSkeleton />
+        ) : (
+          <Carousel contents={bannerData?.events || []} />
+        )}
+      </div>
+
+      <PageContainer>
+        <div className="pb-2 lg:pb-5 text-2xl font-bold my-10">여행지</div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
           {isLoading && <TravelDestinationSkeletons />}
           {status === "pending" || isFetchingNextPage ? (
@@ -81,7 +96,7 @@ export default function SearchTripPage() {
             </button>
           </div>
         )} */}
-      </div>
-    </PageContainer>
+      </PageContainer>
+    </div>
   );
 }

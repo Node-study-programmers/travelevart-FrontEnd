@@ -1,6 +1,4 @@
 import useLogin from "@/app/hooks/auth/useLogin";
-import useCartTravelDestination from "@/app/hooks/searchTrip/useCartTravelDestintaion";
-import useDetailCartTravelDestination from "@/app/hooks/searchTrip/useDetailCartTravelDestination";
 import Image from "next/image";
 import { MouseEvent } from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
@@ -18,16 +16,13 @@ export default function AllTravelDestination({
   title,
   placeId,
 }: IAllTravelDestinationProps) {
-  const { data } = useDetailCartTravelDestination();
   const { userData } = useLogin();
-  const { addCartMutation, deleteCartMutation } = useCartTravelDestination();
 
   const handleAddCartTravelDestination = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
 
     // 찜 API 호출
     console.log(`${placeId} 장소 찜하기 버튼 클릭!`);
-    addCartMutation.mutate(placeId);
   };
 
   return (

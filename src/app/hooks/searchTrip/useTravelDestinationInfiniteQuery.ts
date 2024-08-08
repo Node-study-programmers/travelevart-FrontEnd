@@ -1,9 +1,9 @@
 import { get } from "@/lib/api";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { headers } from "next/headers";
+import { useEffect, useState } from "react";
 
 interface ITravelDestination {
-  placeId: number;
+  id: number;
   address: string;
   image: string | "";
   title: string;
@@ -18,10 +18,12 @@ interface ITravelDestinationResponse {
 }
 
 export default function useTravelDestinationInfiniteQuery() {
+  const [currentPage, setCurrentPage] = useState(1);
+
   async function getTravelDestination(pageParam: number) {
     try {
       const response = await get<ITravelDestinationResponse>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&page=${pageParam}&limit=9`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&page=${pageParam}`,
         {
           headers: {
             "ngrok-skip-browser-warning": "true",
@@ -37,21 +39,43 @@ export default function useTravelDestinationInfiniteQuery() {
     }
   }
 
-  const { data, isLoading, hasNextPage, fetchNextPage } =
-    useInfiniteQuery<ITravelDestinationResponse>({
-      queryKey: ["travelDestination"],
-      queryFn: ({ pageParam = 1 }) => getTravelDestination(Number(pageParam)),
-      initialPageParam: 1,
-      getNextPageParam: (lastPage) => {
-        if (lastPage.currentPage < lastPage.totalPage) {
-          return lastPage.currentPage + 1;
-        }
-        return undefined;
-      },
-      retry: 0,
-    });
+  const {
+    data,
+    status,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<ITravelDestinationResponse>({
+    queryKey: ["travelDestination"],
+    queryFn: ({ pageParam = 1 }) => getTravelDestination(Number(pageParam)),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.currentPage < lastPage.totalPage) {
+        return lastPage.currentPage + 1;
+      }
+      return undefined;
+    },
+    retry: 0,
+  });
+
+  useEffect(() => {
+    if (data) {
+      const lastPage = data.pages[data.pages.length - 1];
+
+      setCurrentPage(lastPage.currentPage);
+    }
+  }, [data]);
 
   const travelDestinationData = data?.pages.flatMap((page) => page.items) ?? [];
 
-  return { travelDestinationData, hasNextPage, fetchNextPage, isLoading };
+  return {
+    travelDestinationData,
+    status,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    currentPage,
+  };
 }

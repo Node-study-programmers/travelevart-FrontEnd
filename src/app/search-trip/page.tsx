@@ -3,10 +3,26 @@
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import useTravelDestinationInfiniteQuery from "../hooks/searchTrip/useTravelDestinationInfiniteQuery";
 import AllTravelDestination from "../ui/travelDestination/AllTravelDestination";
+import TravelDestinationSkeletons from "../ui/travelDestination/skeleton/TravelDestinationSkeleton";
+import PageContainer from "../ui/common/PageContainer";
+import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function SearchTripPage() {
-  const { travelDestinationData, hasNextPage, fetchNextPage } =
-    useTravelDestinationInfiniteQuery();
+  // const [isDefaultLoaded, setIsDefaultLoaded] = useState(false);
+  const {
+    travelDestinationData,
+    status,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    currentPage,
+  } = useTravelDestinationInfiniteQuery();
+
+  useEffect(() => {
+    // if (currentPage >= 10) setIsDefaultLoaded(true);
+  }, [currentPage]);
 
   const moreRef = useIntersectionObserver(
     ([entry]) => {
@@ -14,7 +30,7 @@ export default function SearchTripPage() {
         loadMore();
       }
     },
-    { threshold: 1 },
+    { threshold: 0.5 },
   );
 
   const loadMore = () => {
@@ -23,26 +39,49 @@ export default function SearchTripPage() {
     fetchNextPage();
   };
 
+  const handleMoreTravelDestination = () => {
+    // setIsDefaultLoaded(false); // 무한 스크롤 재시작
+    fetchNextPage();
+  };
+
   return (
-    <div className="max-w-screen-lg h-auto w-auto relative py-[8px] px-[16px] mx-auto mt-12">
-      <form className="flex flex-col border-4 border-primary">
-        <input type="text" placeholder="국내 여행지를 검색해보세요" />
-        <button>검색하기</button>
-      </form>
-      {/* 처음에 전체 여행지 보여주기 */}
+    <PageContainer>
       <div className="mt-20">
         <div className="text-center text-2xl py-4">대한민국 내 여행지</div>
-        <div className="grid grid-cols-3 gap-4">
-          {travelDestinationData.map((destination) => (
-            <AllTravelDestination
-              key={destination.placeId}
-              representativeImg={destination.image}
-              title={destination.title}
-            />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+          {isLoading && <TravelDestinationSkeletons />}
+          {status === "pending" || isFetchingNextPage ? (
+            <TravelDestinationSkeletons />
+          ) : (
+            <>
+              {travelDestinationData.map((destination) => (
+                <Link
+                  href={`/search-trip/${destination.id}`}
+                  key={destination.id}
+                >
+                  <AllTravelDestination
+                    representativeImg={destination.image}
+                    address={destination.address}
+                    title={destination.title}
+                    placeId={destination.id}
+                  />
+                </Link>
+              ))}
+            </>
+          )}
           <div ref={moreRef}></div>
         </div>
+        {/* {currentPage >= 10 && hasNextPage && (
+          <div className="flex justify-center">
+            <button
+              className={`text-center bg-primary rounded-full py-4 px-8 text-white cursor-pointer outline-none mb-12`}
+              onClick={handleMoreTravelDestination}
+            >
+              더보기
+            </button>
+          </div>
+        )} */}
       </div>
-    </div>
+    </PageContainer>
   );
 }

@@ -2,6 +2,7 @@
 
 import useLogin from "@/app/hooks/auth/useLogin";
 import CategoryTabs from "@/app/ui/common/CategoryTabs";
+import PageContainer from "@/app/ui/common/PageContainer";
 import UserProfile from "@/app/ui/profile/UserProfile";
 import { useState } from "react";
 
@@ -19,7 +20,7 @@ export default function UserPage({
   const [focusTab, setFocusTab] = useState<number>(0);
 
   return (
-    <div className="max-w-screen-lg h-auto w-auto mx-auto my-8 p-4">
+    <PageContainer>
       <div className="flex flex-col items-start md:flex-row md:gap-x-12">
         <UserProfile userId={userId} />
         <CategoryTabs
@@ -28,6 +29,6 @@ export default function UserPage({
           setFocusTab={setFocusTab}
         />
       </div>
-    </div>
+    </PageContainer>
   );
 }

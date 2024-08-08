@@ -3,6 +3,7 @@
 import Profile from "@/app/ui/common/myPage/Profile";
 import CategoryTabs from "../ui/common/CategoryTabs";
 import { useState } from "react";
+import PageContainer from "../ui/common/PageContainer";
 
 const categories = [
   { id: 0, title: "찜" },
@@ -14,7 +15,7 @@ export default function MyPage() {
   const [focusTab, setFocusTab] = useState<number>(0);
 
   return (
-    <div className="max-w-screen-lg h-auto w-auto mx-auto my-8 p-4">
+    <PageContainer>
       <div className="flex flex-col items-start md:flex-row md:gap-x-12">
         <Profile />
         <CategoryTabs
@@ -23,6 +24,6 @@ export default function MyPage() {
           setFocusTab={setFocusTab}
         />
       </div>
-    </div>
+    </PageContainer>
   );
 }

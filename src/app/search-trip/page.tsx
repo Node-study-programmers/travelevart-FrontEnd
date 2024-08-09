@@ -106,7 +106,6 @@ export default function SearchTripPage() {
     setFocusFilter(filterId);
   };
 
-
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (searchInputRef.current) {

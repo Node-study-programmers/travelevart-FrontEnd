@@ -25,13 +25,6 @@ import useGetRegionCode, {
 import { useRouter } from "next/navigation";
 
 const filterGroup = [
-  { id: "view", title: "조회 순" },
-  { id: "review", title: "리뷰 순" },
-  { id: "rating", title: "별점 순" },
-  { id: "save", title: "찜한 순" },
-];
-
-const filterGroup = [
   {
     id: "view",
     title: "조회 순",

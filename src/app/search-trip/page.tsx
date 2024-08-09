@@ -11,17 +11,37 @@ import Carousel from "../ui/common/carousel/Carousel";
 import useBannerContents from "../hooks/searchTrip/useBannerContents";
 import CarouselSkeleton from "../ui/common/carousel/CarouselSkeleton";
 
+const filterGroup = [
+  {
+    id: "view",
+    title: "조회 순",
+  },
+  {
+    id: "review",
+    title: "리뷰 순",
+  },
+  {
+    id: "rating",
+    title: "별점 순",
+  },
+  {
+    id: "save",
+    title: "찜한 순",
+  },
+];
+
 export default function SearchTripPage() {
-  // const [isDefaultLoaded, setIsDefaultLoaded] = useState(false);
+  const [isDefaultLoaded, setIsDefaultLoaded] = useState(false);
+  const [focusFilter, setFocusFilter] = useState<string>("view");
   const {
     travelDestinationData,
     status,
-    isLoading,
+    isLoading: isTravelDestinationLoading,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
     currentPage,
-  } = useTravelDestinationInfiniteQuery();
+  } = useTravelDestinationInfiniteQuery(focusFilter);
 
   const { data: bannerData, isLoading: BannerIsLoading } = useBannerContents();
 
@@ -49,12 +69,16 @@ export default function SearchTripPage() {
     fetchNextPage();
   };
 
+  const handleSortingFilter = (filterId: string) => {
+    setFocusFilter(filterId);
+  };
+
   return (
     <div>
       {/* 핫한 행사 케러셀 */}
       <div>
         {/* <div className="text-2xl font-bold pb-2 lg:pb-5">인기 행사🔥</div> */}
-        {isLoading ? (
+        {BannerIsLoading ? (
           <CarouselSkeleton />
         ) : (
           <Carousel contents={bannerData?.events || []} />
@@ -62,9 +86,22 @@ export default function SearchTripPage() {
       </div>
 
       <PageContainer>
-        <div className="pb-2 lg:pb-5 text-2xl font-bold my-10">여행지</div>
+        <div className="pb-2 lg:pb-5 text-2xl font-bold mt-10">여행지</div>
+        <div className="flex justify-end gap-x-2 pb-2">
+          {filterGroup.map((filter) => (
+            <button
+              key={filter.id}
+              className={`${
+                filter.id === focusFilter ? "text-black" : "text-rgb-primary"
+              } text-sm transition-all duration-300 ease-in-out`}
+              onClick={() => handleSortingFilter(filter.id)}
+            >
+              {filter.title}
+            </button>
+          ))}
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
-          {isLoading && <TravelDestinationSkeletons />}
+          {isTravelDestinationLoading && <TravelDestinationSkeletons />}
           {status === "pending" || isFetchingNextPage ? (
             <TravelDestinationSkeletons />
           ) : (
@@ -79,6 +116,7 @@ export default function SearchTripPage() {
                     address={destination.address}
                     title={destination.title}
                     placeId={destination.id}
+                    rating={destination.averageRating}
                   />
                 </Link>
               ))}

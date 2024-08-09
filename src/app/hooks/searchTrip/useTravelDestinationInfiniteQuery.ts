@@ -9,6 +9,7 @@ interface ITravelDestination {
   title: string;
   mapx: string;
   mapy: string;
+  averageRating: string | null;
 }
 
 interface ITravelDestinationResponse {
@@ -17,13 +18,13 @@ interface ITravelDestinationResponse {
   totalPage: number;
 }
 
-export default function useTravelDestinationInfiniteQuery() {
+export default function useTravelDestinationInfiniteQuery(focusFilter: string) {
   const [currentPage, setCurrentPage] = useState(1);
 
   async function getTravelDestination(pageParam: number) {
     try {
       const response = await get<ITravelDestinationResponse>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&page=${pageParam}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&page=${pageParam}&sort=${focusFilter}`,
         {
           headers: {
             "ngrok-skip-browser-warning": "true",
@@ -47,7 +48,7 @@ export default function useTravelDestinationInfiniteQuery() {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery<ITravelDestinationResponse>({
-    queryKey: ["travelDestination"],
+    queryKey: ["travelDestination", focusFilter],
     queryFn: ({ pageParam = 1 }) => getTravelDestination(Number(pageParam)),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -70,6 +71,7 @@ export default function useTravelDestinationInfiniteQuery() {
   const travelDestinationData = data?.pages.flatMap((page) => page.items) ?? [];
 
   return {
+    getTravelDestination,
     travelDestinationData,
     status,
     isLoading,

@@ -53,7 +53,6 @@ export default function SearchTripPage() {
     <div>
       {/* 핫한 행사 케러셀 */}
       <div>
-        {/* <div className="text-2xl font-bold pb-2 lg:pb-5">인기 행사🔥</div> */}
         {isLoading ? (
           <CarouselSkeleton />
         ) : (

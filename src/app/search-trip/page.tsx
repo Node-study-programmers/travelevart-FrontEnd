@@ -31,13 +31,34 @@ const filterGroup = [
   { id: "save", title: "찜한 순" },
 ];
 
+const filterGroup = [
+  {
+    id: "view",
+    title: "조회 순",
+  },
+  {
+    id: "review",
+    title: "리뷰 순",
+  },
+  {
+    id: "rating",
+    title: "별점 순",
+  },
+  {
+    id: "save",
+    title: "찜한 순",
+  },
+];
+
 export default function SearchTripPage() {
   const [isDefaultLoaded, setIsDefaultLoaded] = useState(false);
   const [focusFilter, setFocusFilter] = useState<string>("view");
+
   const [regionCode, setRegionCode] = useState<number>(0);
   const [searchName, setSearchName] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+
   const {
     travelDestinationData,
     status,
@@ -47,6 +68,7 @@ export default function SearchTripPage() {
     isFetchingNextPage,
     currentPage,
   } = useTravelDestinationInfiniteQuery(focusFilter, regionCode, searchName);
+
   const { data: bannerData, isLoading: BannerIsLoading } = useBannerContents();
   const { data: regionData, isLoading } = useGetRegionCode();
 
@@ -90,6 +112,7 @@ export default function SearchTripPage() {
   const handleSortingFilter = (filterId: string) => {
     setFocusFilter(filterId);
   };
+
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -161,6 +184,7 @@ export default function SearchTripPage() {
           ))}
         </div>
         {/* 검색 결과 보여주는 부분 컴포넌트 빼서 querystring으로 데이터 패칭하기 , notfound 까지  */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
           {isTravelDestinationLoading && <TravelDestinationSkeletons />}
           {status === "pending" || isFetchingNextPage ? (

@@ -18,6 +18,7 @@ interface ITravelDestinationResponse {
   totalPage: number;
 }
 
+
 export default function useTravelDestinationInfiniteQuery(
   focusFilter: string,
   regionCode: number = 0,
@@ -28,7 +29,9 @@ export default function useTravelDestinationInfiniteQuery(
   async function getTravelDestination(pageParam: number) {
     try {
       const response = await get<ITravelDestinationResponse>(
+
         `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&regionCode=${regionCode}&name=${name}&page=${pageParam}&sort=${focusFilter}`,
+
       );
 
       return response;
@@ -49,6 +52,7 @@ export default function useTravelDestinationInfiniteQuery(
     refetch,
   } = useInfiniteQuery<ITravelDestinationResponse>({
     queryKey: ["travelDestination", focusFilter, regionCode, name],
+
     queryFn: ({ pageParam = 1 }) => getTravelDestination(Number(pageParam)),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

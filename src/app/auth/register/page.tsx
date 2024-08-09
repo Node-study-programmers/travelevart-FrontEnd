@@ -35,10 +35,11 @@ export default function SignupPage() {
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (body) => {
     try {
-      await post(
-        "https://f771-220-125-131-244.ngrok-free.app/auth/local/join",
-        body,
-      );
+      await post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/local/join`, body, {
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+        },
+      });
       router.push("/auth/login");
     } catch (error) {
       console.log(error);

@@ -9,6 +9,8 @@ export interface TravelItem {
   title: string; // 제목
   descreiption: string; // 설명
   viewCount: number; // 조회수
+  mapx: number; // 위도
+  mapy: number; // 경도
 }
 
 // 전체 응답 구조를 나타내는 인터페이스

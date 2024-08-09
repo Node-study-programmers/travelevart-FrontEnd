@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 
 interface ISelectProps {
@@ -20,7 +20,9 @@ export default function Select({
   onChange,
 }: ISelectProps) {
   const [listOpen, setListOpen] = useState<boolean>(false);
-  const [selectValue, setSelectValue] = useState<string | number>();
+  const [selectValue, setSelectValue] = useState<string | number>(
+    defaultValue || "",
+  );
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,50 +54,40 @@ export default function Select({
   return (
     <div
       ref={selectRef}
-      className={`${className} bg-primary flex w-full max-w-80 rounded-md shadow-lg`}
+      className={`${className} bg-primary flex w-full max-w-80 z-50 shadow-xl rounded-l-2xl relative`}
     >
-      <div className="w-full flex flex-col relative">
+      <div className="w-full flex flex-col relative py-1">
         <button
-          className="relative px-3 w-full inline-flex shadow-sm rounded-md flex-col items-start justify-center gap-0 outline-none h-14 min-h-14 py-2"
+          className="relative pl-5 px-3 w-full inline-flex flex-col items-start justify-center gap-0 outline-none min-h-14 py-2"
           type="button"
           onClick={handleToggleList}
         >
-          <label className="absolute z-10 pointer-events-none cursor-pointer will-change-auto top-2 left-3 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+          <label className="absolute z-10 pointer-events-none cursor-pointer top-2 left-5 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-third">
             {label}
           </label>
           <div
-            className={`inline-flex h-full min-h-4 items-end gap-1.5 box-border text-sm ${selectValue || defaultValue ? "text-black" : "text-gray-500"} overflow-hidden text-ellipsis whitespace-nowrap font-bold`}
+            className={`inline-flex h-full items-end gap-1.5 box-border text-base ${selectValue ? "text-white" : "text-gray-200"} overflow-hidden text-ellipsis whitespace-nowrap font-bold`}
           >
-            {selectValue
-              ? selectValue
-              : defaultValue
-                ? defaultValue
-                : placeholder}
+            {selectValue || placeholder}
           </div>
           <div
-            className={`absolute right-3 w-4 h-4 text-black transition-transform duration-200 ${
-              listOpen ? "rotate-180" : ""
-            }`}
+            className={`absolute right-3 w-4 h-4 text-white transition-transform duration-200 ${listOpen ? "rotate-180" : ""}`}
           >
             <MdKeyboardArrowDown />
           </div>
         </button>
         {listOpen && (
           <div
-            className={`absolute w-full top-16 p-2 bg-primary shadow-md rounded-xl flex items-center max-h-64 overflow-auto transition-all duration-100 ${
-              listOpen ? "animate-fade-in" : "animate-fade-out"
-            }`}
+            className={`absolute w-full top-full mt-1 p-2 bg-primary rounded-xl max-h-64 overflow-auto transition-all duration-100 ${listOpen ? "animate-fade-in" : "animate-fade-out"}`}
           >
-            <ul className="w-full">
+            <ul className="w-full text-white">
               {items.map((item, index) => (
                 <li
                   key={index}
                   onClick={() => handleChange(item)}
-                  className={`text-left hover:bg-secondary rounded-xl py-2 cursor-pointer pl-2 relative ${item === selectValue && "bg-secondary"}`}
+                  className={`text-left mb-1 hover:bg-secondary rounded-xl py-2 cursor-pointer pl-2 relative ${item === selectValue ? "bg-secondary" : ""}`}
                 >
-                  <div
-                    className={`w-[90%] overflow-hidden text-ellipsis whitespace-nowrap`}
-                  >
+                  <div className="w-[90%] overflow-hidden text-ellipsis whitespace-nowrap">
                     {item}
                   </div>
                   {item === selectValue && (

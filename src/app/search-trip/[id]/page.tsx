@@ -28,7 +28,11 @@ export default function SearchTripDetailPage({
   const router = useRouter();
   const [focusTab, setFocusTab] = useState<number>(0);
   const detailContentsRef = useRef<HTMLDivElement>(null);
-  const { data: detailPageData, isLoading } = useGetDetailTravelPage(params.id);
+  const {
+    data: detailPageData,
+    isLoading,
+    refetch,
+  } = useGetDetailTravelPage(params.id);
 
   useEffect(() => {
     if (detailContentsRef.current) {
@@ -93,6 +97,8 @@ export default function SearchTripDetailPage({
             likeNum={totalSaveCount}
             view={item.viewCount}
             isSaved={isSaved}
+            placeId={Number(params.id)}
+            refetch={refetch}
           />
         </div>
         {/* 상세정보 */}

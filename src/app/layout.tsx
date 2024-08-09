@@ -28,13 +28,13 @@ export default async function RootLayout({
               <StoreProvider>
                 <Navbar />
                 {children}
-
                 <Footer />
               </StoreProvider>
             </body>
-            {/* <Script
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&libraries=services,clusterer&autoload=false`}
-        /> */}
+            <Script
+              type="text/javascript"
+              src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`}
+            ></Script>
           </html>
         </AuthSession>
       </SessionWrapper>

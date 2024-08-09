@@ -8,6 +8,7 @@ import useReviewsInfiniteQuery from "@/app/hooks/searchTrip/useReviewInfinitiQue
 import ReviewContainer from "./ReviewContainer";
 import useIntersectionObserver from "@/app/hooks/useIntersectionObserver";
 import { ReviewContainerSkeletons } from "../travelDestination/skeleton/DetailPageSkeleton";
+import NaverMap from "../travelDestination/NaverMap";
 
 interface IDetailContentsProps {
   idx: number;
@@ -100,7 +101,13 @@ export default function DetailContents({ idx, data }: IDetailContentsProps) {
           {/* 지도 보여줄곳 */}
           <div className="flex flex-col gap-5">
             <h2 className="text-2xl font-semibold">위치</h2>
-            <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl"></div>
+            <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl">
+              <NaverMap
+                mapx={data.mapx}
+                mapy={data.mapy}
+                address={data.address}
+              />
+            </div>
             <div className="pl-2 flex items-center gap-2 text-gray-800">
               <IoLocationSharp />
               {data.address}
@@ -167,7 +174,13 @@ export default function DetailContents({ idx, data }: IDetailContentsProps) {
           {/* 지도보여줄곳 */}
           <div className="flex flex-col gap-5">
             <h2 className="text-2xl font-semibold">위치</h2>
-            <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl"></div>
+            <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl">
+              <NaverMap
+                mapx={data.mapx}
+                mapy={data.mapy}
+                address={data.address}
+              />
+            </div>
             <div className="pl-2 flex items-center gap-2 text-gray-800">
               <IoLocationSharp />
               {data.address}

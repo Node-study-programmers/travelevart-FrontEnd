@@ -60,7 +60,7 @@ export function NotifyDrawer({ open, onClose, notifications }: INotifyDrawer) {
 
   return createPortal(
     <div
-      className={`fixed inset-0 top-0 right-0 z-50 bg-[rgba(0,0,0,0.5)] flex flex-col transition-opacity duration-300 items-end`}
+      className={`fixed inset-0 top-0 right-0 z-[999] bg-[rgba(0,0,0,0.5)] flex flex-col transition-opacity duration-300 items-end`}
       onClick={handleBackgroundClick}
     >
       <div

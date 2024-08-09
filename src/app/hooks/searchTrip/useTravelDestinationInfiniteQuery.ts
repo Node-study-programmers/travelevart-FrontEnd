@@ -18,18 +18,20 @@ interface ITravelDestinationResponse {
   totalPage: number;
 }
 
-export default function useTravelDestinationInfiniteQuery(focusFilter: string) {
+
+export default function useTravelDestinationInfiniteQuery(
+  focusFilter: string,
+  regionCode: number = 0,
+  name: string = "",
+) {
   const [currentPage, setCurrentPage] = useState(1);
 
   async function getTravelDestination(pageParam: number) {
     try {
       const response = await get<ITravelDestinationResponse>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&page=${pageParam}&sort=${focusFilter}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
+
+        `${process.env.NEXT_PUBLIC_BASE_URL}/places/search?&regionCode=${regionCode}&name=${name}&page=${pageParam}&sort=${focusFilter}`,
+
       );
 
       return response;
@@ -47,8 +49,10 @@ export default function useTravelDestinationInfiniteQuery(focusFilter: string) {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    refetch,
   } = useInfiniteQuery<ITravelDestinationResponse>({
-    queryKey: ["travelDestination", focusFilter],
+    queryKey: ["travelDestination", focusFilter, regionCode, name],
+
     queryFn: ({ pageParam = 1 }) => getTravelDestination(Number(pageParam)),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -79,5 +83,6 @@ export default function useTravelDestinationInfiniteQuery(focusFilter: string) {
     fetchNextPage,
     isFetchingNextPage,
     currentPage,
+    refetch,
   };
 }

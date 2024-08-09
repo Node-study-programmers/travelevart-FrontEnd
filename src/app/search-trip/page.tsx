@@ -6,10 +6,30 @@ import AllTravelDestination from "../ui/travelDestination/AllTravelDestination";
 import TravelDestinationSkeletons from "../ui/travelDestination/skeleton/TravelDestinationSkeleton";
 import PageContainer from "../ui/common/PageContainer";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Carousel from "../ui/common/carousel/Carousel";
 import useBannerContents from "../hooks/searchTrip/useBannerContents";
 import CarouselSkeleton from "../ui/common/carousel/CarouselSkeleton";
+import TravelSearchBar from "../ui/travelDestination/TravelSearchBar";
+import Select from "../ui/common/Select";
+import { FaSearch } from "react-icons/fa";
+import useGetRegionCode, {
+  TregionResponse,
+} from "../hooks/searchTrip/useGetRegionCode";
+import { useRouter } from "next/navigation";
+
+const filterGroup = [
+  { id: "view", title: "조회 순" },
+  { id: "review", title: "리뷰 순" },
+  { id: "rating", title: "별점 순" },
+  { id: "save", title: "찜한 순" },
+];
 
 const filterGroup = [
   {
@@ -33,6 +53,12 @@ const filterGroup = [
 export default function SearchTripPage() {
   const [isDefaultLoaded, setIsDefaultLoaded] = useState(false);
   const [focusFilter, setFocusFilter] = useState<string>("view");
+
+  const [regionCode, setRegionCode] = useState<number>(0);
+  const [searchName, setSearchName] = useState<string>("");
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
+
   const {
     travelDestinationData,
     status,
@@ -41,9 +67,24 @@ export default function SearchTripPage() {
     fetchNextPage,
     isFetchingNextPage,
     currentPage,
-  } = useTravelDestinationInfiniteQuery(focusFilter);
+  } = useTravelDestinationInfiniteQuery(focusFilter, regionCode, searchName);
 
   const { data: bannerData, isLoading: BannerIsLoading } = useBannerContents();
+  const { data: regionData, isLoading } = useGetRegionCode();
+
+  useEffect(() => {
+    // URL 쿼리 파라미터 업데이트
+    const query = new URLSearchParams({
+      filter: focusFilter,
+      regionCode: regionCode.toString(),
+      searchName,
+    }).toString();
+    router.replace(`?${query}`);
+  }, [focusFilter, regionCode, searchName, router]);
+
+  useEffect(() => {
+    setSearchName("");
+  }, [regionCode]);
 
   useEffect(() => {
     // if (currentPage >= 10) setIsDefaultLoaded(true);
@@ -60,7 +101,6 @@ export default function SearchTripPage() {
 
   const loadMore = () => {
     if (!hasNextPage) return;
-
     fetchNextPage();
   };
 
@@ -73,16 +113,59 @@ export default function SearchTripPage() {
     setFocusFilter(filterId);
   };
 
+
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    if (searchInputRef.current) {
+      setSearchName(searchInputRef?.current?.value);
+      searchInputRef.current.value = "";
+    }
+  };
+
   return (
     <div>
       {/* 핫한 행사 케러셀 */}
-      <div>
-        {/* <div className="text-2xl font-bold pb-2 lg:pb-5">인기 행사🔥</div> */}
+      <div className="relative mb-20">
         {BannerIsLoading ? (
           <CarouselSkeleton />
         ) : (
           <Carousel contents={bannerData?.events || []} />
         )}
+
+        <div
+          className="absolute left-1/2 w-full max-w-3xl z-[99] 
+    h-16 -bottom-8 -translate-x-1/2 flex items-center"
+        >
+          <Select
+            className="h-full"
+            placeholder="지역을 선택하세요."
+            label="지역"
+            items={regionData?.regions.map((item) => item.region) || []}
+            onChange={(selectedRegion) => {
+              const selectedRegionData = regionData?.regions.find(
+                (region: TregionResponse) => region.region === selectedRegion,
+              );
+              if (selectedRegionData) {
+                setRegionCode(selectedRegionData.id);
+              }
+            }}
+          />
+          <form className="flex-grow h-full flex" onSubmit={handleSearch}>
+            <input
+              className="flex-grow shadow-xl h-full outline-none text-xl p-4"
+              placeholder="여행지를 검색하세요!"
+              ref={searchInputRef}
+            />
+            <button
+              className="bg-primary h-full w-16 rounded-r-2xl flex items-center justify-center 
+      text-white text-3xl cursor-pointer shadow-xl"
+              onClick={handleSearch}
+              type="submit"
+            >
+              <FaSearch />
+            </button>
+          </form>
+        </div>
       </div>
 
       <PageContainer>
@@ -100,6 +183,8 @@ export default function SearchTripPage() {
             </button>
           ))}
         </div>
+        {/* 검색 결과 보여주는 부분 컴포넌트 빼서 querystring으로 데이터 패칭하기 , notfound 까지  */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
           {isTravelDestinationLoading && <TravelDestinationSkeletons />}
           {status === "pending" || isFetchingNextPage ? (

@@ -62,7 +62,7 @@ export default function Header() {
   const { handleLogout, status } = useLogin();
   const [openNotification, setOpenNotification] = useState(false);
   return (
-    <div className="border-b-[1px] border-gray-300 w-full sticky z-[48] top-0 bg-white">
+    <div className="border-b-[1px] border-gray-300 w-full sticky z-[100] top-0 bg-white">
       <div className="max-w-[1280px] w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-3">
         <Link
           href="/"

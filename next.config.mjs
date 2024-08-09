@@ -13,6 +13,7 @@ const nextConfig = {
       "www.iusm.co.kr",
       "lh3.googleusercontent.com",
       "encrypted-tbn0.gstatic.com",
+      "k.kakaocdn.net",
     ],
   },
 };

@@ -63,7 +63,7 @@ export default function Header() {
   const [openNotification, setOpenNotification] = useState(false);
   return (
     <div className="border-b-[1px] border-gray-300 w-full sticky z-[100] top-0 bg-white">
-      <div className="max-w-[1280px] w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-3">
+      <div className="max-w-[1280px] w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-5">
         <Link
           href="/"
           className={`${logoFont.className} text-3xl flex items-center gap-2 cursor-pointer text-blue-500`}
@@ -71,7 +71,7 @@ export default function Header() {
           <IoEarthOutline className="text-blue-500" />
           TravelevarT
         </Link>
-        <div className="flex gap-7 items-center">
+        <div className="flex gap-5 items-center">
           <div className="relative">
             <div onClick={() => setOpenNotification(true)}>
               <Tooltip direction="bottom" content="알림">

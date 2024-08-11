@@ -54,24 +54,25 @@ export default function Select({
   return (
     <div
       ref={selectRef}
-      className={`${className} bg-primary flex w-full max-w-80 z-50 shadow-xl rounded-l-2xl relative`}
+      className={`${className} bg-white flex w-full max-w-80 z-50 shadow-xl rounded-l-full relative`}
     >
-      <div className="w-full flex flex-col relative py-1">
+      <div className="w-full flex flex-col relative pb-1 pl-2 lg:pb-0 lg:py-1">
         <button
           className="relative pl-5 px-3 w-full inline-flex flex-col items-start justify-center gap-0 outline-none min-h-14 py-2"
           type="button"
           onClick={handleToggleList}
         >
-          <label className="absolute z-10 pointer-events-none cursor-pointer top-2 left-5 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-third">
+          <label className="absolute z-10 pointer-events-none cursor-pointer top-2 left-5 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-primary">
             {label}
           </label>
+
           <div
-            className={`inline-flex h-full items-end gap-1.5 box-border text-base ${selectValue ? "text-white" : "text-gray-200"} overflow-hidden text-ellipsis whitespace-nowrap font-bold`}
+            className={`inline-flex h-full items-end text-xs gap-1.5 box-border lg:text-base ${!selectValue && "hidden lg:inline-flex"} text-primary overflow-hidden text-ellipsis whitespace-nowrap font-bold`}
           >
             {selectValue || placeholder}
           </div>
           <div
-            className={`absolute right-3 w-4 h-4 text-white transition-transform duration-200 ${listOpen ? "rotate-180" : ""}`}
+            className={`absolute right-3 w-4 h-4 text-primary transition-transform duration-200 ${listOpen ? "rotate-180" : ""}`}
           >
             <MdKeyboardArrowDown />
           </div>

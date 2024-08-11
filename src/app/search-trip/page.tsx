@@ -117,21 +117,25 @@ export default function SearchTripPage() {
   return (
     <div>
       {/* 핫한 행사 케러셀 */}
-      <div className="relative mb-20">
+      <div className="relative mb-10">
         {BannerIsLoading ? (
           <CarouselSkeleton />
         ) : (
           <Carousel contents={bannerData?.events || []} />
         )}
+      </div>
 
+      <PageContainer className="relative">
         <div
-          className="absolute left-1/2 w-full max-w-3xl z-[99] 
-    h-16 -bottom-8 -translate-x-1/2 flex items-center"
+          style={{ transition: "top 0.3s ease" }}
+          className="sticky w-full max-w-2xl z-[101] 
+    lg:h-16 flex -top-0 mx-auto transition-all duration-1000 bg-white h-[56px]"
         >
           <Select
             className="h-full"
-            placeholder="지역을 선택하세요."
+            placeholder="검색할 지역 선택"
             label="지역"
+            defaultValue={regionData?.regions[0].region}
             items={regionData?.regions.map((item) => item.region) || []}
             onChange={(selectedRegion) => {
               const selectedRegionData = regionData?.regions.find(
@@ -142,15 +146,18 @@ export default function SearchTripPage() {
               }
             }}
           />
-          <form className="flex-grow h-full flex" onSubmit={handleSearch}>
+          <form
+            className="flex-grow h-full flex shadow-xl p-2 rounded-r-full"
+            onSubmit={handleSearch}
+          >
             <input
-              className="flex-grow shadow-xl h-full outline-none text-xl p-4"
+              className="flex-grow h-full outline-none text-base lg:text-lg "
               placeholder="여행지를 검색하세요!"
               ref={searchInputRef}
             />
             <button
-              className="bg-primary h-full w-16 rounded-r-2xl flex items-center justify-center 
-      text-white text-3xl cursor-pointer shadow-xl"
+              className="bg-primary h-full w-12 rounded-full flex items-center justify-center 
+      text-white text-xl lg:text-2xl cursor-pointer"
               onClick={handleSearch}
               type="submit"
             >
@@ -158,9 +165,6 @@ export default function SearchTripPage() {
             </button>
           </form>
         </div>
-      </div>
-
-      <PageContainer>
         <div className="pb-2 lg:pb-5 text-2xl font-bold mt-10">여행지</div>
         <div className="flex justify-end gap-x-2 pb-2">
           {filterGroup.map((filter) => (

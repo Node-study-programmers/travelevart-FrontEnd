@@ -28,7 +28,7 @@ export default function CommunityFreePost({
   contents,
 }: ICommunityFreePostProps) {
   const formattedCreatedAt = convertTimeAgo(created_at);
-
+  console.log(contents);
   return (
     <div className="p-6 rounded-xl h-auto w-full cursor-pointer">
       <Link className="flex items-start w-full" href={`/community/free/${id}`}>
@@ -49,7 +49,7 @@ export default function CommunityFreePost({
           </div>
           <div className="text-xl font-semibold mb-3">{title}</div>
           <div className="text-left text-sm line-clamp-2 mb-4">
-            {contents[0].text}
+            {contents[0]?.text}
           </div>
           <PostBottoms commentCount={commentCount} like={like} views={views} />
         </div>

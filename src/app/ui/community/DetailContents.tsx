@@ -8,12 +8,19 @@ import useReviewsInfiniteQuery from "@/app/hooks/searchTrip/useReviewInfinitiQue
 import ReviewContainer from "./ReviewContainer";
 import useIntersectionObserver from "@/app/hooks/useIntersectionObserver";
 import { ReviewContainerSkeletons } from "../travelDestination/skeleton/DetailPageSkeleton";
-import NaverMap from "../travelDestination/NaverMap";
+import dynamic from "next/dynamic";
 
 interface IDetailContentsProps {
   idx: number;
   data: TravelItem;
 }
+
+const DynamicNaverMap = dynamic(
+  () => import("@/app/ui/travelDestination/NaverMap"),
+  {
+    ssr: false,
+  },
+);
 
 export default function DetailContents({ idx, data }: IDetailContentsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -98,11 +105,10 @@ export default function DetailContents({ idx, data }: IDetailContentsProps) {
               )}
             </div>
           </div>
-          {/* 지도 보여줄곳 */}
           <div className="flex flex-col gap-5">
             <h2 className="text-2xl font-semibold">위치</h2>
             <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl">
-              <NaverMap
+              <DynamicNaverMap
                 mapx={data.mapx}
                 mapy={data.mapy}
                 address={data.address}
@@ -171,11 +177,10 @@ export default function DetailContents({ idx, data }: IDetailContentsProps) {
               )}
             </div>
           </div>
-          {/* 지도보여줄곳 */}
           <div className="flex flex-col gap-5">
             <h2 className="text-2xl font-semibold">위치</h2>
             <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl">
-              <NaverMap
+              <DynamicNaverMap
                 mapx={data.mapx}
                 mapy={data.mapy}
                 address={data.address}

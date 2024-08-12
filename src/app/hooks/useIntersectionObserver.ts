@@ -25,6 +25,5 @@ export default function useIntersectionObserver(
       }
     };
   }, [callback, options]);
-
   return targetRef;
 }

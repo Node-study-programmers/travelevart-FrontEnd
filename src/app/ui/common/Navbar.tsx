@@ -62,11 +62,15 @@ export default function Navbar() {
             )}
           </li>
         ))}
-        <li className="flex justify-center items-center bg-primary rounded-2xl px-7 py-3 cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full relative text-white">
+        <li className="flex justify-center items-center bg-primary rounded-2xl cursor-pointer whitespace-nowrap tracking-widest sm:rounded-full relative text-white">
           {userData ? (
-            <Link href="/mypage">마이페이지</Link>
+            <Link href="/mypage" className="px-7 py-3">
+              마이페이지
+            </Link>
           ) : (
-            <div onClick={() => signIn()}>로그인</div>
+            <div onClick={() => signIn()} className="px-7 py-3">
+              로그인
+            </div>
           )}
         </li>
       </ul>

@@ -21,10 +21,6 @@ export default function useDetailPost(id: string) {
   return useQuery<DetailPost>({
     queryKey: ["detailPost", id],
     queryFn: () =>
-      get<DetailPost>(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`, {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      }),
+      get<DetailPost>(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${id}`),
   });
 }

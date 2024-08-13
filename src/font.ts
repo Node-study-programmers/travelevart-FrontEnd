@@ -8,4 +8,5 @@ export const noto = Noto_Sans({
 export const logoFont = Protest_Strike({
   weight: "400",
   subsets: ["latin"],
+  preload: true,
 });

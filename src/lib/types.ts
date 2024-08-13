@@ -61,3 +61,42 @@ export interface IFestival {
 export interface IGetFestivalResponse {
   item: IFestival | null;
 }
+
+// 커스텀하기 데이터 타입
+
+export interface ITravelDetail {
+  id: number;
+  place_id: number;
+  routeIndex: number;
+  playTime: string;
+  contents: string;
+  transportOption: string;
+  starting_point: string;
+  region_id: number;
+  detailtravel_image: string;
+  address: string;
+  placeTitle: string;
+  placeImage: string;
+  day: number;
+  mapLink: string;
+  accommodation_day: number;
+  accommodation_address: string;
+  accommodation_title: string;
+  accommodation_reservationLink: string;
+}
+
+export interface ITravelItem {
+  date: string;
+  details: ITravelDetail[];
+}
+
+export interface ITravelCustomData {
+  travel_name: string;
+  travelroute_range: number;
+  start_date: string;
+  end_date: string;
+}
+
+export interface ITravelResponse {
+  items: ITravelItem[];
+}

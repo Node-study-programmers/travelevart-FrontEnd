@@ -23,11 +23,6 @@ export default function useGetCommentsInfinite(postId: string) {
     try {
       const response = await get<CommentsResponseData>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${postId}?page=${pageParam}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
       );
       return response;
     } catch (error) {

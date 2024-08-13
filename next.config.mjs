@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
+
   images: {
     domains: [
       "elasticbeanstalk-ap-northeast-2-905418188515.s3.ap-northeast-2.amazonaws.com",

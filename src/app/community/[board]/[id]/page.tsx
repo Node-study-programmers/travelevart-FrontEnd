@@ -210,7 +210,7 @@ export default function CommunityDetailPage({
             userData={userData}
           />
           {/* 댓글 */}
-          <div className="space-y-4 mb-10 h-auto overflow-scroll">
+          <div className="space-y-4 mb-10 h-auto overflow-scroll scroll-none">
             {comments.length > 0 ? (
               comments.map(
                 ({ author, comment, created_at, id, profileImg, authorId }) => (

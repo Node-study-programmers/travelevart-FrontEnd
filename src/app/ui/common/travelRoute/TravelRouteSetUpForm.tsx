@@ -58,7 +58,7 @@ export default function TravelRouteSetUpForm() {
   });
   const router = useRouter();
   const dispatch = useDispatch();
-  const { mutate } = useTravelRouteSetup();
+  const { mutate, isPending } = useTravelRouteSetup();
   const {
     register,
     handleSubmit,
@@ -91,6 +91,7 @@ export default function TravelRouteSetUpForm() {
         endDate: dateRange.endDate,
       },
       {
+        // 로딩 추가하기
         onSuccess: (res) => {
           dispatch(
             setTravelRoute({
@@ -224,6 +225,8 @@ export default function TravelRouteSetUpForm() {
                 </button>
               </div>
             </form>
+            {/* 토스트 UI로 바꾸기 */}
+            {isPending ? <div>Loading...</div> : null}
           </div>
         </div>
       </div>

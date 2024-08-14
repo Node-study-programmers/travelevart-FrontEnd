@@ -2,7 +2,7 @@ import { get } from "@/lib/api";
 import { ITravelResponse } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 
-export default function useGetDetailCustomData(travelrouteId: number) {
+export default function useGetDetailCustomData(travelrouteId: string) {
   return useQuery({
     queryKey: ["customData", travelrouteId],
     queryFn: () =>

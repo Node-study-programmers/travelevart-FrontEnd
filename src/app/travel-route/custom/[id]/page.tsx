@@ -2,7 +2,9 @@
 import useGetDetailCustomData from "@/app/hooks/custom/useGetCustomData";
 import TodoLibraryExample from "@/app/ui/customTravel/DragAndDrop";
 import { ITravelDetail, ITravelItem } from "@/lib/types";
+import { RootState } from "@/redux";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export interface ITravelCustomData {
   travel_name: string;
@@ -50,7 +52,19 @@ type ApiResponse = {
 export default function TodoPage() {
   const [items, setItems] = useState<ITravelItems>({});
   const { data, isLoading } = useGetDetailCustomData(82);
-  console.log(items);
+
+  // setup 페이지에서 설정한 옵션 불러오기
+  const travelRoute = useSelector((state: RootState) => state.travelRoute);
+
+  const dateRange = generateDateRange(
+    travelRoute.startDate,
+    travelRoute.endDate,
+  );
+
+  console.log(travelRoute);
+  console.log(dateRange);
+
+  // console.log(items);
   useEffect(() => {
     // 더미 데이터를 사용하여 상태를 초기화
     if (data) {

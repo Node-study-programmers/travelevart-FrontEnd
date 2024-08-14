@@ -1,4 +1,5 @@
 "use client";
+
 import useGetDetailCustomData from "@/app/hooks/custom/useGetCustomData";
 import CustomSearch from "@/app/ui/customTravel/CustomSearch";
 import TodoLibraryExample from "@/app/ui/customTravel/DragAndDrop";
@@ -18,41 +19,10 @@ export type ITravelItems = {
   [date: string]: ITravelDetail[];
 };
 
-function generateDateRange(startDate: string, endDate: string): string[] {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const dates = [];
-
-  let currentDate = start;
-  while (currentDate <= end) {
-    dates.push(currentDate.toISOString().split("T")[0]); // Format YYYY-MM-DD
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  return dates;
-}
-
-function transformData(apiResponse: { items: ITravelItem[] }): ITravelItems {
-  const transformed: ITravelItems = {};
-
-  apiResponse.items.forEach((item) => {
-    transformed[item.date] = item.details;
-  });
-
-  return transformed;
-}
-
-// API에서 받은 데이터 형식
-type ApiResponse = {
-  items: ITravelItem[];
-};
-
-// 더미 데이터
-
-// 데이터 변환 함수
 export default function TodoPage({ params }: { params: { id: string } }) {
   const [items, setItems] = useState<ITravelItems>({});
   const { data, isLoading } = useGetDetailCustomData(params.id);
+  const [openSearch, setOpenSearch] = useState(false);
 
   // setup 페이지에서 설정한 옵션 불러오기
   const travelRoute = useSelector((state: RootState) => state.travelRoute);
@@ -62,24 +32,61 @@ export default function TodoPage({ params }: { params: { id: string } }) {
     travelRoute.endDate,
   );
 
-  // console.log(items);
+  function transformData(apiResponse: { items: ITravelItem[] }): ITravelItems {
+    const transformed: ITravelItems = {};
+    apiResponse.items.forEach((item) => {
+      transformed[item.date] = item.details;
+    });
+    return transformed;
+  }
+
+  function generateDateRange(startDate: string, endDate: string): string[] {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const dates = [];
+
+    let currentDate = start;
+    while (currentDate <= end) {
+      dates.push(currentDate.toISOString().split("T")[0]); // Format YYYY-MM-DD
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  }
+
   useEffect(() => {
-    // 더미 데이터를 사용하여 상태를 초기화
+    // 데이터를 변환하고 상태를 초기화
     if (data) {
       const transformedItems = transformData(data);
       setItems(transformedItems);
     }
   }, [data]);
 
+  useEffect(() => {
+    // dateRange가 변경될 때만 상태를 초기화
+    if (Object.keys(items).length === 0 && dateRange.length > 0) {
+      const initialItems: ITravelItems = {};
+      dateRange.forEach((date) => {
+        initialItems[date] = [];
+      });
+      setItems(initialItems);
+    }
+  }, [dateRange]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="flex relative">
+    <div className="flex relative justify-center h-screen bg-gray-200 lg:py-2">
       <TodoLibraryExample
         dateRange={dateRange}
         items={items}
         setItems={setItems}
         travelRouteBaseInfo={travelRoute}
+        setOpenSearch={setOpenSearch}
       />
-      <CustomSearch />
+      <CustomSearch openSearch={openSearch} setOpenSearch={setOpenSearch} />
     </div>
   );
 }

@@ -112,8 +112,8 @@ export default function TravelRouteSetUpForm() {
   };
 
   return (
-    <div className="bg-[whitesmoke] min-h-screen flex flex-col items-center">
-      <div className="w-screen lg:max-w-screen-md mx-auto mt-20 border-2 border-gray-300 bg-white">
+    <div className="bg-[whitesmoke] flex flex-col items-center">
+      <div className="w-screen lg:max-w-screen-md mx-auto border-2 border-gray-300 bg-white">
         <h1
           className={`p-5 bg-white text-left my-auto flex items-center text-3xl ${logoFont.className} border-gray-300 border-b-2 cursor-pointer`}
         >
@@ -131,7 +131,7 @@ export default function TravelRouteSetUpForm() {
               onSubmit={handleSubmit(handleCustomizing)}
             >
               <div>
-                <p className="pb-2">TravelRoute</p>
+                <p className="pb-2">TravelRouteName</p>
                 <input
                   type="name"
                   className="border border-gray-300 p-2 w-full rounded-lg py-3 outline-none"

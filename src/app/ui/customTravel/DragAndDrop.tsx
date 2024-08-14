@@ -1,4 +1,5 @@
 import { ITravelItems } from "@/app/travel-route/custom/[id]/page";
+import { ITravelCustomData } from "@/lib/types";
 import { useEffect, useState } from "react";
 import {
   DragDropContext,
@@ -10,12 +11,38 @@ import {
 export default function TodoLibraryExample({
   items,
   setItems,
+  travelRouteBaseInfo,
+  dateRange,
 }: {
   items: ITravelItems;
   setItems: (items: ITravelItems) => void;
+  travelRouteBaseInfo: ITravelCustomData;
+  dateRange: string[];
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  // 남은 일수 계산
+  const calculateDaysLeft = () => {
+    const today = new Date();
+    const startDate = new Date(travelRouteBaseInfo.startDate);
+    const timeDiff = startDate.getTime() - today.getTime();
+    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return daysLeft > 0 ? daysLeft : 0;
+  };
+
+  const daysLeft = calculateDaysLeft();
+
+  // 초기화 로직
+  useEffect(() => {
+    if (Object.keys(items).length === 0) {
+      const initialItems: ITravelItems = {};
+      dateRange.forEach((date) => {
+        initialItems[date] = [];
+      });
+      setItems(initialItems);
+    }
+  }, [dateRange, items, setItems]);
 
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
@@ -59,13 +86,34 @@ export default function TodoLibraryExample({
   };
 
   return (
-    <div className="p-4">
-      <div className="mb-2">
-        <h1 className="text-3xl font-bold">Travel Itinerary</h1>
-        <span>Organize your travel plans</span>
+    <div className="lg:w-1/2">
+      <div className="mb-2 bg-primary p-4 min-h-64 flex flex-col justify-around px-10 text-white relative">
+        <h1 className="text-3xl font-bold ">
+          {travelRouteBaseInfo.travelRouteName}
+          {travelRouteBaseInfo.travelRouteRange === 0 ? (
+            <div className="text-sm py-2 bg-secondary w-fit px-3 rounded-3xl">
+              비공개
+            </div>
+          ) : (
+            <div className="text-sm pl-2 py-2">공개</div>
+          )}
+        </h1>
+
+        <div>
+          <span className="bg-secondary text-lg w-fit px-5 py-2 rounded-3xl">
+            {travelRouteBaseInfo.startDate} - {travelRouteBaseInfo.endDate}
+          </span>
+          <span className="ml-4">
+            {daysLeft > 0
+              ? `여행까지 ${daysLeft}일 남았습니다.`
+              : "여행이 시작되었습니다!"}
+          </span>
+        </div>
+
+        <div className="absolute right-1 bottom-1 text-white">TravelevarT</div>
       </div>
 
-      <div className="mt-4 flex flex-col space-y-4">
+      <div className="mt-4 flex flex-col overflow-scroll h-screen px-10">
         <DragDropContext onDragEnd={onDragEnd}>
           {Object.keys(items).map((key, dayIndex) => (
             <Droppable key={key} droppableId={key}>
@@ -73,7 +121,7 @@ export default function TodoLibraryExample({
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="space-y-4"
+                  className="min-h-32"
                 >
                   <div className="flex items-center space-x-2">
                     <span className="text-lg font-bold">
@@ -145,17 +193,6 @@ export default function TodoLibraryExample({
                       )}
                     </Draggable>
                   ))}
-
-                  {/* + 버튼 추가 */}
-                  <div className="flex justify-center mt-2">
-                    <button
-                      onClick={() => openModal(key)}
-                      className="text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg"
-                    >
-                      + 추가하기
-                    </button>
-                  </div>
-
                   {provided.placeholder}
                 </div>
               )}
@@ -163,23 +200,6 @@ export default function TodoLibraryExample({
           ))}
         </DragDropContext>
       </div>
-
-      {/* 모달 컴포넌트 */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">새 항목 추가</h2>
-            <p>{selectedDate}에 새 항목을 추가합니다.</p>
-            {/* 여기에 입력 필드와 추가 버튼 등을 구현 */}
-            <button
-              onClick={closeModal}
-              className="mt-4 text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
-            >
-              닫기
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -16,7 +16,6 @@ import React, {
 import Carousel from "../ui/common/carousel/Carousel";
 import useBannerContents from "../hooks/searchTrip/useBannerContents";
 import CarouselSkeleton from "../ui/common/carousel/CarouselSkeleton";
-import TravelSearchBar from "../ui/travelDestination/TravelSearchBar";
 import Select from "../ui/common/Select";
 import { FaSearch } from "react-icons/fa";
 import useGetRegionCode, {
@@ -97,10 +96,10 @@ export default function SearchTripPage() {
     fetchNextPage();
   };
 
-  const handleMoreTravelDestination = () => {
-    // setIsDefaultLoaded(false); // 무한 스크롤 재시작
-    fetchNextPage();
-  };
+  // const handleMoreTravelDestination = () => {
+  //   // setIsDefaultLoaded(false); // 무한 스크롤 재시작
+  //   fetchNextPage();
+  // };
 
   const handleSortingFilter = (filterId: string) => {
     setFocusFilter(filterId);

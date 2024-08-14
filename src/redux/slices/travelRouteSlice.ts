@@ -6,6 +6,7 @@ interface ITravelRouteState {
   startDate: string;
   endDate: string;
   travelRouteId: number | null;
+  travelRouteTransport: string;
 }
 
 const initialState: ITravelRouteState = {
@@ -14,6 +15,7 @@ const initialState: ITravelRouteState = {
   startDate: "",
   endDate: "",
   travelRouteId: null,
+  travelRouteTransport: "",
 };
 
 const travelRouteSlice = createSlice({
@@ -26,6 +28,7 @@ const travelRouteSlice = createSlice({
       state.startDate = action.payload.startDate;
       state.endDate = action.payload.endDate;
       state.travelRouteId = action.payload.travelRouteId;
+      state.travelRouteTransport = action.payload.travelRouteTransport;
     },
     resetTravelRoute: (state) => {
       state.travelRouteName = "";
@@ -33,6 +36,7 @@ const travelRouteSlice = createSlice({
       state.startDate = "";
       state.endDate = "";
       state.travelRouteId = null;
+      state.travelRouteTransport = "";
     },
   },
 });

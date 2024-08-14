@@ -96,6 +96,7 @@ export interface ITravelCustomData {
   startDate: string;
   endDate: string;
   travelRouteId: number | null;
+  travelRouteTransport: string;
 }
 
 export interface ITravelResponse {

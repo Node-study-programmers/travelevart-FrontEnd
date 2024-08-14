@@ -1,11 +1,17 @@
+"use client";
 import { logoFont } from "@/font";
 import { IoEarthOutline } from "react-icons/io5";
 import { RiNotionFill } from "react-icons/ri";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import FeedbackForm from "./FeedbackForm";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname.startsWith("/travel-route/custom")) {
+    return null;
+  }
   return (
     <footer className="relative w-full flex justify-center bg-slate-200 text-rgb-primary pt-6 pb-5">
       <div className="max-w-[1280px] w-full mx-auto px-4">

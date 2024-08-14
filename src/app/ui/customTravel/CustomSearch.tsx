@@ -1,35 +1,35 @@
 "use client";
-import useTravelDestinationInfiniteQuery from "@/app/hooks/searchTrip/useTravelDestinationInfiniteQuery";
-import { FormEvent, useRef, useState } from "react";
+
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { FaArrowUp, FaSearch } from "react-icons/fa";
+import { CiSquareMore } from "react-icons/ci";
+import { FiPlusSquare } from "react-icons/fi";
+import Image from "next/image";
 import Select from "../common/Select";
+import Tooltip from "../common/Tooltip";
+import useTravelDestinationInfiniteQuery from "@/app/hooks/searchTrip/useTravelDestinationInfiniteQuery";
 import useGetRegionCode, {
   TregionResponse,
 } from "@/app/hooks/searchTrip/useGetRegionCode";
-import { FaSearch } from "react-icons/fa";
-import Link from "next/link";
+import useGetCartTravelDestintaion from "@/app/hooks/searchTrip/useGetCartTravelDestination";
 import useIntersectionObserver from "@/app/hooks/useIntersectionObserver";
 import AllTravelDestination from "../travelDestination/AllTravelDestination";
 import CategoryTabs from "../common/CategoryTabs";
-import useGetCartTravelDestintaion from "@/app/hooks/searchTrip/useGetCartTravelDestination";
-import Image from "next/image";
+import DetailModal from "./Modal/DetailModal";
+import { CustomSearchSkeleton } from "./skeleton/Skeletons";
 
 const filterGroup = [
-  {
-    id: "view",
-    title: "조회 순",
-  },
-  {
-    id: "review",
-    title: "리뷰 순",
-  },
-  {
-    id: "rating",
-    title: "별점 순",
-  },
-  {
-    id: "save",
-    title: "찜한 순",
-  },
+  { id: "view", title: "조회 순" },
+  { id: "review", title: "리뷰 순" },
+  { id: "rating", title: "별점 순" },
+  { id: "save", title: "찜한 순" },
 ];
 
 const categories = [
@@ -37,12 +37,19 @@ const categories = [
   { id: 1, title: "찜 목록 보기" },
 ];
 
-export default function CustomSearch() {
+interface ICustomSearchProps {
+  openSearch: boolean;
+  setOpenSearch: Dispatch<SetStateAction<boolean>>;
+}
+
+const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusFilter, setFocusFilter] = useState<string>("view");
-  const { data: regionData, isLoading } = useGetRegionCode();
+  const { data: regionData } = useGetRegionCode();
   const [regionCode, setRegionCode] = useState<number>(0);
   const [searchName, setSearchName] = useState<string>("");
-  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [focusTab, setFocusTab] = useState<number>(0);
   const {
     travelDestinationData,
@@ -51,18 +58,18 @@ export default function CustomSearch() {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-    currentPage,
   } = useTravelDestinationInfiniteQuery(focusFilter, regionCode, searchName);
-  const isLogin = localStorage.getItem("accessToken");
-  const {
-    data: cartData,
-    isLoading: cartLoading,
-    refetch,
-  } = useGetCartTravelDestintaion(Boolean(isLogin));
+
+  const isLogin = Boolean(localStorage.getItem("accessToken"));
+  const { data: cartData, isLoading: cartLoading } =
+    useGetCartTravelDestintaion(isLogin);
   const cartItems = cartData?.map((item) => item.place);
+  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
+
   const handleSortingFilter = (filterId: string) => {
     setFocusFilter(filterId);
   };
+
   const moreRef = useIntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting) {
@@ -73,136 +80,225 @@ export default function CustomSearch() {
   );
 
   const loadMore = () => {
-    if (!hasNextPage) return;
-    fetchNextPage();
+    if (hasNextPage) {
+      fetchNextPage();
+    }
   };
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (searchInputRef.current) {
-      setSearchName(searchInputRef?.current?.value);
+      setSearchName(searchInputRef.current.value);
       searchInputRef.current.value = "";
     }
   };
-  return (
-    <div className="lg:w-1/2 border-x-2 border-gray-300 mt-5">
-      <CategoryTabs
-        focusTab={focusTab}
-        setFocusTab={setFocusTab}
-        categories={categories}
-      />
-      {focusTab === 0 ? (
-        <>
-          <div
-            style={{ transition: "top 0.3s ease" }}
-            className="w-full 
-lg:h-16 flex transition-all duration-1000 h-[56px] mb-10"
-          >
-            <Select
-              className="h-full"
-              placeholder="검색할 지역 선택"
-              label="지역"
-              defaultValue={regionData?.regions[0].region}
-              items={regionData?.regions.map((item) => item.region) || []}
-              onChange={(selectedRegion) => {
-                const selectedRegionData = regionData?.regions.find(
-                  (region: TregionResponse) => region.region === selectedRegion,
-                );
-                if (selectedRegionData) {
-                  setRegionCode(selectedRegionData.id);
-                }
-              }}
-            />
-            <form
-              className="flex-grow h-full flex shadow-xl p-2 rounded-r-full"
-              onSubmit={handleSearch}
-            >
-              <input
-                className="flex-grow h-full outline-none text-base lg:text-lg "
-                placeholder="여행지를 검색하세요!"
-                ref={searchInputRef}
-              />
-              <button
-                className="bg-primary h-full w-12 rounded-full flex items-center justify-center 
-text-white text-xl lg:text-2xl cursor-pointer"
-                onClick={handleSearch}
-                type="submit"
-              >
-                <FaSearch />
-              </button>
-            </form>
-          </div>
-          <div className="flex justify-end gap-x-2 pb-2 px-10">
-            {filterGroup.map((filter) => (
-              <button
-                key={filter.id}
-                className={`${
-                  filter.id === focusFilter ? "text-black" : "text-rgb-primary"
-                } text-sm transition-all duration-300 ease-in-out`}
-                onClick={() => handleSortingFilter(filter.id)}
-              >
-                {filter.title}
-              </button>
-            ))}
-          </div>
-          {/* 검색 결과 보여주는 부분 컴포넌트 빼서 querystring으로 데이터 패칭하기 , notfound 까지  */}
 
-          <div className="flex flex-col gap-12 h-full overflow-scroll px-10">
-            {isTravelDestinationLoading && <p>Loading</p>}
-            {status === "pending" || isFetchingNextPage ? (
-              <p>Loading</p>
-            ) : (
-              <>
-                {travelDestinationData.map((destination) => (
-                  <div key={destination.id}>
-                    <AllTravelDestination
-                      isInCustom
-                      representativeImg={destination.image}
-                      address={destination.address}
-                      title={destination.title}
-                      placeId={destination.id}
-                      rating={destination.averageRating}
+  const handleOpenModal = (id: string) => {
+    setSelectedId(id);
+    setIsModalOpen(true);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = document.getElementById("scroll-container");
+      if (container) {
+        setShowScrollTopButton(container.scrollTop > 300);
+      }
+    };
+
+    const container = document.getElementById("scroll-container");
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    const container = document.getElementById("scroll-container");
+    if (container) {
+      container.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleAddPlan = () => {
+    // Implement add plan logic here
+  };
+
+  return (
+    <>
+      <div
+        id="scroll-container"
+        className={`fixed top-0 right-0 w-full lg:w-1/3 border-2 border-gray-300 p-2 overflow-y-auto h-screen bg-white
+      transition-transform duration-300 ease-in-out transform ${openSearch ? "translate-x-0" : "translate-x-full"} lg:translate-x-0
+      lg:relative
+    `}
+      >
+        <div className="flex justify-end lg:hidden">
+          <button
+            onClick={() => setOpenSearch(false)}
+            className="lg:hidden outline flex gap-2 items-center bg-primary text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-primary 
+        focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition duration-300"
+          >
+            x
+          </button>
+        </div>
+        <CategoryTabs
+          focusTab={focusTab}
+          setFocusTab={setFocusTab}
+          categories={categories}
+        />
+        {focusTab === 0 ? (
+          <>
+            <div
+              style={{ transition: "top 0.3s ease" }}
+              className="w-full lg:h-16 flex transition-all duration-1000 h-[56px] mb-10 mt-10"
+            >
+              <Select
+                className="h-full"
+                placeholder="검색할 지역 선택"
+                label="지역"
+                defaultValue={regionData?.regions[0]?.region || ""}
+                items={regionData?.regions.map((item) => item.region) || []}
+                onChange={(selectedRegion) => {
+                  const selectedRegionData = regionData?.regions.find(
+                    (region: TregionResponse) =>
+                      region.region === selectedRegion,
+                  );
+                  if (selectedRegionData) {
+                    setRegionCode(selectedRegionData.id);
+                  }
+                }}
+              />
+              <form
+                className="flex-grow h-full flex shadow-xl p-2 rounded-r-full"
+                onSubmit={handleSearch}
+              >
+                <input
+                  className="flex-grow h-full outline-none text-base lg:text-lg p-4"
+                  placeholder="여행지를 검색하세요!"
+                  ref={searchInputRef}
+                />
+                <button
+                  className="bg-primary h-full w-12 rounded-full flex items-center justify-center text-white text-xl lg:text-2xl cursor-pointer"
+                  type="submit"
+                >
+                  <FaSearch />
+                </button>
+              </form>
+            </div>
+            <div className="flex justify-end gap-x-2 pb-2 px-10">
+              {filterGroup.map((filter) => (
+                <button
+                  key={filter.id}
+                  className={`${
+                    filter.id === focusFilter
+                      ? "text-black"
+                      : "text-rgb-primary"
+                  } text-sm transition-all duration-300 ease-in-out`}
+                  onClick={() => handleSortingFilter(filter.id)}
+                >
+                  {filter.title}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-col gap-0 h-full px-10 py-10">
+              {isTravelDestinationLoading && <CustomSearchSkeleton />}
+              {status === "pending" || isFetchingNextPage ? (
+                <CustomSearchSkeleton />
+              ) : (
+                <>
+                  {travelDestinationData.map((destination) => (
+                    <div key={destination.id}>
+                      <AllTravelDestination
+                        isInCustom
+                        representativeImg={destination.image}
+                        address={destination.address}
+                        title={destination.title}
+                        placeId={destination.id}
+                        rating={destination.averageRating}
+                      />
+                    </div>
+                  ))}
+                  <div ref={moreRef}></div>
+                </>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col px-10 mt-10">
+            {cartItems?.map((item) => (
+              <div
+                className="h-full border-b-[1px] border-gray-300 flex justify-between items-center py-5"
+                key={item.placeId}
+              >
+                <div className="flex items-center flex-grow gap-3">
+                  <div className="relative">
+                    <Image
+                      src={
+                        item.image ||
+                        "https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
+                      }
+                      alt={item.title}
+                      width={50}
+                      height={50}
+                      className="rounded-xl object-cover w-24 h-20"
                     />
                   </div>
-                ))}
-              </>
-            )}
-            <div ref={moreRef}></div>
-          </div>
-        </>
-      ) : (
-        <div className="flex flex-col gap-12 px-10 mt-10">
-          {cartItems?.map((item) => (
-            <div
-              className="h-full border-b-[1px] border-gray-300"
-              key={item.placeId}
-            >
-              <div className="relative">
-                <Image
-                  src={
-                    item.image ||
-                    "https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
-                  }
-                  alt={item.title}
-                  width={50}
-                  height={50}
-                  className="rounded-full object-cover w-12 h-12"
-                />
-              </div>
-              <div className="flex flex-col py-2 gap-y-1">
-                {/* 여행지 & 별점 */}
-                <div className="flex justify-between items-center sm text-sm">
-                  <div className="w-3/5">{item.title.split("(")[0]}</div>
+                  <div className="flex flex-col py-2 gap-y-1 w-full overflow-x-auto text-ellipsis">
+                    <div className="flex items-center text-sm">
+                      <div className="w-3/5">{item.title.split("(")[0]}</div>
+                    </div>
+                    <p className="text-rgb-primary text-xs">
+                      {item.address.split("(")[0]}
+                    </p>
+                  </div>
                 </div>
-                {/* 주소 */}
-                <p className="text-rgb-primary text-xs">
-                  {item.address.split("(")[0]}
-                </p>
+                <div className="flex gap-3">
+                  <Tooltip content="상세보기" direction="bottom">
+                    <button
+                      onClick={() => handleOpenModal(String(item.placeId))}
+                      className="text-black px-4 py-2 text-2xl"
+                    >
+                      <CiSquareMore />
+                    </button>
+                  </Tooltip>
+                  <Tooltip content="일정담기" direction="bottom">
+                    <button
+                      className="text-black px-4 py-2 text-2xl"
+                      onClick={handleAddPlan}
+                    >
+                      <FiPlusSquare />
+                    </button>
+                  </Tooltip>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+        {selectedId && (
+          <DetailModal
+            id={selectedId}
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
+      </div>
+      {showScrollTopButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg transition-transform transform hover:scale-105"
+          aria-label="Scroll to top"
+        >
+          <FaArrowUp />
+        </button>
       )}
-    </div>
+    </>
   );
-}
+};
+
+export default CustomSearch;

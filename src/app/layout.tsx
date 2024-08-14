@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Script from "next/script";
 import { noto } from "@/font";
 import SessionWrapper from "@/util/SessionWrapper";
 import Navbar from "./ui/common/Navbar";

@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 interface IDetailContentsProps {
   idx: number;
   data: TravelItem;
+  isModal?: boolean;
 }
 
 const DynamicNaverMap = dynamic(
@@ -22,7 +23,11 @@ const DynamicNaverMap = dynamic(
   },
 );
 
-export default function DetailContents({ idx, data }: IDetailContentsProps) {
+export default function DetailContents({
+  idx,
+  data,
+  isModal = false,
+}: IDetailContentsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const {
@@ -124,9 +129,12 @@ export default function DetailContents({ idx, data }: IDetailContentsProps) {
             <h2 className="text-2xl font-semibold">
               리뷰 <span className="text-primary">{totalReviews}</span>
             </h2>
-            <div className="text-lg">
-              <ReviewWithStar detailId={data.id} refetch={refetch} />
-            </div>
+            {!isModal && (
+              <div className="text-lg">
+                <ReviewWithStar detailId={data.id} refetch={refetch} />
+              </div>
+            )}
+
             {/* 리뷰목록 보여주기 */}
             <div>
               {reviews.map((review) => (
@@ -199,7 +207,9 @@ export default function DetailContents({ idx, data }: IDetailContentsProps) {
             리뷰 <span className="text-primary">{totalReviews}</span>
           </h2>
           <div className="text-lg">
-            <ReviewWithStar detailId={data.id} refetch={refetch} />
+            {!isModal && (
+              <ReviewWithStar detailId={data.id} refetch={refetch} />
+            )}
           </div>
           {/* 리뷰목록 보여주기 */}
           <div>

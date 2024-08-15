@@ -1,7 +1,7 @@
 import { get } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
-interface ICartPlace {
+export interface ICartPlace {
   placeId: number;
   address: string;
   image: string;

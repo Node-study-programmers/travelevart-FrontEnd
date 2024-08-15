@@ -1,5 +1,7 @@
 import useLogin from "@/app/hooks/auth/useLogin";
-import useGetCartTravelDestintaion from "@/app/hooks/searchTrip/useGetCartTravelDestination";
+import useGetCartTravelDestintaion, {
+  ICartPlace,
+} from "@/app/hooks/searchTrip/useGetCartTravelDestination";
 import Image from "next/image";
 import { MouseEvent, useState } from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
@@ -11,6 +13,10 @@ import DetailModal from "../customTravel/Modal/DetailModal";
 import { CiSquareMore } from "react-icons/ci";
 import { FiPlusSquare } from "react-icons/fi";
 import Tooltip from "../common/Tooltip";
+import DropDown from "../common/DropDown";
+import { ITravelItems } from "@/app/travel-route/custom/[id]/page";
+import { ITravelDestination } from "@/app/hooks/searchTrip/useTravelDestinationInfiniteQuery";
+import { TravelItem } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
 
 interface IAllTravelDestinationProps {
   representativeImg: string;
@@ -19,6 +25,9 @@ interface IAllTravelDestinationProps {
   placeId: number;
   rating: string | null;
   isInCustom?: boolean;
+  items?: ITravelItems;
+  destination?: ITravelDestination;
+  handleAddPlan?: (value: string, item: TravelItem | ICartPlace) => void;
 }
 
 export default function AllTravelDestination({
@@ -28,6 +37,9 @@ export default function AllTravelDestination({
   placeId,
   rating,
   isInCustom = false,
+  items,
+  destination,
+  handleAddPlan,
 }: IAllTravelDestinationProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -125,8 +137,8 @@ export default function AllTravelDestination({
               {/* 여행지 & 별점 */}
               <div className="flex items-center text-sm">
                 <div className="w-3/5">
-                  {title.split("(")[0]}
-                  <p className="text-rgb-primary text-xs">
+                  <p className="line-clamp-2">{title.split("(")[0]}</p>
+                  <p className="text-rgb-primary text-xs line-clamp-1">
                     {address.split("(")[0]}
                   </p>
                 </div>
@@ -138,20 +150,25 @@ export default function AllTravelDestination({
               </div>
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-1">
             <Tooltip content="상세보기" direction="bottom">
               <button
                 onClick={() => handleOpenModal(String(placeId))}
-                className="text-black px-4 py-2 text-2xl"
+                className="text-secondary lg:px-2 py-2 text-2xl"
               >
                 <CiSquareMore />
               </button>
             </Tooltip>
-            <Tooltip content="일정담기" direction="bottom">
-              <button className="text-black px-4 py-2 text-2xl">
+            <DropDown
+              contents={Object.keys(items!)}
+              handleClickValue={(selectedValue) =>
+                handleAddPlan(selectedValue, destination)
+              }
+            >
+              <button className="text-primary lg:px-2 py-2 text-2xl">
                 <FiPlusSquare />
               </button>
-            </Tooltip>
+            </DropDown>
           </div>
           {selectedId && (
             <DetailModal

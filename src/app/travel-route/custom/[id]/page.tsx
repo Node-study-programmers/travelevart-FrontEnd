@@ -1,6 +1,7 @@
 "use client";
 
 import useGetDetailCustomData from "@/app/hooks/custom/useGetCustomData";
+import LoadingModal from "@/app/ui/common/LoadingModal";
 import CustomSearch from "@/app/ui/customTravel/CustomSearch";
 import TodoLibraryExample from "@/app/ui/customTravel/DragAndDrop";
 import { ITravelDetail, ITravelItem } from "@/lib/types";
@@ -19,7 +20,11 @@ export type ITravelItems = {
   [date: string]: ITravelDetail[];
 };
 
-export default function TodoPage({ params }: { params: { id: string } }) {
+export default function DetailCustomPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const [items, setItems] = useState<ITravelItems>({});
   const { data, isLoading } = useGetDetailCustomData(params.id);
   const [openSearch, setOpenSearch] = useState(false);
@@ -74,11 +79,11 @@ export default function TodoPage({ params }: { params: { id: string } }) {
   }, [dateRange]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingModal />;
   }
 
   return (
-    <div className="flex relative justify-center h-screen bg-gray-200 lg:py-2">
+    <div className="flex relative justify-center bg-gray-200">
       <TodoLibraryExample
         dateRange={dateRange}
         items={items}
@@ -86,7 +91,12 @@ export default function TodoPage({ params }: { params: { id: string } }) {
         travelRouteBaseInfo={travelRoute}
         setOpenSearch={setOpenSearch}
       />
-      <CustomSearch openSearch={openSearch} setOpenSearch={setOpenSearch} />
+      <CustomSearch
+        openSearch={openSearch}
+        setOpenSearch={setOpenSearch}
+        items={items}
+        setItems={setItems}
+      />
     </div>
   );
 }

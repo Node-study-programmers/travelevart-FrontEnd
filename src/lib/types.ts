@@ -102,3 +102,14 @@ export interface ITravelCustomData {
 export interface ITravelResponse {
   items: ITravelItem[];
 }
+
+export type IUserSaveData = {
+  cart_id: number;
+  place: {
+    address: string;
+    event: number;
+    image: string | null;
+    placeId: number;
+    title: string;
+  };
+}[];

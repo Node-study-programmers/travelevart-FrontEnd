@@ -5,6 +5,7 @@ import CategoryTabs from "../ui/common/CategoryTabs";
 import { useState } from "react";
 import PageContainer from "../ui/common/PageContainer";
 import { useRouter } from "next/navigation";
+import MyPageSave from "../ui/common/myPage/MypageSave";
 
 const categories = [
   { id: 0, title: "찜" },
@@ -14,6 +15,7 @@ const categories = [
 
 export default function MyPage() {
   const [focusTab, setFocusTab] = useState<number>(0);
+
   const router = useRouter();
 
   const handleCreateTravelRoute = () => {
@@ -30,6 +32,7 @@ export default function MyPage() {
             focusTab={focusTab}
             setFocusTab={setFocusTab}
           />
+          {focusTab === 0 && <MyPageSave />}
           <div className="mt-4 flex justify-end">
             {focusTab === 1 && (
               <button

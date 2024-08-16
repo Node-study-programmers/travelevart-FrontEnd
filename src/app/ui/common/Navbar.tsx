@@ -25,6 +25,11 @@ export default function Navbar() {
     setOpen(!open);
   };
 
+  // 특정 경로에서 Navbar를 숨김
+  if (pathname.startsWith("/travel-route/")) {
+    return null;
+  }
+
   return (
     <nav
       className={`z-[30] fixed bottom-0 left-1/2 -translate-x-1/2 bg-white w-full

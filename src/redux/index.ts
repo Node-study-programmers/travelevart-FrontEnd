@@ -1,13 +1,40 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "./slices/userSlice";
 import { travelRouteReducer } from "./slices/travelRouteSlice";
+import storage from "redux-persist/lib/storage";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
+
+const persistConfig = {
+  key: "travelRouteSetupOption",
+  storage, // localStorage,
+  whitelist: ["travelRoute"], // travelRoute만 저장
+};
+
+const reducers = combineReducers({
+  userInfo: userReducer,
+  travelRoute: travelRouteReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const Appstore = () => {
   return configureStore({
-    reducer: {
-      userInfo: userReducer,
-      travelRoute: travelRouteReducer,
-    },
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          // persist 액션 직렬화 검사에서 제외
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }),
   });
 };
 

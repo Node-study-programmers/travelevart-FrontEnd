@@ -91,10 +91,12 @@ export interface ITravelItem {
 }
 
 export interface ITravelCustomData {
-  travel_name: string;
-  travelroute_range: number;
-  start_date: string;
-  end_date: string;
+  travelRouteName: string;
+  travelRouteRange: number;
+  startDate: string;
+  endDate: string;
+  travelRouteId: number | null;
+  travelRouteTransport: string;
 }
 
 export interface ITravelResponse {

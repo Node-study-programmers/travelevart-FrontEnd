@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@nextui-org/date-picker": "^2.1.6",
-    "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^2.2.6",
     "@tanstack/react-query": "^5.51.1",
     "@types/react-beautiful-dnd": "^13.1.8",

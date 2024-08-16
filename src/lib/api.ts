@@ -4,6 +4,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import { toast } from "react-toastify";
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -85,7 +86,7 @@ async function interceptorResponseRejected(err: AxiosError) {
   if (err.response?.status === 403) {
     localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
     localStorage.removeItem(LOCAL_STORAGE_KEY.refreshToken);
-    alert("로그인 정보가 만료되었습니다. 다시 로그인 해주세요");
+    toast.info("로그인 정보가 만료되었습니다. 다시 로그인 해주세요");
     window.location.replace("/");
   }
 

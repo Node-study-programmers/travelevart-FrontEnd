@@ -9,6 +9,7 @@ import useLogin from "@/app/hooks/auth/useLogin";
 import { ReviewWithStarSkeleton } from "./skeleton/DetailPageSkeleton";
 import useAddReview from "@/app/hooks/searchTrip/useAddReview";
 import { signIn } from "next-auth/react";
+import { toast } from "react-toastify";
 
 interface FormValues {
   rating: number;
@@ -45,7 +46,7 @@ export default function ReviewWithStar({
       {
         onSuccess: (res) => {
           reset();
-          window.alert(res.message);
+          toast.info(res.message);
           refetch();
         },
       },

@@ -11,6 +11,7 @@ import DetailModal from "../customTravel/Modal/DetailModal";
 import { CiSquareMore } from "react-icons/ci";
 import { FiPlusSquare } from "react-icons/fi";
 import Tooltip from "../common/Tooltip";
+import { toast } from "react-toastify";
 
 interface IAllTravelDestinationProps {
   representativeImg: string;
@@ -44,7 +45,7 @@ export default function AllTravelDestination({
     e.preventDefault();
 
     if (!localStorage.getItem("accessToken")) {
-      alert("로그인이 필요합니다.");
+      toast.info("로그인이 필요합니다.");
       router.replace("/auth/login");
       return;
     }

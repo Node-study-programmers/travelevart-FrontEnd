@@ -10,6 +10,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import Tooltip from "@/app/ui/common/Tooltip";
 import { PiEyesFill } from "react-icons/pi";
 import FestivalSkeleton from "@/app/ui/travelDestination/skeleton/FestivalSkeleton";
+import { toast } from "react-toastify";
 
 export default function FestivalDetailPage({
   params,
@@ -80,11 +81,11 @@ export default function FestivalDetailPage({
     navigator.clipboard
       .writeText(currentUrl)
       .then(() => {
-        alert("링크가 클립보드에 복사되었습니다!");
+        toast.info("링크가 클립보드에 복사되었습니다!");
       })
       .catch((error) => {
         console.error("링크 복사 실패", error);
-        alert("링크 복사에 실패했습니다.");
+        toast.error("링크 복사에 실패했습니다.");
       });
   };
 

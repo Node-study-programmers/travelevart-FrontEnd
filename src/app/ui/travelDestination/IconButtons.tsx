@@ -5,6 +5,7 @@ import Tooltip from "../common/Tooltip";
 import useCartTravelDestination from "@/app/hooks/searchTrip/useCartTravelDestination";
 import { MouseEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface IconButtonsProps {
   likeNum: number;
@@ -28,7 +29,7 @@ export default function IconButtons({
 
   const handleAddCartTravelDestination = (e: MouseEvent<HTMLOrSVGElement>) => {
     if (!localStorage.getItem("accessToken")) {
-      alert("로그인이 필요합니다.");
+      toast.info("로그인이 필요합니다.");
       router.replace("/auth/login");
     }
 
@@ -49,11 +50,11 @@ export default function IconButtons({
     navigator.clipboard
       .writeText(currentUrl)
       .then(() => {
-        alert("링크가 클립보드에 복사되었습니다!");
+        toast.info("링크가 클립보드에 복사되었습니다!");
       })
       .catch((error) => {
         console.error("링크 복사 실패", error);
-        alert("링크 복사에 실패했습니다.");
+        toast.error("링크 복사에 실패했습니다.");
       });
 
     // 토스트 추가하기

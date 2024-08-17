@@ -165,9 +165,9 @@ export default function AllTravelDestination({
                 handleAddPlan(selectedValue, destination)
               }
             >
-              <button className="text-primary lg:px-2 py-2 text-2xl">
+              <div className="text-primary lg:px-2 py-2 text-2xl cursor-pointer">
                 <FiPlusSquare />
-              </button>
+              </div>
             </DropDown>
           </div>
           {selectedId && (

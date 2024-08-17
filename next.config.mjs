@@ -16,6 +16,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "encrypted-tbn0.gstatic.com",
       "k.kakaocdn.net",
+      "source.unsplash.com",
     ],
   },
 };

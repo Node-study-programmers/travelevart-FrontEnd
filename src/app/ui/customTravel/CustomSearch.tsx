@@ -173,6 +173,17 @@ export default function CustomSearch({
       }
     };
 
+    // 전체 항목에서 이미 존재하는 장소가 있는지 확인
+    const isDuplicate = Object.values(items).some((details) =>
+      details.some((detail) => detail.placeId === newDetail(item).placeId),
+    );
+
+    if (isDuplicate) {
+      // 전체 일차에 해당 장소가 있는 경우 경고 표시
+      alert("이미 존재하는 일정입니다.");
+      return;
+    }
+
     // item이 ICartPlace 타입인지 확인하여 details를 생성
     const details =
       "placeId" in item
@@ -187,25 +198,11 @@ export default function CustomSearch({
 
     setItems((prevItems: ITravelItems) => {
       if (prevItems.hasOwnProperty(value)) {
-        // 날짜가 이미 존재하면 알림 표시
-        const existingDetails = prevItems[value];
-        const newDetailIds = newItem.details.map((detail) => detail.placeId);
-        const duplicate = existingDetails.some((detail) =>
-          newDetailIds.includes(detail.placeId),
-        );
-
-        if (duplicate) {
-          alert("이미 존재하는 일정입니다.");
-          return prevItems; // 변경하지 않고 기존 상태 반환
-        }
-
-        // 기존 항목이 존재하는 경우, 업데이트
         return {
           ...prevItems,
           [value]: [...prevItems[value], ...newItem.details],
         };
       } else {
-        // 새로운 항목을 추가
         return {
           ...prevItems,
           [value]: newItem.details,
@@ -219,9 +216,10 @@ export default function CustomSearch({
     <>
       <div
         id="scroll-container"
-        className={`fixed top-0 right-0 w-full lg:w-1/3 border-2 border-gray-300 p-2 overflow-y-auto h-screen bg-white
-      transition-transform duration-300 ease-in-out transform ${openSearch ? "translate-x-0" : "translate-x-full"} lg:translate-x-0
-      lg:relative
+        className={`fixed top-0 right-0 w-full border-2 border-gray-300
+      p-2 overflow-y-auto h-screen bg-white transition-transform duration-300 ease-in-out 
+      transform ${openSearch ? "translate-x-0" : "translate-x-full"} lg:translate-x-0
+      lg:sticky
     `}
       >
         <div className="flex justify-end lg:hidden">
@@ -367,9 +365,9 @@ export default function CustomSearch({
                       handleAddPlan(selectedValue, item)
                     }
                   >
-                    <button className="text-primary lg:px-2 py-2 text-2xl">
+                    <div className="text-primary lg:px-2 py-2 text-2xl cursor-pointer">
                       <FiPlusSquare />
-                    </button>
+                    </div>
                   </DropDown>
                 </div>
               </div>

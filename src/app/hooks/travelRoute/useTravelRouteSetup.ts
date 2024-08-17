@@ -30,7 +30,7 @@ export default function useTravelRouteSetup() {
     ITravelRouteSetupRequest
   >({
     mutationFn: async (data: ITravelRouteSetupRequest) => {
-      const response = await post<ITravelRouteSetupResponse>("/travelroutes", {
+      const response = await post<ITravelRouteSetupResponse>(`/travelroutes`, {
         travelName: data.travelRouteName,
         travelrouteRange: data.travelRouteRange,
         startDate: data.startDate,

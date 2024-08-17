@@ -9,6 +9,7 @@ export default function useGetDetailCustomData(travelrouteId: string) {
       get<ITravelResponse>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/travelroutes/${travelrouteId}/details`,
       ),
+
     retry: 0,
   });
 }

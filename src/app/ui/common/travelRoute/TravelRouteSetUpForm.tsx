@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRangePicker } from "@nextui-org/date-picker";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,9 @@ import { RangeValue } from "@react-types/shared";
 import Link from "next/link";
 import { logoFont } from "@/font";
 import { FaCar, FaTrain } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux";
+import usePatchCustomData from "@/app/hooks/custom/usePatchCustomData";
 
 interface ISetupFormValues {
   travelRouteName: string;
@@ -42,8 +45,11 @@ const travelRouteTransportOptions = [
   },
 ];
 
-export default function TravelRouteSetUpForm() {
-  // 여행 기간
+export default function TravelRouteSetUpForm({
+  routeId,
+}: {
+  routeId?: string | null;
+}) {
   const currentDate = new Date();
   const initialStartDate = currentDate.toISOString().split("T")[0];
   const endDate = new Date(currentDate);
@@ -56,9 +62,13 @@ export default function TravelRouteSetUpForm() {
     startDate: initialStartDate,
     endDate: initialEndDate,
   });
+  const travelRoute = useSelector((state: RootState) => state.travelRoute);
   const router = useRouter();
   const dispatch = useDispatch();
   const { mutate, isPending } = useTravelRouteSetup();
+  const { mutate: patchData, isPending: isPatchLoading } = routeId
+    ? usePatchCustomData(routeId)
+    : { mutate: () => {}, isPending: false };
   const {
     register,
     handleSubmit,
@@ -66,7 +76,7 @@ export default function TravelRouteSetUpForm() {
     formState: { errors },
   } = useForm<ISetupFormValues>({
     defaultValues: {
-      travelRouteName: "",
+      travelRouteName: routeId ? travelRoute.travelRouteName : "",
       travelRouteRange: 0,
       startDate: initialStartDate,
       endDate: initialEndDate,
@@ -83,32 +93,90 @@ export default function TravelRouteSetUpForm() {
   };
 
   const handleCustomizing = (data: ISetupFormValues) => {
-    mutate(
-      {
-        travelRouteName: data.travelRouteName,
-        travelRouteRange: data.travelRouteRange,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-      },
-      {
-        onSuccess: (res) => {
-          dispatch(
-            setTravelRoute({
-              travelRouteName: res.travelName,
-              travelRouteRange,
-              startDate: dateRange.startDate,
-              endDate: dateRange.endDate,
-              travelRouteId: res.id,
-              travelRouteTransport:
-                travelRouteTransportOptions[travelRouteTransport].title,
-            }),
-          );
-          router.push(`/travel-route/custom/${res.id}`);
-          reset();
+    if (routeId) {
+      console.log("수정하기");
+      console.log(data.travelRouteRange, "range");
+      patchData(
+        {
+          reqData: {
+            travelName: data.travelRouteName,
+            travelrouteRange: travelRouteRange,
+          },
         },
-      },
-    );
+        {
+          onSuccess: () => {
+            console.log(travelRoute.travelRouteRange);
+            dispatch(
+              setTravelRoute({
+                travelRouteName: data.travelRouteName,
+                travelRouteRange: travelRouteRange,
+                travelRouteId: travelRoute.travelRouteId,
+                startDate: dateRange.startDate,
+                endDate: dateRange.endDate,
+                travelRouteTransport:
+                  travelRouteTransportOptions[travelRouteTransport].title,
+              }),
+            );
+            router.push(`/travel-route/custom/${routeId}`);
+            reset();
+          },
+        },
+      );
+    } else {
+      mutate(
+        {
+          travelRouteName: data.travelRouteName,
+          travelRouteRange: data.travelRouteRange,
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+        },
+        {
+          onSuccess: (res) => {
+            dispatch(
+              setTravelRoute({
+                travelRouteName: res.travelName,
+                travelRouteRange,
+                startDate: dateRange.startDate,
+                endDate: dateRange.endDate,
+                travelRouteId: res.id,
+                travelRouteTransport:
+                  travelRouteTransportOptions[travelRouteTransport].title,
+              }),
+            );
+            router.push(`/travel-route/custom/${res.id}`);
+            reset();
+          },
+        },
+      );
+    }
   };
+  console.log(travelRouteRange);
+  console.log(travelRouteTransport);
+  useEffect(() => {
+    if (routeId) {
+      setTravelRouteRange(travelRoute.travelRouteRange);
+
+      const transportId =
+        travelRoute.travelRouteTransport === "car"
+          ? travelRouteTransportOptions.find(
+              (option) => option.title === "승용차",
+            )?.id
+          : travelRoute.travelRouteTransport === "public"
+            ? travelRouteTransportOptions.find(
+                (option) => option.title === "대중교통",
+              )?.id
+            : undefined;
+
+      if (transportId !== undefined) {
+        setTravelRouteTransport(transportId);
+      }
+
+      setDateRange({
+        startDate: travelRoute.startDate,
+        endDate: travelRoute.endDate,
+      });
+    }
+  }, []);
 
   return (
     <div className="bg-[whitesmoke] min-h-screen flex flex-col items-center">
@@ -190,11 +258,14 @@ export default function TravelRouteSetUpForm() {
                 <DateRangePicker
                   label="여행 기간"
                   isRequired
+                  isDisabled={routeId ? true : false}
                   defaultValue={{
                     start: parseDate(dateRange.startDate),
                     end: parseDate(dateRange.endDate),
                   }}
-                  className="w-full border-2 border-stone-200 rounded-xl"
+                  className={`w-full border-2 border-stone-200 rounded-xl ${
+                    routeId ? "bg-gray-200 opacity-50 cursor-not-allowed" : ""
+                  }`}
                   variant="bordered"
                   onChange={handleDateRange}
                   calendarProps={{

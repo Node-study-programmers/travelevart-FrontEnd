@@ -12,6 +12,9 @@ import { CiMemoPad } from "react-icons/ci";
 import { FaCar, FaSearch, FaTrain } from "react-icons/fa";
 import { GoGrabber } from "react-icons/go";
 import Tooltip from "../common/Tooltip";
+import { useRouter } from "next/navigation";
+import usePostCustomData from "@/app/hooks/custom/usePostCustomData";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export default function DragAndDrop({
   items,
@@ -19,13 +22,16 @@ export default function DragAndDrop({
   travelRouteBaseInfo,
   dateRange,
   setOpenSearch,
+  handleSubmit,
 }: {
   items: ITravelItems;
   setItems: (items: ITravelItems) => void;
   travelRouteBaseInfo: ITravelCustomData;
   dateRange: string[];
   setOpenSearch: Dispatch<SetStateAction<boolean>>;
+  handleSubmit: () => void;
 }) {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{
     dateKey: string;
@@ -33,9 +39,6 @@ export default function DragAndDrop({
   } | null>(null);
   const [memoContent, setMemoContent] = useState("");
 
-  console.log("items: ", items);
-
-  // 초기화 로직
   useEffect(() => {
     if (Object.keys(items).length === 0 && dateRange.length > 0) {
       const initialItems: ITravelItems = {};
@@ -48,7 +51,7 @@ export default function DragAndDrop({
 
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
-
+    document.documentElement.removeAttribute("style");
     const sourceKey = source.droppableId;
     const destinationKey = destination.droppableId;
 
@@ -58,7 +61,6 @@ export default function DragAndDrop({
     setItems(_items);
   };
 
-  // 메모 추가 핸들러
   const handleMemoSubmit = () => {
     if (selectedItem && memoContent) {
       const { dateKey, itemIndex } = selectedItem;
@@ -70,48 +72,49 @@ export default function DragAndDrop({
     }
   };
 
-  // --- requestAnimationFrame 초기화
-  const [enabled, setEnabled] = useState(false);
+  const onDragStart = () => {
+    document.documentElement.setAttribute("style", "scroll-behavior: auto");
+  };
 
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
+  const handleCancel = () => {
+    if (window.confirm("취소 하시겠습니까? 변경사항은 저장되지 않습니다.")) {
+      router.push("/mypage");
+    }
+  };
 
-    return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
-    };
-  }, []);
-
-  if (!enabled) {
-    return null;
-  }
-  // --- requestAnimationFrame 초기화 END
+  const handleDeleteItem = (dateKey: string, itemIndex: number) => {
+    if (window.confirm("이 항목을 삭제하시겠습니까?")) {
+      const updatedItems = JSON.parse(JSON.stringify(items)) as ITravelItems;
+      updatedItems[dateKey].splice(itemIndex, 1);
+      setItems(updatedItems);
+    }
+  };
 
   return (
-    <div className="w-full lg:w-1/3 border-l-2 border-t-2 border-b-2 border-gray-300 bg-white">
-      <div className="pb-2 bg-primary p-4 min-h-64 flex flex-col justify-around px-5 lg:px-10 text-white relative">
+    <div className="w-full border-l-2 border-t-2 border-b-2 border-gray-300 bg-white">
+      <div className="pb-2 bg-white p-4 min-h-64 flex flex-col justify-around px-5 lg:px-10 text-white relative">
         <div>
-          <div className="text-3xl font-bold gap-1 flex items-center line-clamp-1">
+          <div className="text-3xl font-bold gap-1 flex items-center line-clamp-1 text-primary">
             {travelRouteBaseInfo.travelRouteName}
           </div>
           <div className="flex gap-3 mt-2">
             {travelRouteBaseInfo.travelRouteTransport === "승용차" ? (
-              <div className="text-sm py-2 bg-blue-900 w-fit px-3 rounded-3xl flex items-center gap-2">
+              <div className="text-sm py-2 bg-primary w-fit px-3 rounded-3xl flex items-center gap-2">
                 <FaCar />
                 승용차
               </div>
             ) : (
-              <div className="text-sm py-2 bg-blue-900 w-fit px-3 rounded-3xl flex items-center gap-2">
+              <div className="text-sm py-2 bg-primary w-fit px-3 rounded-3xl flex items-center gap-2">
                 <FaTrain />
                 대중교통
               </div>
             )}
             {travelRouteBaseInfo.travelRouteRange === 0 ? (
-              <div className="text-sm py-2 bg-blue-500 w-fit px-3 rounded-3xl">
+              <div className="text-sm py-2 bg-secondary w-fit px-3 rounded-3xl">
                 비공개
               </div>
             ) : (
-              <div className="text-sm py-2 bg-blue-500 w-fit px-3 rounded-3xl">
+              <div className="text-sm py-2 bg-secondary w-fit px-3 rounded-3xl">
                 공개
               </div>
             )}
@@ -123,17 +126,22 @@ export default function DragAndDrop({
             {travelRouteBaseInfo.startDate} - {travelRouteBaseInfo.endDate}
           </span>
         </div>
-        <div className="bg-gray-300 w-full h-[1px]"></div>
-        <div className="absolute right-1 bottom-1 text-white">
-          {/* By. TravelevarT */}
+        <div className="absolute right-1 top-1 text-primary">
+          By. TravelevarT
         </div>
       </div>
-      <div className="text-sm flex justify-between py-4 px-5 lg:px-10 bg-primary border-b-2 border-gray-300 items-center">
+      <div className="text-sm flex justify-between py-4 px-5 lg:px-10 bg-white border-b-2 border-gray-300 items-center">
         <div className="flex gap-5">
-          <button className="bg-red-300 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300">
+          <button
+            onClick={handleCancel}
+            className="border-2 border-red-300 text-black font-bold py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300 hover:text-white"
+          >
             취소
           </button>
-          <button className="bg-primary text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-secondary focus:outline-none focus:ring-2 focus:primary focus:ring-opacity-50 transition duration-300">
+          <button
+            onClick={handleSubmit}
+            className="bg-primary text-white font-bold py-2 px-4 rounded-lg hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition duration-300"
+          >
             완료
           </button>
         </div>
@@ -148,7 +156,7 @@ export default function DragAndDrop({
       </div>
 
       <div className="mt-6 flex flex-col px-2 lg:px-10">
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
           {Object.keys(items).map((key, dayIndex) => (
             <Droppable key={key} droppableId={key}>
               {(provided, snapshot) => (
@@ -218,7 +226,7 @@ export default function DragAndDrop({
                                 </a>
                               )}
                             </div>
-                            <Tooltip direction="bottom" content="메모추가">
+                            <Tooltip direction="top" content="메모추가">
                               <CiMemoPad
                                 className="text-lg cursor-pointer"
                                 onClick={() => {
@@ -230,9 +238,14 @@ export default function DragAndDrop({
                                 }}
                               />
                             </Tooltip>
+                            <button
+                              className="text-base"
+                              onClick={() => handleDeleteItem(key, index)}
+                            >
+                              <RiDeleteBin6Line />
+                            </button>
                             <GoGrabber className="text-lg" />
                           </div>
-
                           {/* Memo Section */}
                           {item.contents && (
                             <p className="relative text-xs lg:text-sm bg-third text-gray-800 px-4 py-2 rounded-lg shadow-sm border border-third hover:bg-secondary transition duration-300 ease-in-out flex items-start space-x-2">
@@ -254,27 +267,28 @@ export default function DragAndDrop({
         </DragDropContext>
       </div>
 
+      {/* Memo Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-semibold mb-4">메모 추가</h2>
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h2 className="text-lg font-semibold mb-4">메모 추가</h2>
             <textarea
-              className="w-full border rounded-lg p-2"
-              rows={5}
-              autoFocus={true}
               value={memoContent}
               onChange={(e) => setMemoContent(e.target.value)}
-            ></textarea>
-            <div className="flex justify-end mt-4 space-x-2">
+              rows={4}
+              className="w-full p-2 border rounded-lg mb-4"
+              placeholder="메모를 입력하세요..."
+            />
+            <div className="flex justify-end gap-4">
               <button
-                className="bg-red-500 text-white px-4 py-2 rounded-lg"
                 onClick={() => setIsModalOpen(false)}
+                className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg"
               >
                 취소
               </button>
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
                 onClick={handleMemoSubmit}
+                className="bg-primary text-white py-2 px-4 rounded-lg"
               >
                 저장
               </button>

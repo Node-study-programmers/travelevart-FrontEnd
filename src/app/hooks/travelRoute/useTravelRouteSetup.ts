@@ -1,6 +1,8 @@
 import { post } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
 
+// API Format 통일
+
 interface ITravelRouteSetupRequest {
   travelRouteName: string;
   travelRouteRange: number;
@@ -9,9 +11,9 @@ interface ITravelRouteSetupRequest {
 }
 
 interface ITravelRouteSetupResponse {
-  user_id: number;
-  travel_name: string;
-  travelroute_range: number;
+  userId: number;
+  travelName: string;
+  travelrouteRange: number;
   startDate: string;
   endDate: string;
   id: number;
@@ -28,11 +30,11 @@ export default function useTravelRouteSetup() {
     ITravelRouteSetupRequest
   >({
     mutationFn: async (data: ITravelRouteSetupRequest) => {
-      const response = await post<ITravelRouteSetupResponse>("/travelroutes", {
-        travel_name: data.travelRouteName,
-        travelroute_range: data.travelRouteRange,
-        start_date: data.startDate,
-        end_date: data.endDate,
+      const response = await post<ITravelRouteSetupResponse>(`/travelroutes`, {
+        travelName: data.travelRouteName,
+        travelrouteRange: data.travelRouteRange,
+        startDate: data.startDate,
+        endDate: data.endDate,
       });
 
       return response;

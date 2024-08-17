@@ -5,7 +5,10 @@ import CategoryTabs from "../ui/common/CategoryTabs";
 import { useState } from "react";
 import PageContainer from "../ui/common/PageContainer";
 import { useRouter } from "next/navigation";
+import MyPageTravelRoute from "../ui/common/myPage/MypageTravelRoute";
+import { useSession } from "next-auth/react";
 import MyPageSave from "../ui/common/myPage/MypageSave";
+
 
 const categories = [
   { id: 0, title: "찜" },
@@ -15,12 +18,13 @@ const categories = [
 
 export default function MyPage() {
   const [focusTab, setFocusTab] = useState<number>(0);
-
+  const { data } = useSession();
   const router = useRouter();
 
   const handleCreateTravelRoute = () => {
     router.push("/travel-route/setup");
   };
+
 
   return (
     <PageContainer>
@@ -34,14 +38,7 @@ export default function MyPage() {
           />
           {focusTab === 0 && <MyPageSave />}
           <div className="mt-4 flex justify-end">
-            {focusTab === 1 && (
-              <button
-                className="bg-primary text-white py-2 px-4 rounded-xl"
-                onClick={handleCreateTravelRoute}
-              >
-                travel route 생성하기
-              </button>
-            )}
+            {focusTab === 1 && <MyPageTravelRoute userId={data?.user.userId} />}
           </div>
         </div>
       </div>

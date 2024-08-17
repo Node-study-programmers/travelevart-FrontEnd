@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 import PageContainer from "@/app/ui/common/PageContainer";
 import IconButtons from "@/app/ui/travelDestination/IconButtons";
 import Image from "next/image";
@@ -38,6 +39,17 @@ export default function DetailModal({ id, isOpen, onClose }: DetailModalProps) {
     }
   }, [focusTab]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -46,15 +58,18 @@ export default function DetailModal({ id, isOpen, onClose }: DetailModalProps) {
 
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
       onClick={handleOutsideClick}
     >
-      <button className="absolute top-2 right-2 text-white" onClick={onClose}>
-        <IoMdClose className="text-2xl" />
-      </button>
-      <div className="bg-white p-6 rounded-lg max-w-4xl w-full h-3/4 overflow-auto relative">
+      <div className="bg-white p-6 lg:rounded-lg w-full h-full lg:max-w-4xl lg:h-3/4 overflow-auto relative">
+        <button
+          className="z-50 absolute top-1 right-1 text-white bg-black bg-opacity-70 rounded-full p-2 lg:hidden"
+          onClick={onClose}
+        >
+          <IoMdClose className="text-lg" />
+        </button>
         {isLoading ? (
           <PageContainer>
             <DetailTravelPageSkeleton />
@@ -62,13 +77,7 @@ export default function DetailModal({ id, isOpen, onClose }: DetailModalProps) {
         ) : !detailPageData ? (
           <div>No data</div>
         ) : (
-          <div className="flex flex-col gap-3 relative">
-            <div
-              className="w-full h-16 items-center flex gap-3 cursor-pointer lg:hidden"
-              onClick={onClose}
-            >
-              <IoMdArrowRoundBack className="text-xl font-bold" />
-            </div>
+          <div className="flex flex-col gap-3 relative mt-3">
             <div className="relative w-full aspect-video">
               <Image
                 fill
@@ -116,6 +125,7 @@ export default function DetailModal({ id, isOpen, onClose }: DetailModalProps) {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

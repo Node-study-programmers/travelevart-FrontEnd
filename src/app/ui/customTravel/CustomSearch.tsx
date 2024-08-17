@@ -18,12 +18,18 @@ import useTravelDestinationInfiniteQuery from "@/app/hooks/searchTrip/useTravelD
 import useGetRegionCode, {
   TregionResponse,
 } from "@/app/hooks/searchTrip/useGetRegionCode";
-import useGetCartTravelDestintaion from "@/app/hooks/searchTrip/useGetCartTravelDestination";
+import useGetCartTravelDestintaion, {
+  ICartPlace,
+} from "@/app/hooks/searchTrip/useGetCartTravelDestination";
 import useIntersectionObserver from "@/app/hooks/useIntersectionObserver";
 import AllTravelDestination from "../travelDestination/AllTravelDestination";
 import CategoryTabs from "../common/CategoryTabs";
 import DetailModal from "./Modal/DetailModal";
 import { CustomSearchSkeleton } from "./skeleton/Skeletons";
+import { ITravelItems } from "@/app/travel-route/custom/[id]/page";
+import DropDown from "../common/DropDown";
+import { ITravelDetail, ITravelItem } from "@/lib/types";
+import { TravelItem } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
 
 const filterGroup = [
   { id: "view", title: "조회 순" },
@@ -40,9 +46,16 @@ const categories = [
 interface ICustomSearchProps {
   openSearch: boolean;
   setOpenSearch: Dispatch<SetStateAction<boolean>>;
+  items: ITravelItems;
+  setItems: (items: ITravelItems) => void;
 }
 
-const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
+export default function CustomSearch({
+  openSearch,
+  setOpenSearch,
+  items,
+  setItems,
+}: ICustomSearchProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusFilter, setFocusFilter] = useState<string>("view");
@@ -51,6 +64,7 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
   const [searchName, setSearchName] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [focusTab, setFocusTab] = useState<number>(0);
+
   const {
     travelDestinationData,
     status,
@@ -125,17 +139,87 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
     }
   };
 
-  const handleAddPlan = () => {
-    // Implement add plan logic here
+  const handleAddPlan = (value: string, item: TravelItem | ICartPlace) => {
+    // ICartPlace 또는 ITravelItem 타입에 따라 ITravelDetail 객체로 변환
+    const newDetail = (item: ICartPlace | TravelItem): ITravelDetail => {
+      if ("placeId" in item) {
+        // ICartPlace 타입인 경우
+        return {
+          detailtravelId: 0, // 기본값, 필요시 적절한 값으로 대체
+          travelrouteId: 0, // 기본값, 필요시 적절한 값으로 대체
+          placeId: item.placeId, // ICartPlace의 경우 placeId 사용
+          routeIndex: 0, // 기본값, 필요시 적절한 값으로 대체
+          contents: "", // 비워두기
+          regionId: 0, // 기본값, 필요시 적절한 값으로 대체
+          address: item.address,
+          placeTitle: item.title,
+          placeImage: item.image,
+          mapLink: null, // 비워두기
+        };
+      } else {
+        // ITravelItem 타입인 경우
+        return {
+          detailtravelId: 0, // 기본값, 필요시 적절한 값으로 대체
+          travelrouteId: 0, // 기본값, 필요시 적절한 값으로 대체
+          placeId: item.id, // ITravelItem의 경우 id를 placeId로 사용
+          routeIndex: 0, // 기본값, 필요시 적절한 값으로 대체
+          contents: "", // 비워두기
+          regionId: 0, // 기본값, 필요시 적절한 값으로 대체
+          address: item.address,
+          placeTitle: item.title,
+          placeImage: item.image,
+          mapLink: null, // 비워두기
+        };
+      }
+    };
+
+    // 전체 항목에서 이미 존재하는 장소가 있는지 확인
+    const isDuplicate = Object.values(items).some((details) =>
+      details.some((detail) => detail.placeId === newDetail(item).placeId),
+    );
+
+    if (isDuplicate) {
+      // 전체 일차에 해당 장소가 있는 경우 경고 표시
+      alert("이미 존재하는 일정입니다.");
+      return;
+    }
+
+    // item이 ICartPlace 타입인지 확인하여 details를 생성
+    const details =
+      "placeId" in item
+        ? [newDetail(item as ICartPlace)] // ICartPlace의 경우 details를 생성
+        : [newDetail(item as TravelItem)]; // ITravelItem의 경우 details를 생성
+
+    // 새 ITravelItem 객체 생성
+    const newItem: ITravelItem = {
+      date: value,
+      details,
+    };
+
+    setItems((prevItems: ITravelItems) => {
+      if (prevItems.hasOwnProperty(value)) {
+        return {
+          ...prevItems,
+          [value]: [...prevItems[value], ...newItem.details],
+        };
+      } else {
+        return {
+          ...prevItems,
+          [value]: newItem.details,
+        };
+      }
+    });
+    setOpenSearch(false);
   };
 
   return (
     <>
       <div
         id="scroll-container"
-        className={`fixed top-0 right-0 w-full lg:w-1/3 border-2 border-gray-300 p-2 overflow-y-auto h-screen bg-white
-      transition-transform duration-300 ease-in-out transform ${openSearch ? "translate-x-0" : "translate-x-full"} lg:translate-x-0
-      lg:relative
+        className={`fixed top-0 right-0 w-full border-2 border-gray-300
+      p-2 overflow-y-auto h-screen bg-white transition-transform duration-300 ease-in-out 
+      transform ${openSearch ? "translate-x-0" : "translate-x-full"} lg:translate-x-0
+      lg:sticky
     `}
       >
         <div className="flex justify-end lg:hidden">
@@ -191,7 +275,7 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
                 </button>
               </form>
             </div>
-            <div className="flex justify-end gap-x-2 pb-2 px-10">
+            <div className="flex justify-end gap-x-2 pb-2 px-5 lg:px-10">
               {filterGroup.map((filter) => (
                 <button
                   key={filter.id}
@@ -206,7 +290,7 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
                 </button>
               ))}
             </div>
-            <div className="flex flex-col gap-0 h-full px-10 py-10">
+            <div className="flex flex-col gap-0 h-full px-5 lg:px-10 py-10">
               {isTravelDestinationLoading && <CustomSearchSkeleton />}
               {status === "pending" || isFetchingNextPage ? (
                 <CustomSearchSkeleton />
@@ -221,6 +305,9 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
                         title={destination.title}
                         placeId={destination.id}
                         rating={destination.averageRating}
+                        items={items}
+                        destination={destination}
+                        handleAddPlan={handleAddPlan}
                       />
                     </div>
                   ))}
@@ -230,7 +317,7 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
             </div>
           </>
         ) : (
-          <div className="flex flex-col px-10 mt-10">
+          <div className="flex flex-col px-5 lg:px-10 mt-10">
             {cartItems?.map((item) => (
               <div
                 className="h-full border-b-[1px] border-gray-300 flex justify-between items-center py-5"
@@ -251,30 +338,37 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
                   </div>
                   <div className="flex flex-col py-2 gap-y-1 w-full overflow-x-auto text-ellipsis">
                     <div className="flex items-center text-sm">
-                      <div className="w-3/5">{item.title.split("(")[0]}</div>
+                      <div className="w-3/5">
+                        <p className="line-clamp-2">
+                          {item.title.split("(")[0]}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-rgb-primary text-xs">
+                    <p className="text-rgb-primary text-xs line-clamp-1">
                       {item.address.split("(")[0]}
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-1 items-center">
                   <Tooltip content="상세보기" direction="bottom">
                     <button
                       onClick={() => handleOpenModal(String(item.placeId))}
-                      className="text-black px-4 py-2 text-2xl"
+                      className="text-secondary lg:px-2 py-2 text-2xl"
                     >
                       <CiSquareMore />
                     </button>
                   </Tooltip>
-                  <Tooltip content="일정담기" direction="bottom">
-                    <button
-                      className="text-black px-4 py-2 text-2xl"
-                      onClick={handleAddPlan}
-                    >
+
+                  <DropDown
+                    contents={Object.keys(items)}
+                    handleClickValue={(selectedValue) =>
+                      handleAddPlan(selectedValue, item)
+                    }
+                  >
+                    <div className="text-primary lg:px-2 py-2 text-2xl cursor-pointer">
                       <FiPlusSquare />
-                    </button>
-                  </Tooltip>
+                    </div>
+                  </DropDown>
                 </div>
               </div>
             ))}
@@ -299,6 +393,4 @@ const CustomSearch = ({ openSearch, setOpenSearch }: ICustomSearchProps) => {
       )}
     </>
   );
-};
-
-export default CustomSearch;
+}

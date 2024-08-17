@@ -1,16 +1,17 @@
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 interface IDropDownProps {
-  toggleTitle: React.ReactNode | string;
+  children: React.ReactNode | string;
   openStatus?: boolean;
-  contents: string[] | number[];
+  contents: string[];
+  handleClickValue: (value: string) => void; // 값을 전달할 함수 타입 정의
 }
 
 export default function DropDown({
-  toggleTitle,
+  children,
   openStatus = false,
   contents,
+  handleClickValue,
 }: IDropDownProps) {
   const [isOpen, setIsOpen] = useState(openStatus);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,29 +38,37 @@ export default function DropDown({
 
   return (
     <div
-      className="flex flex-col justify-center items-center flex-wrap mt-20 relative"
+      className="flex flex-col justify-center items-center flex-wrap relative"
       ref={dropdownRef}
     >
       <button
         onClick={handleDropDown}
         className="bg-transparent border-none cursor-pointer outline-none"
       >
-        {toggleTitle}
+        {children}
       </button>
       {isOpen && (
         <div
-          className={`absolute top-8 p-2 bg-primary shadow-md rounded-xl flex flex-col items-start max-w-xs transition-all duration-100 ${
+          className={`z-50 absolute top-8 p-2 bg-primary shadow-md rounded-xl flex flex-col items-start max-w-xs transition-all duration-100 ${
             isOpen ? "animate-fade-in" : "animate-fade-out"
           }`}
           style={{ minWidth: "max-content" }}
         >
           <ul className="w-full list-none p-0 m-0">
-            {contents.map((content) => (
+            {contents.map((content, index) => (
               <li
                 key={content}
-                className="hover:bg-secondary rounded-xl p-2 cursor-pointer whitespace-nowrap"
+                className="hover:bg-secondary rounded-xl p-2 cursor-pointer whitespace-nowrap text-white"
               >
-                <Link href={`/`}>{content}</Link>
+                {/* 화살표 함수로 클릭한 값을 전달 */}
+                <div
+                  onClick={() => {
+                    handleClickValue(content);
+                    setIsOpen(false);
+                  }}
+                >
+                  {index + 1} 일차
+                </div>
               </li>
             ))}
           </ul>

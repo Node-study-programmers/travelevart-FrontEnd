@@ -1,6 +1,7 @@
 import { get, patch } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface IUserInfo {
   userId: number;
@@ -60,7 +61,7 @@ export function useProfile(userId: number) {
   const updateProfileMutation = useMutation({
     mutationFn: (formData: FormData) => updateProfile(formData),
     onSuccess: () => {
-      alert("프로필이 수정되었습니다.");
+      toast.info("프로필이 수정되었습니다.");
       router.replace("/mypage");
     },
     onError: (err) => {

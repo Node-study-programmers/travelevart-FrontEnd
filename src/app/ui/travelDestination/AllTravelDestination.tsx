@@ -17,6 +17,8 @@ import DropDown from "../common/DropDown";
 import { ITravelItems } from "@/app/travel-route/custom/[id]/page";
 import { ITravelDestination } from "@/app/hooks/searchTrip/useTravelDestinationInfiniteQuery";
 import { TravelItem } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
+import { toast } from "react-toastify";
+
 
 interface IAllTravelDestinationProps {
   representativeImg: string;
@@ -56,7 +58,7 @@ export default function AllTravelDestination({
     e.preventDefault();
 
     if (!localStorage.getItem("accessToken")) {
-      alert("로그인이 필요합니다.");
+      toast.info("로그인이 필요합니다.");
       router.replace("/auth/login");
       return;
     }

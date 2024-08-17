@@ -5,6 +5,7 @@ import sendFeedback from "@/app/hooks/useSendMail";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosSend } from "react-icons/io";
+import { toast } from "react-toastify";
 
 export default function FeedbackForm() {
   const { register, handleSubmit, setValue } = useForm<{ text: string }>();
@@ -13,7 +14,7 @@ export default function FeedbackForm() {
 
   const onSubmitFeedback = ({ text }: { text: string }) => {
     if (!userData) {
-      alert("로그인은 필수입니다.");
+      toast.info("로그인은 필수입니다.");
       return;
     }
 

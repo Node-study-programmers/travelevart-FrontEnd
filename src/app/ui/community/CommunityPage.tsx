@@ -22,6 +22,7 @@ import {
   CommunityTravelPostSkeletons,
 } from "./skeleton/CommunityPostSkeleton";
 import PopularPosts from "./PopularPosts";
+import Link from "next/link";
 
 const categories = [
   { id: 0, title: "여행게시판", path: "travel" },
@@ -91,7 +92,10 @@ export default function CommunityPage({ board }: CommunityPageProps) {
         {/* 글 목록 보여줄 곳 */}
         <div className="relative lg:pr-12 flex flex-col gap-5 py-8">
           {/* 글 쓰는 페이지 이동 */}
-          <button className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-lg rounded-xl">
+          <Link
+            className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-lg rounded-xl"
+            href={`/community/${focusBoard === "여행게시판" ? "travel" : "free"}/newpost`}
+          >
             <Image
               src={dummyimg}
               alt="hi"
@@ -105,7 +109,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
                 : "여행 질문 및 정보를 공유해보세요!"}
             </span>
             <PiNotePencil className="text-2xl text-gray-500" />
-          </button>
+          </Link>
           {/* post 보여주는 곳 */}
           <div className="overflow-scroll scroll-none">
             {postData?.map(
@@ -120,6 +124,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
                 travelRoute_id,
                 views,
                 contents,
+                isLiked,
               }: ICommunityTravelPostProps | ICommunityFreePostProps) =>
                 travelRoute_id ? (
                   <CommunityTravelPost
@@ -134,6 +139,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
                     travelRoute_id={travelRoute_id}
                     views={views}
                     contents={contents}
+                    isLiked={isLiked}
                   />
                 ) : (
                   <CommunityFreePost
@@ -147,6 +153,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
                     title={title}
                     views={views}
                     contents={contents}
+                    isLiked={isLiked}
                   />
                 ),
             )}

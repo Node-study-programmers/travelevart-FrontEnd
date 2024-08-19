@@ -100,7 +100,7 @@ export default function TravelRouteDetailModal({
         <div className="pb-2 bg-white p-4 min-h-64 flex flex-col justify-around px-4 lg:px-8 relative">
           <div>
             <div className="text-3xl font-bold gap-1 flex items-center line-clamp-1 text-primary">
-              {route.travelName}
+              {route?.travelName}
             </div>
             <div className="flex gap-3 mt-2 text-white">
               {data.transportOption === "car" ? (
@@ -114,7 +114,7 @@ export default function TravelRouteDetailModal({
                   대중교통
                 </div>
               )}
-              {route.travelrouteRange === 0 ? (
+              {route?.travelrouteRange === 0 ? (
                 <div className="text-sm py-2 bg-secondary w-fit px-3 rounded-3xl">
                   비공개
                 </div>
@@ -128,7 +128,7 @@ export default function TravelRouteDetailModal({
 
           <div className="flex items-center justify-between">
             <span className="bg-secondary text-base w-fit px-4 py-2 rounded-3xl text-white">
-              {route.startDate} - {route.endDate}
+              {route?.startDate} - {route?.endDate}
             </span>
           </div>
           <div className="absolute left-2 top-1 text-primary">

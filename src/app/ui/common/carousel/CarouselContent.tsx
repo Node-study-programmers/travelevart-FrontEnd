@@ -9,10 +9,10 @@ interface ICarouselContentProps {
 }
 
 export default function CarouselContent({ content }: ICarouselContentProps) {
-  const startDate = format(new Date(content.startDay), "yyyy년 MM월 dd일", {
+  const startDate = format(new Date(content?.startDay), "yyyy년 MM월 dd일", {
     locale: ko,
   });
-  const endDate = format(new Date(content.endDay), "yyyy년 MM월 dd일", {
+  const endDate = format(new Date(content?.endDay), "yyyy년 MM월 dd일", {
     locale: ko,
   });
 

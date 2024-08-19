@@ -11,7 +11,7 @@ export interface TravelRoute {
   detailtravelImage?: string | null; // Optional field
 }
 
-interface TravelRoutes {
+export interface TravelRoutes {
   totalPage: number;
   currentPage: number;
   routes: TravelRoute[];

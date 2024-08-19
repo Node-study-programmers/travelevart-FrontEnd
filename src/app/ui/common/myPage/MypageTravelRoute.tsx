@@ -1,9 +1,6 @@
 // components/MyPageTravelRoute.tsx
 "use client";
 
-import userGetTravelRoute, {
-  TravelRoutes,
-} from "@/app/hooks/mypage/useGetTravelRoute";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useDeleteTravelRoute } from "@/app/hooks/mypage/useDeleteTravelRoute";
@@ -11,6 +8,9 @@ import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import TravelRouteDetailModal from "../travelRoute/TravelRouteDetailModal";
 import Pagination from "../Pagination";
+import useUserGetTravelRoute, {
+  TravelRoutes,
+} from "@/app/hooks/mypage/useGetTravelRoute";
 
 export default function MyPageTravelRoute({
   userId,
@@ -21,8 +21,8 @@ export default function MyPageTravelRoute({
   const [page, setPage] = useState(1);
   const pageSize = 4;
 
-  const { data, isLoading, refetch } = userGetTravelRoute({
-    userId: userId || 0, // Ensure userId is not undefined
+  const { data, isLoading, refetch } = useUserGetTravelRoute({
+    userId: userId || 0,
     page,
     pageSize,
   });
@@ -34,7 +34,7 @@ export default function MyPageTravelRoute({
 
   // Extract data from API response
   const travelRoutes = data?.routes || [];
-  const totalPages = data?.totalPage || 1; // Default to 1 if undefined
+  const totalPages = data?.totalPage || 1;
 
   const handleCreateTravelRoute = () => {
     router.push("/travel-route/setup");
@@ -67,7 +67,7 @@ export default function MyPageTravelRoute({
   };
 
   return (
-    <div className="w-full flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5 mb-10">
       <button
         className="bg-primary text-white py-2 px-4 rounded-xl hover:bg-secondary transition-all duration-150"
         onClick={handleCreateTravelRoute}
@@ -80,7 +80,7 @@ export default function MyPageTravelRoute({
         <div className="text-center">로딩 중...</div>
       ) : (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full pb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
             {travelRoutes.map((route) => (
               <div
                 key={route.id}
@@ -106,7 +106,7 @@ export default function MyPageTravelRoute({
                   </p>
                 </div>
                 <button
-                  className="absolute bottom-2 right-2 bg-secondary text-white p-2 rounded-full hover:bg-primary transition-all duration-150"
+                  className="absolute bottom-2 right-2 bg-primary text-white p-2 rounded-full hover:bg-primary transition-all duration-150"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteClick(route.id);

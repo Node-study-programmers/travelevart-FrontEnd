@@ -14,6 +14,7 @@ export interface ICommunityFreePostProps {
   title: string;
   views: number;
   contents: IContent[];
+  isLiked: boolean;
 }
 
 export default function CommunityFreePost({

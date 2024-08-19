@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  timeout: 15000,
+  timeout: 30000,
 });
 
 function interceptorRequestFulfulled(config: InternalAxiosRequestConfig) {

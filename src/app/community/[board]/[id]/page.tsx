@@ -40,6 +40,8 @@ export default function CommunityDetailPage({
   const pathname = usePathname();
   const router = useRouter();
 
+  console.log(data);
+
   const {
     comments,
     fetchNextPage,
@@ -104,7 +106,7 @@ export default function CommunityDetailPage({
           "ngrok-skip-browser-warning": "true",
         },
       });
-      router.push("/community");
+      router.push("/community/travel");
     }
   };
 
@@ -170,10 +172,10 @@ export default function CommunityDetailPage({
             </div>
             {userData?.user.userId === authorId ? (
               <div
-                className="bg-red-500 text-white rounded-lg flex justify-center text-sm items-center px-2 py-0.5 cursor-pointer hover:bg-red-600"
+                className="bg-red-500 text-white rounded-lg flex justify-center text-sm items-center px-5 py-0.5 cursor-pointer hover:bg-red-600"
                 onClick={handleDeletePost}
               >
-                게시글 삭제
+                삭제
               </div>
             ) : (
               <div className="bg-primary text-white rounded-lg flex justify-center text-sm items-center px-2 py-0.5 cursor-pointer hover:bg-secondary">

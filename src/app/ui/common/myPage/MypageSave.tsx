@@ -2,6 +2,7 @@ import useGetSaves from "@/app/hooks/mypage/useGetSave";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // Router import 추가
+import MyPageNotfound from "./MyPageNotfound";
 
 export default function MyPageSave() {
   const { data, isLoading, isError } = useGetSaves();
@@ -9,6 +10,10 @@ export default function MyPageSave() {
   if (isLoading) return <div>로딩중...</div>;
 
   if (isError || !data) return <div>에러발생 띠용</div>;
+
+  if (!data.length) {
+    return <MyPageNotfound categoryTabs={"찜"} />;
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full py-10">

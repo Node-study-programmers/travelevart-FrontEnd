@@ -5,7 +5,7 @@ import test1 from "@/app/asset/img/test1.png";
 import { logoFont } from "@/font";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import BackgroundVideo from "next-video/background-video";
-import mainVideo from "../../../videos/mainVideo.mp4";
+import mainVideo from "../../../public/_next-video/mainVideo.mp4";
 
 export default function Home() {
   // const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -101,7 +101,7 @@ export default function Home() {
       {/* intro */}
       <div
         ref={introRef}
-        className={`flex flex-col gap-y-4 md:flex-row justify-center items-center gap-x-32 py-20 mt-40 transition-opacity duration-[2000ms] ease-in-out ${
+        className={`min-h-screen flex flex-col gap-y-4 md:flex-row justify-center items-center gap-x-32 py-20 mt-40 transition-opacity duration-[2000ms] ease-in-out ${
           isIntroVisible
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-10"
@@ -130,10 +130,11 @@ export default function Home() {
           className="w-[150px] lg:w-[300px]"
         />
       </div>
+
       {/* travelRoute 소개 */}
       <div
         ref={travelRouteRef}
-        className={`bg-[whitesmoke] flex flex-col items-center py-20 gap-y-8 transition-opacity duration-[2000ms] ease-in-out ${
+        className={`min-h-screen bg-[whitesmoke] flex flex-col items-center py-20 gap-y-8 transition-opacity duration-[2000ms] ease-in-out ${
           isTravelRouteVisible
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-10"
@@ -172,10 +173,11 @@ export default function Home() {
           />
         </div>
       </div>
+
       {/* 여행지 추천 */}
       <div
         ref={recommendationRef}
-        className={`flex flex-col justify-center items-center gap-y-8 py-20 transition-opacity duration-[2000ms] ease-in-out ${
+        className={`min-h-screen flex flex-col justify-center items-center gap-y-8 py-20 transition-opacity duration-[2000ms] ease-in-out ${
           isRecommendationVisible
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-10"
@@ -201,15 +203,15 @@ export default function Home() {
             alt="test1"
             width={300}
             height={0}
-            // className="z-10 absolute -right-40 top-20 w-[150px] lg:w-[300px]"
             className="w-[150px] lg:w-[300px] z-10 absolute transform translate-x-[60%] translate-y-[15%]"
           />
         </div>
       </div>
+
       {/* 일기 */}
       <div
         ref={diaryRef}
-        className={`bg-[whitesmoke] flex flex-col gap-y-4 md:flex-row justify-center items-center gap-x-32 py-20 transition-opacity duration-[2000ms] ease-in-out ${
+        className={`min-h-screen bg-[whitesmoke] flex flex-col gap-y-4 md:flex-row justify-center items-center gap-x-32 py-20 transition-opacity duration-[2000ms] ease-in-out ${
           isDiaryVisible
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-10"

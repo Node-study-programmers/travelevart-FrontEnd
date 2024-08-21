@@ -10,6 +10,7 @@ import Tooltip from "../Tooltip";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setTravelRoute } from "@/redux/slices/travelRouteSlice";
+import { printPdf } from "@/util/printPdf";
 
 interface TravelRouteDetailModalProps {
   isOpen: boolean;
@@ -98,7 +99,7 @@ export default function TravelRouteDetailModal({
       </button>
       <div className="bg-white w-full lg:w-4/5 max-w-screen-lg mx-4 md:mx-8 lg:mx-16 p-4 lg:p-6 rounded-lg relative max-h-[90vh] overflow-y-auto">
         <div className="pb-2 bg-white p-4 min-h-64 flex flex-col justify-around px-4 lg:px-8 relative">
-          <div>
+          <div id="travel-name">
             <div className="text-3xl font-bold gap-1 flex items-center line-clamp-1 text-primary">
               {route?.travelName}
             </div>
@@ -126,7 +127,7 @@ export default function TravelRouteDetailModal({
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div id="travel-day" className="flex items-center justify-between">
             <span className="bg-secondary text-base w-fit px-4 py-2 rounded-3xl text-white">
               {route?.startDate} - {route?.endDate}
             </span>
@@ -149,7 +150,10 @@ export default function TravelRouteDetailModal({
               </button>
             </Tooltip>
             <Tooltip content="저장하기" direction="bottom">
-              <button className="text-gray-600 hover:text-gray-800 p-2">
+              <button
+                className="text-gray-600 hover:text-gray-800 p-2"
+                onClick={() => printPdf(data ? data.items : null)}
+              >
                 <FaSave size={20} />
               </button>
             </Tooltip>
@@ -162,6 +166,7 @@ export default function TravelRouteDetailModal({
         <div className="mt-4 flex flex-col px-2 lg:px-8">
           {data.items.map((day, dayIndex) => (
             <div
+              id={day.date}
               key={day.date}
               className="min-h-32 bg-[whitesmoke] mb-4 lg:mb-6 rounded-lg p-4"
             >
@@ -174,7 +179,7 @@ export default function TravelRouteDetailModal({
                   key={item.detailtravelId}
                   className="bg-white flex flex-col space-y-2 p-2 lg:p-4 rounded-lg shadow-lg transition-shadow mb-4"
                 >
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 bg-white">
                     <div className="flex flex-col items-center space-y-2">
                       <span className="bg-red-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center">
                         {index + 1}

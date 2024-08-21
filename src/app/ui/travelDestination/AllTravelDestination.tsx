@@ -14,6 +14,8 @@ import { ITravelItems } from "@/app/travel-route/custom/[id]/page";
 import { ITravelDestination } from "@/app/hooks/searchTrip/useTravelDestinationInfiniteQuery";
 import { TravelItem } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
 import useCartTravelDestination from "@/app/hooks/searchTrip/useCartTravelDestination";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface IAllTravelDestinationProps {
   representativeImg: string;
@@ -45,6 +47,7 @@ export default function AllTravelDestination({
   const [isAdded, setIsAdded] = useState(false); // 찜 여부
   const { addCartMutation, deleteCartMutation } = useCartTravelDestination();
   const { data: myCartData } = useGetCartTravelDestintaion(isLogin);
+  const router = useRouter();
 
   // 여행지 애니메이션
   useEffect(() => {
@@ -71,6 +74,13 @@ export default function AllTravelDestination({
   // optimistic update
   const handleToggleLike = async (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
+
+    if (!isLogin) {
+      toast.info("로그인 후 이용 가능합니다.", { autoClose: 1500 });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      router.replace("/auth/login");
+      return;
+    }
 
     if (isAdded) {
       setIsAdded(false);

@@ -102,14 +102,7 @@ export default function SearchTripPage() {
 
   return (
     <div>
-      {/* 핫한 행사 케러셀 */}
-      {/* <div className="relative mb-10">
-        {BannerIsLoading ? (
-          <CarouselSkeleton />
-        ) : (
-          <Carousel contents={bannerData?.events || []} />
-        )}
-      </div> */}
+      {/* 전체 지역 선택 시 핫한 행사 케러셀 그 외 지역 이미지 배너 */}
       <div className="relative mb-10">
         {regionCode ? (
           <TravelRegionBanner regionCode={regionCode} />

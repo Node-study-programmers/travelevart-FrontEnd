@@ -17,6 +17,7 @@ import useGetRegionCode, {
 } from "../hooks/searchTrip/useGetRegionCode";
 import { useRouter } from "next/navigation";
 import NotFoundTravelDestiantion from "../ui/travelDestination/NotFoundTravelDestination";
+import TravelRegionBanner from "../ui/travelDestination/TravelRegionBanner";
 
 const filterGroup = [
   { id: "view", title: "조회 순" },
@@ -30,6 +31,7 @@ export default function SearchTripPage() {
   const [focusFilter, setFocusFilter] = useState<string>("view");
   const [regionCode, setRegionCode] = useState<number>(0);
   const [searchName, setSearchName] = useState<string>("");
+  const [regionImage, setRegionImage] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -49,11 +51,6 @@ export default function SearchTripPage() {
   useEffect(() => {
     if (currentPage >= 10) setIsDefaultLoadedPage(true); // 10페이지까지 자동 무한스크롤
   }, [currentPage]);
-
-  const handleMoreTravelDestination = () => {
-    setIsDefaultLoadedPage(false); // 무한 스크롤 재시작
-    fetchNextPage();
-  };
 
   // URL 쿼리 파라미터 업데이트
   useEffect(() => {
@@ -98,11 +95,25 @@ export default function SearchTripPage() {
     refetch();
   };
 
+  const handleMoreTravelDestination = () => {
+    setIsDefaultLoadedPage(false); // 무한 스크롤 재시작
+    fetchNextPage();
+  };
+
   return (
     <div>
       {/* 핫한 행사 케러셀 */}
-      <div className="relative mb-10">
+      {/* <div className="relative mb-10">
         {BannerIsLoading ? (
+          <CarouselSkeleton />
+        ) : (
+          <Carousel contents={bannerData?.events || []} />
+        )}
+      </div> */}
+      <div className="relative mb-10">
+        {regionCode ? (
+          <TravelRegionBanner regionCode={regionCode} />
+        ) : BannerIsLoading ? (
           <CarouselSkeleton />
         ) : (
           <Carousel contents={bannerData?.events || []} />

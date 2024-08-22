@@ -11,16 +11,18 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
+import { recommendTripReducer } from "./slices/recommendTripSlice";
 
 const persistConfig = {
   key: "travelRouteSetupOption",
   storage, // localStorage,
-  whitelist: ["travelRoute"], // travelRoute만 저장
+  whitelist: ["travelRoute", "recommendTrip"], // travelRoute, recommendTrip 저장
 };
 
 const reducers = combineReducers({
   userInfo: userReducer,
   travelRoute: travelRouteReducer,
+  recommendTrip: recommendTripReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

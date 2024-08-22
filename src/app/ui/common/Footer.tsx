@@ -9,7 +9,10 @@ import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const pathname = usePathname();
-  if (pathname.startsWith("/travel-route/custom")) {
+  if (
+    pathname.startsWith("/travel-route/custom") ||
+    pathname.startsWith("/recommend-trip")
+  ) {
     return null;
   }
   return (

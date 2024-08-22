@@ -31,6 +31,9 @@ export default function Tooltip({
 
   const toggleHover = (state: boolean) => () => setHover(state);
 
+  // 줄바꿈 기능 추가
+  const formattedContent = content.replace(/\n/g, "<br/>");
+
   return (
     <div
       className="relative cursor-pointer"
@@ -40,9 +43,9 @@ export default function Tooltip({
       {children}
       <div
         className={`absolute whitespace-nowrap bg-primary text-white text-sm py-1 px-2 rounded transition-opacity duration-500 ${getTooltipStyles(direction)} ${hover ? "opacity-100" : "opacity-0"}`}
-      >
-        {content}
-      </div>
+        // HTML 렌더링
+        dangerouslySetInnerHTML={{ __html: formattedContent }}
+      />
     </div>
   );
 }

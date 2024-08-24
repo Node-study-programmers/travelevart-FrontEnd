@@ -38,17 +38,13 @@ export default function RecommendTripIntro() {
 
   return (
     <div className="flex flex-col justify-between min-h-screen">
-      <div className="flex justify-between py-4">
+      <div className="flex py-4">
         <div className="flex items-center gap-x-2">
           <Link href="/">
             <p className={`${logoFont.className}`}>TravelevarT</p>
           </Link>
           <p className={`${logoFont.className} text-xs`}>여행지 추천</p>
         </div>
-        <FiShare
-          className="text-2xl hover:cursor-pointer"
-          onClick={handleShareLink}
-        />
       </div>
       <div className="flex flex-col items-center justify-start flex-grow py-8">
         <div className="flex flex-col gap-y-2">

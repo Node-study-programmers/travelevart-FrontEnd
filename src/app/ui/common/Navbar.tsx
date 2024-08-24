@@ -29,7 +29,8 @@ export default function Navbar() {
   if (
     pathname.startsWith("/travel-route/") ||
     pathname === "/recommend-trip" ||
-    pathname === "/recommend-trip/setup"
+    pathname === "/recommend-trip/setup" ||
+    pathname === "/recommend-trip/schedule"
   ) {
     return null;
   }

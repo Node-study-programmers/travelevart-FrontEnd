@@ -1,4 +1,4 @@
-import { IRecommendTripResponse } from "@/app/hooks/recommendTrip/useGetRecommendTrip";
+import { IRecommendTripResponse } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IRouteDetail {

@@ -18,6 +18,7 @@ const nextConfig = {
       "encrypted-tbn0.gstatic.com",
       "k.kakaocdn.net",
       "source.unsplash.com",
+      "img1.kakaocdn.net",
     ],
   },
 };

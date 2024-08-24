@@ -67,6 +67,7 @@ export default function WriteTravelPostSecondStep({
         date: travelDay.date || "",
         details:
           travelDay.details?.map((detail: any) => ({
+            detailtravelId: detail.detailtravelId,
             placeId: detail.placeId ?? -1,
             routeIndex: detail.routeIndex ?? 0,
             contents: "",
@@ -101,7 +102,10 @@ export default function WriteTravelPostSecondStep({
     formData.append("title", data.title);
 
     const contents = data.items.flatMap((item) =>
-      item.details.map((detail) => ({ text: detail.contents })),
+      item.details.map((detail) => ({
+        text: detail.contents,
+        detailtravel_id: detail.detailtravelId,
+      })),
     );
     formData.append("contents", JSON.stringify(contents));
 
@@ -115,12 +119,6 @@ export default function WriteTravelPostSecondStep({
       });
     });
 
-    // FormData의 내용을 확인하기 위한 방법
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
-    // 서버로 전송
     mutate(formData, {
       onSuccess: () => {
         toast.info("게시물 등록이 완료되었습니다.");

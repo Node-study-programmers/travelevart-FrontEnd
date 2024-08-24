@@ -8,6 +8,7 @@ export interface IContent {
   order: number;
   text: string;
   image: string;
+  detailtravel_id: number;
 }
 
 export interface ICommunityPopularPostProps {

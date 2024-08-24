@@ -10,11 +10,14 @@ interface DetailPost {
   views: number;
   commentCount: number;
   created_at: string;
-  travelRoute_id: boolean;
+  travelRoute_id: number;
   like: number;
   contents: IContent[];
   isLiked: boolean;
   authorId: number;
+  detailTravels?: {
+    image: string;
+  }[];
 }
 
 export default function useDetailPost(id: string) {

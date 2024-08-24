@@ -10,6 +10,7 @@ import PageContainer from "@/app/ui/common/PageContainer";
 import CommentForm from "@/app/ui/community/CommentForm";
 import CommunityFreeDetailPage from "@/app/ui/community/CommunityFreeDetailPage";
 import { IContent } from "@/app/ui/community/CommunityPopularPost";
+import CommunityTravelDetailPage from "@/app/ui/community/CommunityTravelDetaiPage";
 import PopularPosts from "@/app/ui/community/PopularPosts";
 import { PostBottomsInPost } from "@/app/ui/community/PostBottoms";
 import {
@@ -40,7 +41,7 @@ export default function CommunityDetailPage({
   const pathname = usePathname();
   const router = useRouter();
 
-  console.log(data);
+  console.log(data, "data!!");
 
   const {
     comments,
@@ -144,6 +145,7 @@ export default function CommunityDetailPage({
     profileImg,
     title,
     travelRoute_id,
+    detailTravels,
     views,
     isLiked,
   } = data;
@@ -172,7 +174,7 @@ export default function CommunityDetailPage({
             </div>
             {userData?.user.userId === authorId ? (
               <div
-                className="bg-red-500 text-white rounded-lg flex justify-center text-sm items-center px-5 py-0.5 cursor-pointer hover:bg-red-600"
+                className="bg-red-500 text-white rounded-lg flex justify-center text-xs items-center px-2 py-0.5 cursor-pointer hover:bg-red-600 h-8"
                 onClick={handleDeletePost}
               >
                 삭제
@@ -188,7 +190,10 @@ export default function CommunityDetailPage({
             <div className="mb-6 w-full h-auto text-xl font-bold">{title}</div>
             <div>
               {travelRoute_id ? (
-                ""
+                <CommunityTravelDetailPage
+                  contents={contents}
+                  travelRoute_id={travelRoute_id}
+                />
               ) : (
                 <CommunityFreeDetailPage contents={contents[0]} />
               )}

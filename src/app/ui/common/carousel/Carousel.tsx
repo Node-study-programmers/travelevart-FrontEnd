@@ -2,21 +2,25 @@ import { ICarouselContents } from "@/lib/types";
 import CarouselContent from "./CarouselContent";
 import { useMemo, useState, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { PostContent } from "../../community/CommunityTravelPost";
+import CommunityCarousel from "./CommunityCarousel";
 
 interface ICarouselProps {
-  contents: ICarouselContents[];
+  contents: ICarouselContents[] | PostContent[];
 }
 
 export default function Carousel({ contents }: ICarouselProps) {
   const [currentActiveContent, setCurrentActiveContent] = useState(0);
 
-  const handlePrevContent = () => {
+  const handlePrevContent = (event?: React.MouseEvent) => {
+    event.stopPropagation();
     setCurrentActiveContent((prev) =>
       prev === 0 ? contents.length - 1 : prev - 1,
     );
   };
 
-  const handleNextContent = () => {
+  const handleNextContent = (event?: React.MouseEvent) => {
+    event.stopPropagation();
     setCurrentActiveContent((prev) =>
       prev === contents.length - 1 ? 0 : prev + 1,
     );
@@ -26,19 +30,27 @@ export default function Carousel({ contents }: ICarouselProps) {
     return currentActiveContent * -100;
   }, [currentActiveContent]);
 
-  const handleIndicator = (idx: number) => {
+  const handleIndicator = (idx: number, event: React.MouseEvent) => {
+    event.stopPropagation();
     setCurrentActiveContent(idx);
+  };
+
+  const isPostContent = (content: any): content is PostContent => {
+    return (content as PostContent).postId !== undefined;
   };
 
   // 자동 슬라이드 전환 설정
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      handleNextContent();
-    }, 5000);
+    // PostContent가 아닌 경우에만 자동 슬라이드 전환
+    if (!isPostContent(contents[0])) {
+      const intervalId = setInterval(() => {
+        handleNextContent();
+      }, 5000);
 
-    // 컴포넌트 언마운트 시 interval 클리어
-    return () => clearInterval(intervalId);
-  }, [contents.length]);
+      // 컴포넌트 언마운트 시 interval 클리어
+      return () => clearInterval(intervalId);
+    }
+  }, [contents, handleNextContent]);
 
   return (
     <div className="relative w-full group overflow-hidden h-[50vh]">
@@ -49,9 +61,13 @@ export default function Carousel({ contents }: ICarouselProps) {
           transition: `transform 0.5s ease-in-out`,
         }}
       >
-        {contents.map((content) => (
-          <CarouselContent content={content} key={content.id} />
-        ))}
+        {contents.map((content) =>
+          isPostContent(content) ? (
+            <CommunityCarousel content={content} key={content.id} />
+          ) : (
+            <CarouselContent content={content} key={content.id} />
+          ),
+        )}
       </div>
 
       {/* 버튼 */}
@@ -72,7 +88,7 @@ export default function Carousel({ contents }: ICarouselProps) {
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {contents.map((_, idx) => (
           <span
-            onClick={() => handleIndicator(idx)}
+            onClick={(event) => handleIndicator(idx, event)}
             key={idx}
             className={`inline-block w-2 h-2 rounded-full cursor-pointer ${idx === currentActiveContent ? "bg-primary" : "bg-white"}`}
           ></span>

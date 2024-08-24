@@ -96,7 +96,7 @@ export interface ITravelResponse {
 }
 
 export type IUserSaveData = {
-  cart_id: number;
+  cartId: number;
   place: {
     address: string;
     event: number;
@@ -105,3 +105,43 @@ export type IUserSaveData = {
     title: string;
   };
 }[];
+
+// recommend-trip
+export type TTransportation = "public" | "car";
+
+export interface ISelectedRegion {
+  id: number;
+  region: string;
+}
+
+export interface IRecommendTripRequest {
+  region1: number;
+  region2?: number;
+  region3?: number;
+  sdate: string;
+  edate: string;
+  transportation: TTransportation;
+  age?: number | null;
+  people?: number | null;
+}
+
+export interface IRecommendTripResponse {
+  transportOption: "대중교통" | "자차";
+  routes: {
+    day: string; // 여행 날짜 (형식: 'xxxx-xx-xx')
+    detail: {
+      placeId: number; // 장소 ID
+      address: string; // 장소 주소
+      placeTitle: string; // 장소 제목
+      routeIndex: number; // 경로 인덱스
+      placeImage: string; // 장소 이미지 URL
+      mapx: number; // 장소 X 좌표
+      mapy: number; // 장소 Y 좌표
+      day: number; // 여행 날짜의 몇 번째 날
+      distance: string | null; // '약 10Km'; 마지막 여행지면 null
+      estimatedTime: string | null; // '약 10분'; 마지막 여행지면 null
+      playTime: string; // 체류 시간 (예: '2시간')
+      mapLink: string | null; // 지도 링크 (마지막 여행지면 null)
+    }[];
+  }[];
+}

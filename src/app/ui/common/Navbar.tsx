@@ -26,7 +26,12 @@ export default function Navbar() {
   };
 
   // 특정 경로에서 Navbar를 숨김
-  if (pathname.startsWith("/travel-route/")) {
+  if (
+    pathname.startsWith("/travel-route/") ||
+    pathname === "/recommend-trip" ||
+    pathname === "/recommend-trip/setup" ||
+    pathname === "/recommend-trip/schedule"
+  ) {
     return null;
   }
 

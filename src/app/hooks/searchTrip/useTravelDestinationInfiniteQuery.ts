@@ -49,7 +49,6 @@ export default function useTravelDestinationInfiniteQuery(
     refetch,
   } = useInfiniteQuery<ITravelDestinationResponse>({
     queryKey: ["travelDestination", focusFilter, regionCode, name],
-
     queryFn: ({ pageParam = 1 }) => getTravelDestination(Number(pageParam)),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

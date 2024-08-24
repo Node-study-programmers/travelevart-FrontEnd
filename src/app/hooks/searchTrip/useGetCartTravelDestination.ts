@@ -7,23 +7,19 @@ export interface ICartPlace {
   image: string;
   title: string;
   event: number;
-  region: string;
+  totalSaveCount: number;
+  isSaved: boolean;
 }
 
-interface ICartTravelDestinationResponse {
-  cart_id: number;
+export interface ICartTravelDestinationResponse {
+  cartId: number;
   place: ICartPlace;
 }
 
 export default function useGetCartTravelDestintaion(enabled: boolean) {
   return useQuery<ICartTravelDestinationResponse[]>({
-    queryKey: ["cartTravelDestinationList"],
-    queryFn: () =>
-      get(`${process.env.NEXT_PUBLIC_BASE_URL}/carts`, {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      }),
+    queryKey: ["cartTravelDestination"],
+    queryFn: () => get(`${process.env.NEXT_PUBLIC_BASE_URL}/carts`),
     enabled,
   });
 }

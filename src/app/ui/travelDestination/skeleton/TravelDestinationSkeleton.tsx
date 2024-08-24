@@ -15,7 +15,7 @@ function TravelDestinationSkeleton() {
 
 export default function TravelDestinationSkeletons() {
   return (
-    <>
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
       <TravelDestinationSkeleton />
       <TravelDestinationSkeleton />
       <TravelDestinationSkeleton />
@@ -28,6 +28,6 @@ export default function TravelDestinationSkeletons() {
       <TravelDestinationSkeleton />
       <TravelDestinationSkeleton />
       <TravelDestinationSkeleton />
-    </>
+    </div>
   );
 }

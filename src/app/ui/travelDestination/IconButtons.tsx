@@ -3,9 +3,12 @@ import { FaRegHeart, FaShareAlt } from "react-icons/fa";
 import { PiEyesFill } from "react-icons/pi";
 import Tooltip from "../common/Tooltip";
 import useCartTravelDestination from "@/app/hooks/searchTrip/useCartTravelDestination";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import useGetCartTravelDestintaion, {
+  ICartTravelDestinationResponse,
+} from "@/app/hooks/searchTrip/useGetCartTravelDestination";
 
 interface IconButtonsProps {
   likeNum: number;
@@ -24,23 +27,66 @@ export default function IconButtons({
 }: IconButtonsProps) {
   const router = useRouter();
   const { addCartMutation, deleteCartMutation } = useCartTravelDestination();
-  const [totalCartCnt, setTotalCnt] = useState(likeNum);
-  const [isAddCart, setIsAddCart] = useState(isSaved);
+  const [totalSaveCount, setTotalSaveCount] = useState(likeNum);
+  const [isAddedCart, setIsAddedCart] = useState(isSaved);
+  const isLogin = Boolean(localStorage.getItem("accessToken"));
+  const { data: myCartData } = useGetCartTravelDestintaion(isLogin);
 
-  const handleAddCartTravelDestination = (e: MouseEvent<HTMLOrSVGElement>) => {
-    if (!localStorage.getItem("accessToken")) {
-      toast.info("로그인이 필요합니다.");
+  useEffect(() => {
+    if (myCartData) {
+      const cartItem = myCartData.find(
+        (item: ICartTravelDestinationResponse) =>
+          item.place.placeId === placeId,
+      );
+
+      setIsAddedCart(!!cartItem);
+      setTotalSaveCount(cartItem ? cartItem.place.totalSaveCount : likeNum);
+    }
+  }, [myCartData, placeId, likeNum]);
+
+  useEffect(() => {
+    if (myCartData) {
+      const cartItem = myCartData.find(
+        (item: ICartTravelDestinationResponse) =>
+          item.place.placeId === placeId,
+      );
+
+      setIsAddedCart(!!cartItem);
+      setTotalSaveCount(cartItem ? cartItem.place.totalSaveCount : likeNum);
+    }
+  }, [myCartData, placeId, likeNum]);
+
+  const handleAddCartTravelDestination = async (
+    e: MouseEvent<HTMLOrSVGElement>,
+  ) => {
+    if (!isLogin) {
+      toast.info("로그인 후 이용 가능합니다.", { autoClose: 1500 });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       router.replace("/auth/login");
+      return;
     }
 
-    if (isAddCart) {
-      deleteCartMutation.mutate(placeId);
-      setTotalCnt((prevTotalCnt) => prevTotalCnt - 1);
-      setIsAddCart(false);
+    // optimistic update
+    if (isAddedCart) {
+      deleteCartMutation.mutate(placeId, {
+        onSuccess: () => {
+          setIsAddedCart(false);
+          setTotalSaveCount((prev) => prev - 1);
+        },
+        onError: () => {
+          toast.error("찜 삭제에 실패했습니다.");
+        },
+      });
     } else {
-      addCartMutation.mutate(placeId);
-      setTotalCnt((prevTotalCnt) => prevTotalCnt + 1);
-      setIsAddCart(true);
+      addCartMutation.mutate(placeId, {
+        onSuccess: () => {
+          setIsAddedCart(true);
+          setTotalSaveCount((prev) => prev + 1);
+        },
+        onError: () => {
+          toast.error("찜 추가에 실패했습니다.");
+        },
+      });
     }
   };
 
@@ -52,12 +98,9 @@ export default function IconButtons({
       .then(() => {
         toast.info("링크가 클립보드에 복사되었습니다!");
       })
-      .catch((error) => {
-        console.error("링크 복사 실패", error);
+      .catch(() => {
         toast.error("링크 복사에 실패했습니다.");
       });
-
-    // 토스트 추가하기
   };
 
   return (
@@ -74,20 +117,20 @@ export default function IconButtons({
       <Tooltip content="찜하기" direction="top">
         <div className="text-center">
           <button
-            className={`flex items-center justify-center w-8 h-8 rounded-full
-               ${isAddCart ? "bg-red-500 hover:bg-white hover:text-red-500 border-red-500" : "bg-primary hover:bg-white hover:text-primary  border-primary"}  border-2 text-white 
-               transition-transform duration-500 hover:rotate-[360deg]`}
+            className={`flex items-center justify-center w-8 h-8 rounded-full ${
+              isAddedCart
+                ? "bg-red-500 hover:bg-white hover:text-red-500 border-red-500"
+                : "bg-primary hover:bg-white hover:text-primary border-primary"
+            } border-2 text-white transition-transform duration-500 hover:rotate-[360deg]`}
             aria-label="Like"
+            onClick={handleAddCartTravelDestination}
           >
-            <FaRegHeart
-              className="text-lg"
-              onClick={handleAddCartTravelDestination}
-            />
+            <FaRegHeart className="text-lg" />
           </button>
           <span
-            className={`text-lg ${isAddCart ? "text-red-500" : "text-primary"}`}
+            className={`text-lg ${isAddedCart ? "text-red-500" : "text-primary"}`}
           >
-            {totalCartCnt}
+            {totalSaveCount}
           </span>
         </div>
       </Tooltip>

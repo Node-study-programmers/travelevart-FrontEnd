@@ -4,10 +4,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useLogin from "@/app/hooks/auth/useLogin";
-import { logoFont } from "@/font";
+
 import { RiKakaoTalkFill } from "react-icons/ri";
 import Link from "next/link";
 import { post } from "@/lib/api";
+import { logoFont } from "@/app/asset/fonts/fonts";
 
 interface SignupFormInputs {
   nickname: string;

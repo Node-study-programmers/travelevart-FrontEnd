@@ -1,6 +1,6 @@
 "use client";
 
-import { logoFont } from "@/font";
+import { logoFont } from "@/app/asset/fonts/fonts";
 import { RootState } from "@/redux";
 import dynamic from "next/dynamic";
 import Image from "next/image";

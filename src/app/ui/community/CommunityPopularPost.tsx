@@ -57,11 +57,9 @@ export default function CommunityPopularPost({
             width={20}
             loading="lazy"
             height={20}
-            className="rounded-full border-[1px] border-transparent w-5 h-5 inline-flex"
+            className="rounded-full border-[1px] border-transparent w-7 h-7"
           />
-          <div className="text-sm text-gray-500 font-black line-clamp-1">
-            {author}
-          </div>
+          <div className="text-sm text-gray-500 line-clamp-1">{author}</div>
         </div>
         <div className="flex-grow max-w-full">
           <div className="text-sm font-semibold line-clamp-1 my-1.5">

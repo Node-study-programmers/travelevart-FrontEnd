@@ -1,15 +1,15 @@
 "use client";
 
-import { logoFont } from "@/font";
 import Link from "next/link";
 import { IoEarthOutline } from "react-icons/io5";
 import { NotifyDrawer } from "./Drawer";
 import { useState } from "react";
 import Tooltip from "./Tooltip";
 import useLogin from "@/app/hooks/auth/useLogin";
-import { IoIosLogOut, IoMdNotificationsOutline } from "react-icons/io";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { MdLogin, MdLogout } from "react-icons/md";
 import { signIn } from "next-auth/react";
+import { logoFont } from "@/app/asset/fonts/fonts";
 
 // 더미 데이터
 const notifications = [

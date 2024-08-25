@@ -2,10 +2,11 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import test1 from "@/app/asset/img/test1.png";
-import { logoFont } from "@/font";
+
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import BackgroundVideo from "next-video/background-video";
 import mainVideo from "../../../public/_next-video/mainVideo.mp4";
+import { logoFont } from "../asset/fonts/fonts";
 
 export default function Home() {
   // const [imagesLoaded, setImagesLoaded] = useState(false);

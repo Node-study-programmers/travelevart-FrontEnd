@@ -10,11 +10,12 @@ import { useDispatch } from "react-redux";
 import { setTravelRoute } from "@/redux/slices/travelRouteSlice";
 import { RangeValue } from "@react-types/shared";
 import Link from "next/link";
-import { logoFont } from "@/font";
+
 import { FaCar, FaTrain } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import usePatchCustomData from "@/app/hooks/custom/usePatchCustomData";
+import { logoFont } from "@/app/asset/fonts/fonts";
 
 interface ISetupFormValues {
   travelRouteName: string;

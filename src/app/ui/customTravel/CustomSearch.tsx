@@ -173,22 +173,19 @@ export default function CustomSearch({
       }
     };
 
-    // 전체 항목에서 이미 존재하는 장소가 있는지 확인
     const isDuplicate = Object.values(items).some((details) =>
       details.some((detail) => detail.placeId === newDetail(item).placeId),
     );
 
     if (isDuplicate) {
-      // 전체 일차에 해당 장소가 있는 경우 경고 표시
       alert("이미 존재하는 일정입니다.");
       return;
     }
 
-    // item이 ICartPlace 타입인지 확인하여 details를 생성
     const details =
       "placeId" in item
-        ? [newDetail(item as ICartPlace)] // ICartPlace의 경우 details를 생성
-        : [newDetail(item as TravelItem)]; // ITravelItem의 경우 details를 생성
+        ? [newDetail(item as ICartPlace)]
+        : [newDetail(item as TravelItem)];
 
     // 새 ITravelItem 객체 생성
     const newItem: ITravelItem = {
@@ -290,7 +287,7 @@ export default function CustomSearch({
                 </button>
               ))}
             </div>
-            <div className="flex flex-col gap-0 h-full px-5 lg:px-10 py-10">
+            <div className="flex flex-col px-5 lg:px-10 mt-10">
               {isTravelDestinationLoading && <CustomSearchSkeleton />}
               {status === "pending" || isFetchingNextPage ? (
                 <CustomSearchSkeleton />

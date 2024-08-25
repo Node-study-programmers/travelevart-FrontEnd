@@ -1,5 +1,5 @@
-import { logoFont } from "@/font";
 import Link from "next/link";
+import { logoFont } from "./asset/fonts/fonts";
 
 export default function NotFound() {
   return (

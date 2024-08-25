@@ -16,7 +16,7 @@ import jenonnam from "@/app/asset/img/travelRegion/jeonnam.jpeg";
 import seojong from "@/app/asset/img/travelRegion/seojong.jpeg";
 import jeju from "@/app/asset/img/travelRegion/jeju.jpeg";
 import kyeongi from "@/app/asset/img/travelRegion/kyeongi.jpeg";
-import { logoFont } from "@/font";
+import { logoFont } from "@/app/asset/fonts/fonts";
 
 // 대표 지역별 이미지
 const travelRegionGroup = [

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { noto } from "@/font";
 import SessionWrapper from "@/util/SessionWrapper";
 import Navbar from "./ui/common/Navbar";
 import Footer from "./ui/common/Footer";
@@ -9,6 +8,7 @@ import AuthSession from "./auth/AuthSession";
 import QueryProvider from "./QueryProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { noto } from "./asset/fonts/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +25,7 @@ export default async function RootLayout({
       <SessionWrapper>
         <AuthSession>
           <html lang="en">
-            <body className={noto.className}>
+            <body className="font-noto">
               <ToastContainer
                 position="top-center"
                 closeOnClick

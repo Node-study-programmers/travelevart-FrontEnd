@@ -1,7 +1,8 @@
 "use client";
 
+import { logoFont } from "@/app/asset/fonts/fonts";
 import useLogin from "@/app/hooks/auth/useLogin";
-import { logoFont } from "@/font";
+
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";

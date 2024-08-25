@@ -43,13 +43,13 @@ export default function DropDown({
     >
       <button
         onClick={handleDropDown}
-        className="bg-transparent border-none cursor-pointer outline-none"
+        className="bg-transparent border-none cursor-pointer outline-none z-10"
       >
         {children}
       </button>
       {isOpen && (
         <div
-          className={`z-50 absolute top-8 p-2 bg-primary shadow-md rounded-xl flex flex-col items-start max-w-xs transition-all duration-100 ${
+          className={`z-[100] absolute top-8 p-2 bg-primary shadow-md rounded-xl flex flex-col items-start max-w-xs transition-all duration-100 ${
             isOpen ? "animate-fade-in" : "animate-fade-out"
           }`}
           style={{ minWidth: "max-content" }}

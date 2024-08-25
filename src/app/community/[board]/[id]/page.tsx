@@ -10,7 +10,7 @@ import PageContainer from "@/app/ui/common/PageContainer";
 import CommentForm from "@/app/ui/community/CommentForm";
 import CommunityFreeDetailPage from "@/app/ui/community/CommunityFreeDetailPage";
 import { IContent } from "@/app/ui/community/CommunityPopularPost";
-import CommunityTravelDetailPage from "@/app/ui/community/CommunityTravelDetaiPage";
+import CommunityTravelDetailPage from "@/app/ui/community/CommunityTravelDetailPage";
 import PopularPosts from "@/app/ui/community/PopularPosts";
 import { PostBottomsInPost } from "@/app/ui/community/PostBottoms";
 import {
@@ -40,8 +40,6 @@ export default function CommunityDetailPage({
   const { status, userData } = useLogin();
   const pathname = usePathname();
   const router = useRouter();
-
-  console.log(data, "data!!");
 
   const {
     comments,
@@ -150,6 +148,7 @@ export default function CommunityDetailPage({
     isLiked,
   } = data;
 
+  console.log(data);
   return (
     <PageContainer>
       <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] mt-5 scroll-none">

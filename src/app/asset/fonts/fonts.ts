@@ -1,0 +1,50 @@
+import localFont from "next/font/local";
+
+export const noto = localFont({
+  src: "./NotoSansKR-VariableFont_wght.woff",
+  display: "swap",
+  weight: "400",
+  preload: true,
+  fallback: [
+    "Pretendard Variable",
+    "Pretendard",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "system-ui",
+    "Roboto",
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "sans-serif",
+  ],
+  variable: "--noto-weight",
+});
+
+export const logoFont = localFont({
+  src: "./ProtestStrike-Regular.woff",
+  display: "swap",
+  preload: true,
+  fallback: [
+    "Pretendard Variable",
+    "Pretendard",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "system-ui",
+    "Roboto",
+    "Helvetica Neue",
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    "Malgun Gothic",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "sans-serif",
+  ],
+  variable: "--logo-font",
+});

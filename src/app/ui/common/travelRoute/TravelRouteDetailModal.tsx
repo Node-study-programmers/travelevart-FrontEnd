@@ -4,7 +4,7 @@ import Image from "next/image";
 import { GoGrabber } from "react-icons/go";
 import { FaCar, FaTrain, FaEdit, FaShareAlt, FaSave } from "react-icons/fa";
 import { TravelRoute } from "@/app/hooks/mypage/useGetTravelRoute";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { ITravelDetail } from "@/lib/types";
 import Tooltip from "../Tooltip";
 import { useRouter } from "next/navigation";
@@ -26,6 +26,8 @@ export default function TravelRouteDetailModal({
   const { data, isLoading } = useGetDetailTravelData(route?.id ?? -1);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
+
   useEffect(() => {
     // Prevent background scroll when modal is open
     if (isOpen) {
@@ -151,8 +153,12 @@ export default function TravelRouteDetailModal({
             </Tooltip>
             <Tooltip content="저장하기" direction="bottom">
               <button
+                id="download-button"
                 className="text-gray-600 hover:text-gray-800 p-2"
-                onClick={() => printPdf(data ? data.items : null)}
+                onClick={() => {
+                  //로딩 컴포넌트 필요
+                  printPdf(data ? data.items : null, route?.travelName);
+                }}
               >
                 <FaSave size={20} />
               </button>

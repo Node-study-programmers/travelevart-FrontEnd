@@ -26,7 +26,6 @@ export default function TravelRouteDetailModal({
   const { data, isLoading } = useGetDetailTravelData(route?.id ?? -1);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
 
   useEffect(() => {
     // Prevent background scroll when modal is open

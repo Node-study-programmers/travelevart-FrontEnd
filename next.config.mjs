@@ -19,9 +19,6 @@ const nextConfig = {
       "source.unsplash.com",
     ],
   },
-
-  // react-toastify sourcemap 비활성화
-  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;

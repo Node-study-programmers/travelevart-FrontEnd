@@ -3,8 +3,27 @@ import jsPDF from "jspdf";
 import * as htmlToImage from "html-to-image";
 
 // 다운로드 버튼에 onClick으로 넣으33
-export const printPdf = async (detail: ITravelDetail[] | null) => {
+export const printPdf = async (
+  detail: ITravelDetail[] | null,
+  travelName: string | undefined,
+) => {
   if (!detail) return;
+
+  const loadingTag = document.createElement("div");
+  loadingTag.style.position = "fixed";
+  loadingTag.style.top = "0";
+  loadingTag.style.left = "0";
+  loadingTag.style.width = "100vw";
+  loadingTag.style.height = "100vh";
+  loadingTag.style.display = "flex";
+  loadingTag.style.justifyContent = "center";
+  loadingTag.style.alignItems = "center";
+  loadingTag.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+  loadingTag.style.color = "white";
+  loadingTag.style.fontSize = "24px";
+  loadingTag.style.zIndex = "9999";
+  loadingTag.innerText = "다운로드중...";
+  document.body.appendChild(loadingTag);
 
   const tags = detail.map((day) => {
     const tag = document.getElementById(day.date) as HTMLElement;
@@ -20,7 +39,6 @@ export const printPdf = async (detail: ITravelDetail[] | null) => {
     htmlToImage
       .toPng(tag, { quality: 0.9, includeQueryParams: true })
       .then((dataUrl) => {
-        console.log(dataUrl);
         const img = new Image();
         img.src = dataUrl;
 
@@ -72,6 +90,7 @@ export const printPdf = async (detail: ITravelDetail[] | null) => {
     y += imgHeight;
   });
 
+  loadingTag.remove();
   // PDF 다운로드
-  pdf.save("download.pdf");
+  pdf.save(`${travelName ? travelName : "download"}.pdf`);
 };

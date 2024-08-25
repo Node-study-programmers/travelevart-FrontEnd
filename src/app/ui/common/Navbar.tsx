@@ -12,7 +12,7 @@ const menuItems = [
   { path: "/", label: "홈" },
   { path: "/search-trip", label: "여행지검색" },
   { path: "/community/travel", label: "커뮤니티" },
-  { path: "/mytrip", label: "여행일기" },
+  // { path: "/mytrip", label: "여행일기" },
   { path: "/recommend-trip", label: "여행지추천" },
 ];
 
@@ -51,9 +51,9 @@ export default function Navbar() {
         onClick={handleShowMenu}
       >
         {!open ? (
-          <RxHamburgerMenu className="w-10 h-10 text-white" />
+          <RxHamburgerMenu className="w-7 h-7 text-white" />
         ) : (
-          <RiCloseFill className="w-10 h-10 text-white" />
+          <RiCloseFill className="w-7 h-7 text-white" />
         )}
       </div>
       <ul
@@ -67,8 +67,9 @@ export default function Navbar() {
           >
             <Link href={item.path}>{item.label}</Link>
             {(pathname === item.path ||
-              (item.path !== "/" && pathname.startsWith(item.path))) && (
-              <span className="absolute w-full -bottom-2 bg-primary h-1"></span>
+              (item.path === "/community/travel" &&
+                pathname.startsWith("/community"))) && (
+              <span className="absolute w-full -bottom-2 bg-primary h-[3px] lg:h-1"></span>
             )}
           </li>
         ))}

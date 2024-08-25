@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import usePostNewPost from "@/app/hooks/community/usePostNewPost";
+import LoadingModal from "../common/LoadingModal";
 
 export interface ITravelPostForm {
   title: string; // Add title to form data
@@ -101,6 +102,7 @@ export default function WriteTravelPostSecondStep({
     const formData = new FormData();
     formData.append("title", data.title);
 
+    // 내용 추가
     const contents = data.items.flatMap((item) =>
       item.details.map((detail) => ({
         text: detail.contents,
@@ -111,13 +113,27 @@ export default function WriteTravelPostSecondStep({
 
     formData.append("travelRoute_id", String(selectedRoute.id ?? null));
 
-    data.items.forEach((item, itemIndex) => {
-      item.details.forEach((detail, detailIndex) => {
-        if (detail.image) {
-          formData.append(`image`, detail.image);
-        }
+    const imageFiles: (File | null)[] = [];
+    data.items.forEach((item) => {
+      item.details.forEach((detail) => {
+        imageFiles.push(detail.image);
       });
     });
+
+    imageFiles.forEach((image, index) => {
+      if (image) {
+        formData.append(`image[${index}]`, image);
+      } else {
+        formData.append(`image[${index}]`, "");
+      }
+    });
+
+    const totalImages = data.items.flatMap((item) => item.details).length;
+    const imageCount = imageFiles.length;
+
+    for (let i = imageCount; i < totalImages; i++) {
+      formData.append(`image[${i}]`, "");
+    }
 
     mutate(formData, {
       onSuccess: () => {
@@ -131,7 +147,7 @@ export default function WriteTravelPostSecondStep({
     });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingModal />;
   if (isError) return <div>Error loading data.</div>;
 
   if (!data || !Array.isArray(data.items)) {
@@ -146,7 +162,7 @@ export default function WriteTravelPostSecondStep({
         </h2>
         <button
           onClick={onBack}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          className="bg-red-300 text-white px-4 py-2 rounded-md hover:bg-red-500"
         >
           뒤로 가기
         </button>
@@ -175,10 +191,10 @@ export default function WriteTravelPostSecondStep({
 
         {fields.map((field, index) => (
           <div key={field.id} className="p-6 bg-white shadow-lg rounded-lg">
-            <h4 className="text-xl font-semibold mb-4 text-gray-800">
+            <h4 className="text-xl font-semibold pb-4 text-gray-800">
               {field.date} 일정
             </h4>
-
+            <div className="w-full h-[1px] bg-gray-300 mb-6"></div>
             {field.details.map((detail, detailIndex) => (
               <div key={detailIndex} className="space-y-6 mb-6">
                 <div className="flex items-center space-x-4">
@@ -243,11 +259,9 @@ export default function WriteTravelPostSecondStep({
                   )}
                 </div>
 
-                {/* Contents Input */}
                 <textarea
                   {...register(
                     `items.${index}.details.${detailIndex}.contents`,
-                    { required: "내용을 입력해주세요" },
                   )}
                   className={`mt-2 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-md text-gray-900 ${errors.items?.[index]?.details?.[detailIndex]?.contents ? "border-red-500" : ""}`}
                   placeholder="공유할 내용을 입력해주세요"

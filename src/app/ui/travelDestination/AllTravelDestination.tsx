@@ -16,6 +16,7 @@ import { TravelItem } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
 import useCartTravelDestination from "@/app/hooks/searchTrip/useCartTravelDestination";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface IAllTravelDestinationProps {
   representativeImg: string;
@@ -46,7 +47,11 @@ export default function AllTravelDestination({
   const isLogin = Boolean(localStorage.getItem("accessToken"));
   const [isAdded, setIsAdded] = useState(false); // 찜 여부
   const { addCartMutation, deleteCartMutation } = useCartTravelDestination();
-  const { data: myCartData } = useGetCartTravelDestintaion(isLogin);
+  const { data: userData } = useSession();
+  const { data: myCartData } = useGetCartTravelDestintaion(
+    isLogin,
+    userData?.user?.userId,
+  );
   const router = useRouter();
 
   // 여행지 애니메이션

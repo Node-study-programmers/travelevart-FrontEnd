@@ -40,12 +40,7 @@ export default function WriteFreePost() {
     formData.append("travelRoute_id", String(null)); // 여행 경로 ID 설정
 
     if (selectedFile) {
-      formData.append("image", selectedFile);
-    }
-
-    // FormData의 내용을 확인하기 위한 방법
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
+      formData.append("image[0]", selectedFile);
     }
 
     // 서버로 전송

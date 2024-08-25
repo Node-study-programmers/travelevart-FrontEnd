@@ -1,4 +1,3 @@
-// components/MyPageTravelRoute.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -11,11 +10,15 @@ import Pagination from "../Pagination";
 import useUserGetTravelRoute, {
   TravelRoutes,
 } from "@/app/hooks/mypage/useGetTravelRoute";
+import MyPageNotfound from "./MyPageNotfound";
+import LoadingModal from "../LoadingModal";
 
 export default function MyPageTravelRoute({
   userId,
+  isNotMypage,
 }: {
   userId: number | undefined;
+  isNotMypage?: boolean;
 }) {
   const router = useRouter();
   const [page, setPage] = useState(1);
@@ -32,9 +35,12 @@ export default function MyPageTravelRoute({
     TravelRoutes["routes"][number] | null
   >(null);
 
-  // Extract data from API response
-  const travelRoutes = data?.routes || [];
+  let travelRoutes = data?.routes || [];
   const totalPages = data?.totalPage || 1;
+
+  if (isNotMypage) {
+    travelRoutes = travelRoutes.filter((route) => route.travelrouteRange === 1);
+  }
 
   const handleCreateTravelRoute = () => {
     router.push("/travel-route/setup");
@@ -66,18 +72,28 @@ export default function MyPageTravelRoute({
     }
   };
 
+  if (!data) {
+    return <MyPageNotfound categoryTabs={"Travel route"} />;
+  }
+
   return (
     <div className="w-full flex flex-col gap-5 mb-10">
-      <button
-        className="bg-primary text-white py-2 px-4 rounded-xl hover:bg-secondary transition-all duration-150"
-        onClick={handleCreateTravelRoute}
-      >
-        TravelRoute 생성하기
-      </button>
-      <div className="w-full h-[1px] bg-gray-300"></div>
+      {!isNotMypage && (
+        <>
+          <button
+            className="bg-primary text-white py-2 px-4 rounded-xl hover:bg-secondary transition-all duration-150"
+            onClick={handleCreateTravelRoute}
+          >
+            TravelRoute 생성하기
+          </button>
+          <div className="w-full h-[1px] bg-gray-300"></div>
+        </>
+      )}
 
       {isLoading ? (
-        <div className="text-center">로딩 중...</div>
+        <div className="text-center">
+          <LoadingModal />
+        </div>
       ) : (
         <>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">

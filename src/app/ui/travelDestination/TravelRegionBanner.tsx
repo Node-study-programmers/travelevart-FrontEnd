@@ -12,7 +12,7 @@ import kyeongnam from "@/app/asset/img/travelRegion/kyeongnam.jpeg";
 import busan from "@/app/asset/img/travelRegion/busan.jpeg";
 import jeonbuk from "@/app/asset/img/travelRegion/jeonbuk.jpeg";
 import ulsan from "@/app/asset/img/travelRegion/ulsan.jpeg";
-import jenonnam from "@/app/asset/img/travelRegion/jeonnam.jpeg";
+import jeonnam from "@/app/asset/img/travelRegion/jeonnam.jpeg";
 import seojong from "@/app/asset/img/travelRegion/seojong.jpeg";
 import jeju from "@/app/asset/img/travelRegion/jeju.jpeg";
 import kyeongi from "@/app/asset/img/travelRegion/kyeongi.jpeg";
@@ -34,7 +34,7 @@ export const travelRegionGroup = [
   { id: 11, region: "부산", imageUrl: busan },
   { id: 12, region: "전북", imageUrl: jeonbuk },
   { id: 13, region: "울산", imageUrl: ulsan },
-  { id: 14, region: "전남", imageUrl: jenonnam },
+  { id: 14, region: "전남", imageUrl: jeonnam },
   { id: 15, region: "세종", imageUrl: seojong },
   { id: 16, region: "제주", imageUrl: jeju },
   { id: 17, region: "경기", imageUrl: kyeongi },
@@ -46,16 +46,16 @@ export default function TravelRegionBanner({
   regionCode: number;
 }) {
   return (
-    <div className="relative w-full group overflow-hidden h-[50vh]">
+    <div className="relative w-full group overflow-hidden h-[50vh] sm:h-[60vh] lg:h-[60vh]">
       <Image
         src={travelRegionGroup[regionCode].imageUrl}
         alt={travelRegionGroup[regionCode].region}
         layout="fill"
         objectFit="cover"
-        className="absolute inset-0"
+        className="absolute inset-0 transform scale-110 brightness-75"
       />
       <h1
-        className={`absolute inset-0 flex items-center justify-center text-white text-7xl lg:text-9xl ${logoFont.className}`}
+        className={`absolute inset-0 flex items-center justify-center text-white text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold ${logoFont.className} text-shadow-md`}
       >
         {travelRegionGroup[regionCode].region}
       </h1>

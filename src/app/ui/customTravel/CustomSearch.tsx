@@ -30,6 +30,7 @@ import { ITravelItems } from "@/app/travel-route/custom/[id]/page";
 import DropDown from "../common/DropDown";
 import { ITravelDetail, ITravelItem } from "@/lib/types";
 import { TravelItem } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
+import { useSession } from "next-auth/react";
 
 const filterGroup = [
   { id: "view", title: "조회 순" },
@@ -64,7 +65,7 @@ export default function CustomSearch({
   const [searchName, setSearchName] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [focusTab, setFocusTab] = useState<number>(0);
-
+  const { data: userData } = useSession();
   const {
     travelDestinationData,
     status,
@@ -76,7 +77,7 @@ export default function CustomSearch({
 
   const isLogin = Boolean(localStorage.getItem("accessToken"));
   const { data: cartData, isLoading: cartLoading } =
-    useGetCartTravelDestintaion(isLogin);
+    useGetCartTravelDestintaion(isLogin, userData?.user?.userId);
   const cartItems = cartData?.map((item) => item.place);
   const [showScrollTopButton, setShowScrollTopButton] = useState(false);
 
@@ -256,7 +257,7 @@ export default function CustomSearch({
                 }}
               />
               <form
-                className="flex-grow h-full flex shadow-xl p-2 rounded-r-full"
+                className="flex-grow h-full flex shadow-lg p-2 rounded-r-full"
                 onSubmit={handleSearch}
               >
                 <input
@@ -287,7 +288,7 @@ export default function CustomSearch({
                 </button>
               ))}
             </div>
-            <div className="flex flex-col px-5 lg:px-10 mt-10">
+            <div className="flex flex-col gap-0 px-5 lg:px-10 py-10">
               {isTravelDestinationLoading && <CustomSearchSkeleton />}
               {status === "pending" || isFetchingNextPage ? (
                 <CustomSearchSkeleton />

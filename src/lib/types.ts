@@ -4,7 +4,7 @@ export type TCheckBoxGroupDirecion = "horizontal" | "vertical";
 
 export type TLoginWay = "kakao" | "credentials";
 
-export type TFocusBoard = "여행게시판" | "자유게시판";
+export type TFocusBoard = "Stories" | "Questions";
 
 export interface IAuthUser {
   userId: number; // primary key

@@ -25,8 +25,8 @@ import PopularPosts from "./PopularPosts";
 import Link from "next/link";
 
 const categories = [
-  { id: 0, title: "여행게시판", path: "travel" },
-  { id: 1, title: "자유게시판", path: "free" },
+  { id: 0, title: "Stories", path: "travel" },
+  { id: 1, title: "Questions", path: "free" },
 ];
 
 interface CommunityPageProps {
@@ -39,14 +39,11 @@ export default function CommunityPage({ board }: CommunityPageProps) {
   const focusTab = board === "free" ? 1 : 0;
   const [searchName, setSearchName] = useState<string | null>("");
   const focusBoard = categories[focusTab].title as TFocusBoard;
-
   const { postData, fetchNextPage, hasNextPage, status, isFetchingNextPage } =
     usePostInfinitiQuery({
       focusBoard,
       searchName,
     });
-
-  console.log(status);
 
   const moreRef = useIntersectionObserver(
     ([entry]) => {
@@ -78,6 +75,8 @@ export default function CommunityPage({ board }: CommunityPageProps) {
     fetchNextPage();
   };
 
+  console.log(postData);
+
   return (
     <PageContainer>
       <CategoryTabs
@@ -94,7 +93,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
           {/* 글 쓰는 페이지 이동 */}
           <Link
             className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-lg rounded-xl"
-            href={`/community/${focusBoard === "여행게시판" ? "travel" : "free"}/newpost`}
+            href={`/community/${focusBoard === "Stories" ? "travel" : "free"}/newpost`}
           >
             <Image
               src={dummyimg}
@@ -103,10 +102,10 @@ export default function CommunityPage({ board }: CommunityPageProps) {
               height={40}
               className="rounded-full border-[1px] border-transparent w-10 h-10"
             />
-            <span className="text-left break-all flex-grow overflow-hidden text-lg text-gray-500">
-              {focusBoard === "여행게시판"
+            <span className="text-left break-all flex-grow overflow-hidden text-base lg:text-lg text-gray-500">
+              {focusBoard === "Stories"
                 ? "나의 여행을 공유해보세요!"
-                : "여행 질문 및 정보를 공유해보세요!"}
+                : "여행 질문,정보를 공유해보세요!"}
             </span>
             <PiNotePencil className="text-2xl text-gray-500" />
           </Link>
@@ -160,7 +159,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
 
             {(status === "pending" || isFetchingNextPage) && (
               <>
-                {focusBoard === "여행게시판" ? (
+                {focusBoard === "Stories" ? (
                   <CommunityTravelPostSkeletons />
                 ) : (
                   <CommunityFreePostSkeletons />

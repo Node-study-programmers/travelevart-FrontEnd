@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { PostContent } from "../../community/CommunityTravelPost";
+import useGetDetailTravelData from "@/app/hooks/custom/useGetDetailTravelData";
 
 export default function CommunityCarousel({
   content,
@@ -8,7 +9,6 @@ export default function CommunityCarousel({
 }) {
   return (
     <div className="relative w-full h-auto flex-shrink-0 bg-white border border-gray-300 rounded-lg overflow-hidden">
-      {/* 이미지 */}
       <div className="relative w-full h-[60vh] bg-gray-200">
         <Image
           src={
@@ -16,13 +16,17 @@ export default function CommunityCarousel({
             `https://cdn.pixabay.com/photo/2019/06/24/16/43/mountain-4296464_640.jpg`
           }
           alt={content?.text}
-          layout="fill"
-          objectFit="cover"
-          className="absolute inset-0"
+          fill
+          className="absolute inset-0 object-cover"
         />
-        {/* 텍스트 오버레이 */}
-        <div className="absolute bottom-[20%] left-0 w-full py-4 bg-black bg-opacity-10 text-white text-center line-clamp-2">
-          <p className="text-base">{content?.text}</p>
+        {/* 제목 박스 */}
+        {content?.title && (
+          <div className="absolute top-4 right-4 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg shadow-lg">
+            <h2 className="text-lg font-semibold">{content.title}</h2>
+          </div>
+        )}
+        <div className="absolute bottom-[20%] left-0 w-full py-10 mb-5 bg-black bg-opacity-10 text-white text-center px-5 overflow-hidden">
+          <p className="text-base line-clamp-4">{content?.text}</p>
         </div>
       </div>
     </div>

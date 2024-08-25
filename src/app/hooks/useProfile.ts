@@ -25,11 +25,7 @@ export function useProfile(userId: number) {
         throw new Error("Unauthorized!!!");
       }
 
-      const response = await get<IUserInfo>(`/users/${userId}`, {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      });
+      const response = await get<IUserInfo>(`/users/${userId}`);
 
       return response;
     } catch (err) {
@@ -42,7 +38,6 @@ export function useProfile(userId: number) {
       const response = await patch<IUpdateProfileResponse>("/users", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "ngrok-skip-browser-warning": "true",
         },
       });
     } catch (err) {

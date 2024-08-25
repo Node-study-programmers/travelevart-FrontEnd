@@ -1,21 +1,20 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { DateRangePicker } from "@nextui-org/date-picker";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import { useRouter } from "next/navigation";
 import useTravelRouteSetup from "@/app/hooks/travelRoute/useTravelRouteSetup";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTravelRoute } from "@/redux/slices/travelRouteSlice";
 import { RangeValue } from "@react-types/shared";
 import Link from "next/link";
 
 import { FaCar, FaTrain } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import usePatchCustomData from "@/app/hooks/custom/usePatchCustomData";
 import { logoFont } from "@/app/asset/fonts/fonts";
+import LoadingModal from "../LoadingModal";
 
 export interface ISetupFormValues {
   travelRouteName: string;
@@ -51,12 +50,15 @@ export default function TravelRouteSetUpForm({
 }: {
   routeId?: string | null;
 }) {
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 변수
   const currentDate = new Date();
   const initialStartDate = currentDate.toISOString().split("T")[0];
   const endDate = new Date(currentDate);
   endDate.setDate(currentDate.getDate() + 7);
   const initialEndDate = endDate.toISOString().split("T")[0];
-
+  const { mutate: patchData, isPending: isPatchLoading } = routeId
+    ? usePatchCustomData(routeId)
+    : { mutate: () => {}, isPending: false };
   const [travelRouteRange, setTravelRouteRange] = useState(0);
   const [travelRouteTransport, setTravelRouteTransport] = useState(0);
   const [dateRange, setDateRange] = useState({
@@ -67,9 +69,7 @@ export default function TravelRouteSetUpForm({
   const router = useRouter();
   const dispatch = useDispatch();
   const { mutate, isPending } = useTravelRouteSetup();
-  const { mutate: patchData, isPending: isPatchLoading } = routeId
-    ? usePatchCustomData(routeId)
-    : { mutate: () => {}, isPending: false };
+
   const {
     register,
     handleSubmit,
@@ -94,19 +94,20 @@ export default function TravelRouteSetUpForm({
   };
 
   const handleCustomizing = (data: ISetupFormValues) => {
+    setIsLoading(true); // 로딩 시작
+
     if (routeId) {
-      console.log("수정하기");
-      console.log(data.travelRouteRange, "range");
       patchData(
         {
           reqData: {
             travelName: data.travelRouteName,
             travelrouteRange: travelRouteRange,
+            startDate: dateRange.startDate,
+            endDate: dateRange.endDate,
           },
         },
         {
           onSuccess: () => {
-            console.log(travelRoute.travelRouteRange);
             dispatch(
               setTravelRoute({
                 travelRouteName: data.travelRouteName,
@@ -120,6 +121,7 @@ export default function TravelRouteSetUpForm({
             );
             router.push(`/travel-route/custom/${routeId}`);
             reset();
+            setIsLoading(false); // 로딩 종료
           },
         },
       );
@@ -146,13 +148,13 @@ export default function TravelRouteSetUpForm({
             );
             router.push(`/travel-route/custom/${res.id}`);
             reset();
+            setIsLoading(false); // 로딩 종료
           },
         },
       );
     }
   };
-  console.log(travelRouteRange);
-  console.log(travelRouteTransport);
+
   useEffect(() => {
     if (routeId) {
       setTravelRouteRange(travelRoute.travelRouteRange);
@@ -181,7 +183,7 @@ export default function TravelRouteSetUpForm({
 
   return (
     <div className="bg-[whitesmoke] min-h-screen flex flex-col items-center">
-      <div className="w-screen lg:max-w-screen-md mx-auto mt-20 border-2 border-gray-300 bg-white">
+      <div className="w-screen lg:max-w-screen-md mx-auto border-2 border-gray-300 bg-white">
         <h1
           className={`p-5 bg-white text-left my-auto flex items-center text-3xl ${logoFont.className} border-gray-300 border-b-2 cursor-pointer`}
         >
@@ -259,31 +261,39 @@ export default function TravelRouteSetUpForm({
                 <DateRangePicker
                   label="여행 기간"
                   isRequired
-                  isDisabled={routeId ? true : false}
+                  minValue={parseDate(initialStartDate)}
                   defaultValue={{
                     start: parseDate(dateRange.startDate),
                     end: parseDate(dateRange.endDate),
                   }}
-                  className={`w-full border-2 border-stone-200 rounded-xl ${
-                    routeId ? "bg-gray-200 opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  className="w-full border-2 border-stone-200 rounded-xl"
                   variant="bordered"
                   onChange={handleDateRange}
                   calendarProps={{
                     classNames: {
-                      base: "bg-[whitesmoke] shadow-md rounded-lg",
+                      base: "bg-white shadow-md rounded-lg",
                       headerWrapper: "py-4",
                       cellButton: [
-                        "data-[today=true]:bg-primary rounded-md",
-                        "data-[range-start=true]:bg-primary text-white rounded-l-md",
-                        "data-[range-end=true]:bg-primary text-white rounded-r-md",
-                        "data-[range-selection=true]:bg-primary text-primary-dark",
+                        "data-[today=true]:bg-[#00A9FF] text-white rounded-md",
+                        "data-[range-start=true]:bg-[#00A9FF] text-white rounded-l-md",
+                        "data-[range-end=true]:bg-[#00A9FF] text-white rounded-r-md",
+                        "data-[range-selection=true]:bg-[#89CFF3] text-[#00A9FF]",
+                        "data-[range-selection=true]:bg-[#A0E9FF] text-[#00A9FF]",
+                        "data-[range-selection=true]:bg-[#CDF5FD] text-[#00A9FF]",
+                        "data-[today=true]:text-white",
+                        "data-[range-selection=true]:text-[#00A9FF]",
                       ],
+                      cell: "hover:bg-[#CDF5FD] hover:text-[#00A9FF]",
                     },
                   }}
                 />
               </div>
-              <div className="w-full h-[1px] bg-gray-300 my-6" />
+              {routeId && (
+                <div className="text-sm text-red-500">
+                  ⚠️날짜를 변경하면 상세일정이 1일차에 모두 저장됩니다.
+                </div>
+              )}
+              <div className="w-full h-[1px] bg-gray-300" />
               <div className="flex justify-center items-center gap-x-4">
                 <button
                   className="bg-stone-200 text-gray-500 px-4 py-2 rounded-xl"
@@ -291,13 +301,15 @@ export default function TravelRouteSetUpForm({
                 >
                   돌아가기
                 </button>
-                <button className="bg-primary text-white px-4 py-2 rounded-xl">
+                <button
+                  type="submit"
+                  className="bg-primary text-white px-4 py-2 rounded-xl"
+                >
                   커스텀하기
                 </button>
               </div>
             </form>
-            {/* 토스트 UI로 바꾸기 */}
-            {isPending ? <div>Loading...</div> : null}
+            {isLoading && <LoadingModal />} {/* 로딩 모달 표시 */}
           </div>
         </div>
       </div>

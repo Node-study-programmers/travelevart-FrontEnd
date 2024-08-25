@@ -126,9 +126,9 @@ export default function DragAndDrop({
             {travelRouteBaseInfo.startDate} - {travelRouteBaseInfo.endDate}
           </span>
         </div>
-        <div className="absolute right-1 top-1 text-primary">
+        {/* <div className="absolute right-1 top-1 text-primary">
           By. TravelevarT
-        </div>
+        </div> */}
       </div>
       <div className="text-sm flex justify-between py-4 px-5 lg:px-10 bg-white border-b-2 border-gray-300 items-center">
         <div className="flex gap-5">
@@ -165,10 +165,11 @@ export default function DragAndDrop({
                   {...provided.droppableProps}
                   className="min-h-32 bg-[whitesmoke] mb-5 lg:mb-10 rounded-lg p-6 overflow-y-scroll"
                 >
-                  <div className="flex items-center space-x-2 border-b-[1px] border-gray-300 pb-2">
+                  <div className="flex items-center space-x-2">
                     <span className="text-lg font-bold">Day{dayIndex + 1}</span>
                     <span className="text-gray-500 text-sm">{key}</span>
                   </div>
+                  <div className="w-full h-[1px] bg-gray-300 my-3"></div>
                   {items[key].map((item, index) => (
                     <Draggable
                       key={`${item.placeId}-${index}`}

@@ -1,17 +1,17 @@
 import useGetSaves from "@/app/hooks/mypage/useGetSave";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Router import 추가
 import MyPageNotfound from "./MyPageNotfound";
+import LoadingModal from "../LoadingModal";
 
-export default function MyPageSave() {
-  const { data, isLoading, isError } = useGetSaves();
+export default function MyPageSave({ userId }: { userId: number | undefined }) {
+  const { data, isLoading, isError } = useGetSaves(userId!);
+  console.log(data);
+  console.log("user", userId);
 
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) return <LoadingModal />;
 
-  if (isError || !data) return <div>에러발생 띠용</div>;
-
-  if (!data.length) {
+  if (!data?.length) {
     return <MyPageNotfound categoryTabs={"찜"} />;
   }
 
@@ -20,7 +20,7 @@ export default function MyPageSave() {
       {data.map((save) => (
         <Link
           href={`/search-trip/${save.place.placeId}`}
-          key={save.cart_id}
+          key={save.cartId}
           className="relative h-96 bg-white border rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow"
         >
           <Image

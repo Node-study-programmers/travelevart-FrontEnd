@@ -54,7 +54,7 @@ export default function Select({
   return (
     <div
       ref={selectRef}
-      className={`${className} bg-white flex w-full max-w-80 z-50 shadow-xl rounded-l-full relative`}
+      className={`${className} bg-white flex w-full max-w-80 z-50 shadow-lg rounded-l-full relative`}
     >
       <div className="w-full flex flex-col relative pb-1 pl-2 lg:pb-0 lg:py-1">
         <button

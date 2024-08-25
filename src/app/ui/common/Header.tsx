@@ -62,7 +62,7 @@ export default function Header() {
   const { handleLogout, status } = useLogin();
   const [openNotification, setOpenNotification] = useState(false);
   return (
-    <div className="border-b-[1px] border-gray-300 w-full sticky z-[100] top-0 bg-white">
+    <div className="border-b-[1px] border-gray-300 w-full sticky z-[110] top-0 bg-white">
       <div className="max-w-[1280px] w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-5">
         <Link
           href="/"
@@ -72,7 +72,9 @@ export default function Header() {
           TravelevarT
         </Link>
         <div className="flex gap-5 items-center">
-          <div className="relative">
+          {/* 알림기능 구현 후 주석풀기 */}
+
+          {/* <div className="relative">
             <div onClick={() => setOpenNotification(true)}>
               <Tooltip direction="bottom" content="알림">
                 <IoMdNotificationsOutline className="text-3xl" />
@@ -83,7 +85,7 @@ export default function Header() {
                 {notifications.length}
               </div>
             )}
-          </div>
+          </div> */}
           <div className="text-2xl">
             {status === "authenticated" && (
               <Tooltip direction="bottom" content="로그아웃">

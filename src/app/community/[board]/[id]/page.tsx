@@ -71,11 +71,6 @@ export default function CommunityDetailPage({
     await post<CommentsResponseData>(
       `${process.env.NEXT_PUBLIC_BASE_URL}/comments/${postId}`,
       data,
-      {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      },
     );
     refetch();
     reset();
@@ -109,14 +104,14 @@ export default function CommunityDetailPage({
     }
   };
 
-  let focusBoard: TFocusBoard = "자유게시판";
+  let focusBoard: TFocusBoard = "Questions";
   if (pathname.includes("/community/travel")) {
-    focusBoard = "여행게시판";
+    focusBoard = "Stories";
   }
 
   const handleNavigateToList = () => {
     const basePath =
-      focusBoard === "자유게시판" ? "/community/free" : "/community/travel";
+      focusBoard === "Questions" ? "/community/free" : "/community/travel";
     router.push(`${basePath}`);
   };
 
@@ -148,7 +143,6 @@ export default function CommunityDetailPage({
     isLiked,
   } = data;
 
-  console.log(data);
   return (
     <PageContainer>
       <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] mt-5 scroll-none">

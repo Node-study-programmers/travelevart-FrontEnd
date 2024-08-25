@@ -41,7 +41,8 @@ export default function CommunityTravelPost({
   isLiked,
 }: ICommunityTravelPostProps) {
   const router = useRouter();
-  const { data, isLoading } = useGetDetailTravelData(travelRoute_id);
+  // const { data, isLoading } = useGetDetailTravelData(travelRoute_id);
+  // console.log(data);
   // 클릭 시 디테일 페이지로 이동
   const handleClick = () => {
     router.push(`/community/travel/${id}`);
@@ -69,7 +70,7 @@ export default function CommunityTravelPost({
             alt="profile"
             width={40}
             height={40}
-            className="rounded-full border border-gray-300"
+            className="rounded-full border border-gray-300 w-10 h-10"
           />
         )}
         <div className="ml-4 w-full">

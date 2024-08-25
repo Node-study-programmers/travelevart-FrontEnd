@@ -57,6 +57,10 @@ export default function SearchTripDetailPage({
 
   const { averageRating, isSaved, item, totalSaveCount } = detailPageData;
 
+  if (!item) {
+    return <div>no data</div>;
+  }
+
   return (
     <PageContainer>
       <div className="flex flex-col gap-3 relative">
@@ -73,7 +77,7 @@ export default function SearchTripDetailPage({
             className="object-cover rounded-2xl"
             alt="detailImage"
             src={
-              item.image
+              item?.image
                 ? item.image
                 : "https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
             }

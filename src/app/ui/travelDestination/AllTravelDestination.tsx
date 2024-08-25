@@ -100,13 +100,13 @@ export default function AllTravelDestination({
   };
 
   return (
-    <div
-      className={`transition-opacity transform ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      } duration-700 ease-in-out w-full h-80`}
-    >
+    <div>
       {!isInCustom ? (
-        <div className="relative w-full h-full bg-white rounded-lg shadow-lg overflow-hidden">
+        <div
+          className={`relative w-full h-80 bg-white rounded-lg shadow-lg overflow-hidden transition-opacity transform ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          } duration-700 ease-in-out w-full`}
+        >
           <Image
             src={
               representativeImg ||
@@ -140,40 +140,42 @@ export default function AllTravelDestination({
           </div>
         </div>
       ) : (
-        <div className="h-full border-b border-gray-300 flex justify-between items-center py-4 px-2">
+        <div className="h-full border-b-[1px] border-gray-300 flex justify-between items-center py-5">
           <div className="flex items-center flex-grow gap-3">
-            <Image
-              src={
-                representativeImg ||
-                "https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
-              }
-              alt={title}
-              width={80}
-              height={80}
-              className="rounded-xl object-cover"
-            />
-            <div className="flex flex-col text-sm w-full overflow-hidden">
+            <div className="relative">
+              <Image
+                src={
+                  representativeImg ||
+                  "https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
+                }
+                alt={title}
+                width={50}
+                height={50}
+                className="rounded-xl object-cover w-24 h-20"
+              />
+            </div>
+            <div className="flex flex-col py-2 gap-y-1 w-full overflow-x-auto text-ellipsis">
               {/* 여행지 & 별점 */}
-              <p className="font-semibold truncate">{title.split("(")[0]}</p>
-              <p className="text-rgb-primary text-xs truncate">
-                {address.split("(")[0]}
-              </p>
-              {/* 별점 있는 여행지만 별점 노출 */}
-              <div className="flex items-center gap-x-2 mt-1">
-                {rating ? (
-                  <>
-                    <FaStar className="text-black" />
-                    <p>{rating}</p>
-                  </>
-                ) : null}
+              <div className="flex items-center text-sm">
+                <div className="w-3/5">
+                  <p className="line-clamp-2">{title.split("(")[0]}</p>
+                  <p className="text-rgb-primary text-xs line-clamp-1">
+                    {address.split("(")[0]}
+                  </p>
+                </div>
+              </div>
+              {/* 주소 */}
+              <div className="flex items-center gap-x-2 text-sm">
+                <FaStar className="fill-yellow-400" />
+                {rating ? rating : ["0", "0"].join(".")}
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-1 ml-2">
+          <div className="flex gap-1 items-center">
             <Tooltip content="상세보기" direction="bottom">
               <button
                 onClick={() => handleOpenModal(String(placeId))}
-                className="text-secondary text-2xl"
+                className="text-secondary lg:px-2 py-2 text-2xl"
               >
                 <CiSquareMore />
               </button>
@@ -184,7 +186,7 @@ export default function AllTravelDestination({
                 handleAddPlan(selectedValue, destination)
               }
             >
-              <div className="text-primary text-2xl cursor-pointer">
+              <div className="text-primary lg:px-2 py-2 text-2xl cursor-pointer">
                 <FiPlusSquare />
               </div>
             </DropDown>

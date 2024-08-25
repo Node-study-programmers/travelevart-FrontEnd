@@ -1,7 +1,7 @@
 "use client";
 
-import { logoFont } from "@/font";
 import { useRouter } from "next/navigation";
+import { logoFont } from "./asset/fonts/fonts";
 
 export default function Error() {
   const router = useRouter();

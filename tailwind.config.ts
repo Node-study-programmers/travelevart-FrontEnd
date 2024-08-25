@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        noto: ["var(--noto-weight)"],
+        logo: ["var(--logo-font)"],
+      },
       colors: {
         primary: "#00A9FF",
         secondary: "#89CFF3",
@@ -26,6 +30,7 @@ const config: Config = {
         "fade-out": "fadeOut 0.3s ease-out forwards",
         "slide-in-right": "slideInRight 0.3s ease-out forwards",
         "slide-out-right": "slideOutRight 0.3s ease-out forwards",
+        shake: "shake 1.5s ease-in-out infinite",
       },
       rotate: {
         "y-180": "rotateY(180deg)",
@@ -35,6 +40,11 @@ const config: Config = {
         opacity: "opacity",
       },
       keyframes: {
+        shake: {
+          "0%": { transform: "translateY(-5px)" },
+          "50%": { transform: "translateY(5px)" },
+          "100%": { transform: "translateY(-5px)" },
+        },
         fadeIn: {
           "0%": { opacity: "0", transform: "translateY(-20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },

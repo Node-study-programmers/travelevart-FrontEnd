@@ -1,11 +1,12 @@
 "use client";
-import { logoFont } from "@/font";
+
 import { IoEarthOutline } from "react-icons/io5";
 import { RiNotionFill } from "react-icons/ri";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import FeedbackForm from "./FeedbackForm";
 import { usePathname } from "next/navigation";
+import { logoFont } from "@/app/asset/fonts/fonts";
 
 export default function Footer() {
   const pathname = usePathname();

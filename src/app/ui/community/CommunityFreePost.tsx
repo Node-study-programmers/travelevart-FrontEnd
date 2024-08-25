@@ -27,6 +27,7 @@ export default function CommunityFreePost({
   title,
   views,
   contents,
+  isLiked,
 }: ICommunityFreePostProps) {
   const formattedCreatedAt = convertTimeAgo(created_at);
 
@@ -52,7 +53,12 @@ export default function CommunityFreePost({
           <div className="text-left text-sm line-clamp-2 mb-4">
             {contents[0]?.text}
           </div>
-          <PostBottoms commentCount={commentCount} like={like} views={views} />
+          <PostBottoms
+            commentCount={commentCount}
+            like={like}
+            views={views}
+            isPostLiked={isLiked}
+          />
         </div>
       </Link>
     </div>

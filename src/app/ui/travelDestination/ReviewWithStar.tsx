@@ -89,9 +89,8 @@ export default function ReviewWithStar({
       <div className="w-full flex flex-col gap-2">
         {/* 별점 선택 UI */}
         <div className="flex gap-5 pl-2">
-          <div className="max-w-24 overflow-hidden text-ellipsis">
-            {userData.user.name}
-          </div>
+          <div className="max-w-[6rem] truncate">{userData.user.name}</div>
+
           <Controller
             name="rating"
             control={control}

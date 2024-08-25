@@ -13,13 +13,20 @@ interface IPostBottomsProps {
   postId?: string;
 }
 
-export function PostBottoms({ commentCount, like, views }: IPostBottomsProps) {
+export function PostBottoms({
+  commentCount,
+  like,
+  views,
+  isPostLiked,
+}: IPostBottomsProps) {
   return (
     <div className="flex justify-end gap-3 text-xs">
       <div className="flex gap-1 items-center text-gray-500">
         <FaCommentAlt /> {commentCount}
       </div>
-      <div className="flex gap-1 items-center text-gray-500">
+      <div
+        className={`flex gap-1 items-center ${isPostLiked ? "text-primary" : "text-gray-500"}`}
+      >
         <GrLike /> {like}
       </div>
       <div className="flex gap-1 items-center text-gray-500">

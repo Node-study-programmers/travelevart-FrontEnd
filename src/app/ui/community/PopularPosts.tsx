@@ -56,7 +56,7 @@ export default function PopularPosts({
       {handleNavigateToList && (
         <button
           onClick={handleNavigateToList}
-          className="mt-4 text-primary rounded-lg px-4 py-2 hover:bg-secondary w-full"
+          className="mt-4 text-primary rounded-lg px-4 py-2 w-full"
         >
           목록으로
         </button>

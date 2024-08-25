@@ -1,7 +1,7 @@
-import { IRecommendTripResponse } from "@/lib/types";
+import { IRecommendTripResponse, ISelectedRegion } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface IRouteDetail {
+export interface IRouteDetail {
   placeId: number;
   address: string;
   placeTitle: string;
@@ -22,11 +22,13 @@ interface IRoute {
 }
 
 interface IRecommendTrip {
+  regions: ISelectedRegion[];
   transportOption: "대중교통" | "자차";
   routes: IRoute[];
 }
 
 const initialState: IRecommendTrip = {
+  regions: [{ id: 0, region: "" }],
   transportOption: "대중교통",
   routes: [
     {
@@ -59,6 +61,7 @@ const recommendTripSlice = createSlice({
       state,
       action: PayloadAction<IRecommendTripResponse>,
     ) => {
+      state.regions = action.payload.regions;
       state.transportOption = action.payload.transportOption;
       state.routes = action.payload.routes;
     },

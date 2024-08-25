@@ -19,7 +19,7 @@ import kyeongi from "@/app/asset/img/travelRegion/kyeongi.jpeg";
 import { logoFont } from "@/font";
 
 // 대표 지역별 이미지
-const travelRegionGroup = [
+export const travelRegionGroup = [
   { id: 0, region: "전체", imageUrl: "" },
   { id: 1, region: "서울", imageUrl: seoul },
   { id: 2, region: "인천", imageUrl: incheon },

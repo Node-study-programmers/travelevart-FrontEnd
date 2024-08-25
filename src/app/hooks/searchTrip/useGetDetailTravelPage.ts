@@ -14,7 +14,7 @@ export interface TravelItem {
 }
 
 // 전체 응답 구조를 나타내는 인터페이스
-interface TravelDetailResponse {
+export interface TravelDetailResponse {
   item: TravelItem; // 여행지 아이템
   totalSaveCount: number; // 전체 저장 수
   averageRating: number; // 평균 별점

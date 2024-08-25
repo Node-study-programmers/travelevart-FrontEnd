@@ -17,14 +17,14 @@ import { RootState } from "@/redux";
 import usePatchCustomData from "@/app/hooks/custom/usePatchCustomData";
 import { logoFont } from "@/app/asset/fonts/fonts";
 
-interface ISetupFormValues {
+export interface ISetupFormValues {
   travelRouteName: string;
   travelRouteRange: number;
   startDate: string;
   endDate: string;
 }
 
-const travelRouteRangeOptions = [
+export const travelRouteRangeOptions = [
   {
     id: 0,
     title: "나만 보기",
@@ -203,7 +203,7 @@ export default function TravelRouteSetUpForm({
                 <input
                   type="name"
                   className="border border-gray-300 p-2 w-full rounded-lg py-3 outline-none"
-                  placeholder=""
+                  placeholder="TravelRoute 입력"
                   {...register("travelRouteName", {
                     required: "travelroute 입력은 필수입니다.",
                   })}

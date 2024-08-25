@@ -8,11 +8,42 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { travelRegionGroup } from "../../travelDestination/TravelRegionBanner";
+import { FaCar, FaTrain } from "react-icons/fa";
+import {
+  ISetupFormValues,
+  travelRouteRangeOptions,
+} from "../travelRoute/TravelRouteSetUpForm";
+import { useForm } from "react-hook-form";
+import useSaveRecommendTrip from "@/app/hooks/recommendTrip/useSaveRecommendTrip";
+import TravelPlaceDetailModal from "./RecommendTripDetailModal";
+import { IRouteDetail } from "@/redux/slices/recommendTripSlice";
+import { TravelDetailResponse } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
+import { get } from "@/lib/api";
 
 export default function RecommendTripSchedule() {
   const [focusDay, setFocusDay] = useState(0);
-  const [isDetailDataModalOpen, setIsDetailDataModalOpen] = useState(false);
+  const [travelRouteRange, setTravelRouteRange] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTravelDestination, setSelectedTravelDestination] =
+    useState<null | IRouteDetail>(null); // 모달로 보여줄 추천 여행지
+  const [detailTravelDestination, setDetailTravelDestination] =
+    useState<null | TravelDetailResponse>(null); // 여행지 상세 정보
+  const [sameRouteDetail, setSameRouteDetail] = useState<IRouteDetail[]>([]);
   const router = useRouter();
+  const { mutate, isPending } = useSaveRecommendTrip(); // travelroute 생성
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Pick<ISetupFormValues, "travelRouteName" | "travelRouteRange">>({
+    defaultValues: {
+      travelRouteName: "",
+      travelRouteRange: 0,
+    },
+  });
 
   // 추천 여행지
   const recommendTripDatas = useSelector(
@@ -47,42 +78,62 @@ export default function RecommendTripSchedule() {
     recommendTripDatas.routes[recommendTripDatas.routes.length - 1].detail[0]
       .day;
 
+  // 추천 데이터 travleroute 저장
+  const handleSaveRecommendTrip = (
+    data: Pick<ISetupFormValues, "travelRouteName" | "travelRouteRange">,
+  ) => {
+    const transformedDetailRoute = recommendTripDatas.routes.flatMap((route) =>
+      route.detail.map((dayDetailData) => ({
+        placeId: dayDetailData.placeId,
+        routeIndex: dayDetailData.routeIndex,
+        day: dayDetailData.day,
+        date: route.day,
+        estimatedTime: dayDetailData.estimatedTime,
+        distance: dayDetailData.distance,
+        playTime: dayDetailData.playTime,
+        mapLink: dayDetailData.mapLink,
+      })),
+    );
+
+    mutate({
+      travelName: data.travelRouteName,
+      travelrouteRange: data.travelRouteRange,
+      transportOption: recommendTripDatas.transportOption,
+      detailRoute: transformedDetailRoute,
+    });
+
+    reset();
+  };
+
+  // 모달 핸들링 함수
+  const handleDetailTravelDestinationModal = async (place: IRouteDetail) => {
+    setSelectedTravelDestination(place);
+
+    try {
+      const response = await get<TravelDetailResponse>(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/places/${place.placeId}`,
+      );
+
+      if (response) {
+        setDetailTravelDestination(response);
+      }
+
+      setIsModalOpen(true);
+
+      // 모달에 보여준 여행지가 속한 날짜의 여행지 routes
+      const sameDetailRoutesIndex = recommendTripDatas.routes.findIndex(
+        (route) => route.detail.some((item) => item.placeId === place.placeId),
+      );
+
+      setSameRouteDetail(
+        recommendTripDatas.routes[sameDetailRoutesIndex].detail,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   console.log(recommendTripDatas);
-
-  const steps = [
-    {
-      label: "Select campaign settings",
-      description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-    },
-    {
-      label: "Create an ad group",
-      description:
-        "An ad group contains one or more ads which target a shared set of keywords.",
-    },
-    {
-      label: "Create an ad",
-      description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-    },
-  ];
-
-  const [activeStep, setActiveStep] = useState(0);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   return (
     <div className="flex flex-col">
@@ -96,15 +147,14 @@ export default function RecommendTripSchedule() {
       </div>
       <div className="flex flex-col items-center justify-start flex-grow py-8">
         <div className="flex flex-col items-center gap-y-4">
-          {/* 추천 지역 대표 이미지 (첫 번째 지역으로) */}
+          {/* 추천 지역 대표 이미지 */}
           <Image
-            src="https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
+            src={travelRegionGroup[recommendTripDatas.regions[0].id].imageUrl}
             alt="dummy image"
             width={100}
             height={100}
-            className="rounded-full"
+            className="w-[200px] h-[200px] rounded-full"
           />
-          {/* 선택 지역 추가로 같이 알려주기 */}
           <p className="text-2xl font-semibold text-center">
             {`${totalNight > 0 ? totalNight + "박 " + totalDay + "일" : "당일치기"}`}
             <br />
@@ -116,20 +166,25 @@ export default function RecommendTripSchedule() {
           </p>
         </div>
       </div>
-
       {/* 날짜별 여행 루트 보여줄 지도 */}
       <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl mt-12">
         <DynamicNaverMap
-          mapx={recommendTripDatas.routes[0].detail[0].mapx}
-          mapy={recommendTripDatas.routes[0].detail[0].mapy}
-          address={recommendTripDatas.routes[0].detail[0].address}
+          mapx={recommendTripDatas.routes[focusDay].detail[0].mapx} // 첫 번째 지점의 x 좌표
+          mapy={recommendTripDatas.routes[focusDay].detail[0].mapy} // 첫 번째 지점의 y 좌표
+          address={recommendTripDatas.routes[focusDay].detail[0].address} // 첫 번째 지점의 주소
+          points={recommendTripDatas.routes[focusDay].detail.map(
+            (dayDetailData, idx) => ({
+              mapx: dayDetailData.mapx,
+              mapy: dayDetailData.mapy,
+              stepNumber: idx + 1, // 스텝 번호 추가
+            }),
+          )}
         />
       </div>
-
       {/* 날짜별 추천 여행지 */}
       <div className="py-8 px-4">
         {/* Day */}
-        <div className="flex gap-x-2">
+        <div className="flex flex-wrap gap-x-2 gap-y-4 mb-4">
           {recommendTripDatas.routes.map((recommenTripData, idx) => (
             <div
               key={recommenTripData.day}
@@ -145,29 +200,76 @@ export default function RecommendTripSchedule() {
           {recommendTripDatas.routes[focusDay]?.detail.map(
             (dayDetailData, idx) => (
               <div className="flex items-start" key={dayDetailData.placeId}>
-                <div className="flex flex-col items-center mr-8 relative">
+                <div className="flex flex-col items-center mr-12 relative">
+                  {/* 스텝 번호 */}
                   <div
                     className={`w-8 h-8 rounded-full ${getStepperColor(idx)} text-white flex items-center justify-center`}
                   >
                     {idx + 1}
                   </div>
+                  {/* 스테퍼 라인 (아이콘 위) */}
                   {idx <
                     recommendTripDatas.routes[focusDay].detail.length - 1 && (
-                    <div
-                      className={`absolute transform -translate-x-1/2 w-0.5 bg-stone-200`}
-                      style={{
-                        top: "100%",
-                        height: "calc(1000%)",
-                        zIndex: -1,
-                      }}
-                    />
+                    <>
+                      {/* 스테퍼 라인 (아래) */}
+                      <div
+                        className={`absolute transform -translate-x-1/2 w-0.5 bg-stone-200`}
+                        style={{
+                          top: "100%",
+                          height: "100px",
+                          zIndex: -1,
+                        }}
+                      />
+                      {/* 맵링크 아이콘 */}
+                      {dayDetailData.mapLink && (
+                        <Link
+                          href={dayDetailData.mapLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="absolute"
+                          style={{
+                            left: "50%",
+                            top: "calc(100% + 100px)",
+                            transform: "translateX(-50%)",
+                          }}
+                        >
+                          {recommendTripDatas.transportOption === "대중교통" ? (
+                            <div className="flex items-center gap-x-1 text-stone-400">
+                              <FaTrain className="text-lg" />
+                              <p className="whitespace-nowrap">
+                                {dayDetailData.estimatedTime?.split("약 ")[1]}
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-x-1 text-stone-400">
+                              <FaCar className="text-lg" />
+                              <p className="whitespace-nowrap">
+                                {dayDetailData.estimatedTime?.split("약 ")[1]}
+                              </p>
+                            </div>
+                          )}
+                        </Link>
+                      )}
+                      {/* 스테퍼 라인 (아이콘 이후) */}
+                      <div
+                        className={`absolute transform -translate-x-1/2 w-0.5 bg-stone-200`}
+                        style={{
+                          top: "calc(100% + 130px)",
+                          height: "40px",
+                          zIndex: -1,
+                        }}
+                      />
+                    </>
                   )}
                 </div>
                 {/* 여행지 */}
                 <div
-                  className={`flex flex-col bg-white shadow-xl rounded-lg p-4 cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 flex-grow`}
+                  className={`flex bg-white shadow-xl rounded-lg p-4 cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105 flex-grow`}
+                  onClick={() =>
+                    handleDetailTravelDestinationModal(dayDetailData)
+                  }
                 >
-                  <div className="flex gap-x-4">
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <Image
                       src={`${dayDetailData.placeImage === "" || dayDetailData.placeImage === null ? "https://cdn.pixabay.com/photo/2019/06/24/16/43/mountain-4296464_640.jpg" : dayDetailData.placeImage}`}
                       alt="dummy image"
@@ -189,29 +291,79 @@ export default function RecommendTripSchedule() {
             ),
           )}
           {/* 추천 일정 travelroute 저장, 다시 추천받기 버튼 */}
-          <div className="flex flex-col items-center py-8">
-            <div className="flex flex-col justify-center items-center gap-y-2">
-              <p className="text-lg font-semibold">
-                추천일정이 마음에 드시나요?
-              </p>
-              <p className="text-xs text-gray-400 text-center">
-                추천일정을 TravelRoute에 담아 언제든 확인, 수정할 수 있어요!
-              </p>
-            </div>
-            <div className="w-full flex flex-col gap-y-4 md:flex-row justify-center md:gap-x-4 py-8">
-              <button
-                className=" bg-stone-200 text-gray-500 rounded-xl px-4 py-2 flex-grow"
-                onClick={() => router.push("/recommend-trip")}
-              >
-                다시 추천받기
-              </button>
-              <button className=" bg-primary text-white rounded-xl px-4 py-2 flex-grow">
-                TravelRoute에 추가하기
-              </button>
-            </div>
+          <div className="flex flex-col py-8 w-full">
+            <form onSubmit={handleSubmit(handleSaveRecommendTrip)}>
+              <div className="flex flex-col justify-center items-center gap-y-4">
+                <p className="text-lg font-semibold">
+                  추천일정이 마음에 드시나요?
+                </p>
+                <p className="text-xs text-gray-400 text-center">
+                  추천일정을 TravelRoute에 담아 언제든 확인, 수정할 수 있어요!
+                </p>
+              </div>
+              <div className="w-full py-8 flex flex-col gap-y-8">
+                <div>
+                  <p className="pb-2">TravelRoute</p>
+                  <input
+                    type="name"
+                    placeholder="TravelRoute 입력"
+                    className="border border-gray-300 p-2 w-full rounded-lg py-3 outline-none"
+                    {...register("travelRouteName", {
+                      required: "travelroute 입력은 필수입니다.",
+                    })}
+                  />
+                  {errors.travelRouteName && (
+                    <p className="text-red-500 text-sm py-2">
+                      {errors.travelRouteName.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <p className="pb-2">공개 범위</p>
+                  <div className="flex flex-wrap gap-2 w-full">
+                    {travelRouteRangeOptions.map((travelRouteRangeOption) => (
+                      <div
+                        key={travelRouteRangeOption.id}
+                        className={`flex justify-center items-center flex-1 px-4 py-2 ${travelRouteRange === travelRouteRangeOption.id ? "bg-primary text-white" : "bg-stone-200 text-gray-500"} ${travelRouteRangeOption.id === 0 ? "rounded-tl-xl rounded-bl-xl" : "rounded-tr-xl rounded-br-xl"} cursor-pointer transition-all duration-300 ease-in-out`}
+                        onClick={() =>
+                          setTravelRouteRange(travelRouteRangeOption.id)
+                        }
+                      >
+                        {travelRouteRangeOption.title}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="w-full flex flex-col gap-y-4 justify-center py-12">
+                  <button
+                    type="button"
+                    className="bg-stone-200 text-gray-500 rounded-xl px-4 py-2 flex-grow"
+                    onClick={() => router.push("/recommend-trip")}
+                  >
+                    다시 추천받기
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-primary text-white rounded-xl px-4 py-2 flex-grow"
+                    disabled={isPending}
+                  >
+                    {isPending ? "생성 중..." : "생성하기"}
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+      <TravelPlaceDetailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        place={selectedTravelDestination as IRouteDetail}
+        detailTravelDestination={
+          detailTravelDestination as TravelDetailResponse
+        }
+        sameRouteDetail={sameRouteDetail}
+      />
     </div>
   );
 }

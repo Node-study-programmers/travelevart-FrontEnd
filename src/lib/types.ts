@@ -126,6 +126,7 @@ export interface IRecommendTripRequest {
 }
 
 export interface IRecommendTripResponse {
+  regions: ISelectedRegion[];
   transportOption: "대중교통" | "자차";
   routes: {
     day: string; // 여행 날짜 (형식: 'xxxx-xx-xx')

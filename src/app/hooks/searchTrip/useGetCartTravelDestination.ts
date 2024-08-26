@@ -20,7 +20,7 @@ export default function useGetCartTravelDestintaion(
   enabled: boolean,
   userId: number | undefined,
 ) {
-  return useQuery<ICartTravelDestinationResponse[]>({
+  return useQuery<{ data: ICartTravelDestinationResponse[] }>({
     queryKey: ["cartTravelDestination"],
     queryFn: () => get(`${process.env.NEXT_PUBLIC_BASE_URL}/carts/${userId}`),
     enabled,

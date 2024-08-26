@@ -38,20 +38,8 @@ export default function IconButtons({
   );
 
   useEffect(() => {
-    if (myCartData) {
-      const cartItem = myCartData.find(
-        (item: ICartTravelDestinationResponse) =>
-          item.place.placeId === placeId,
-      );
-
-      setIsAddedCart(!!cartItem);
-      setTotalSaveCount(cartItem ? cartItem.place.totalSaveCount : likeNum);
-    }
-  }, [myCartData, placeId, likeNum]);
-
-  useEffect(() => {
-    if (myCartData) {
-      const cartItem = myCartData.find(
+    if (myCartData?.data) {
+      const cartItem = myCartData.data.find(
         (item: ICartTravelDestinationResponse) =>
           item.place.placeId === placeId,
       );

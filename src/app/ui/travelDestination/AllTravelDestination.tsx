@@ -62,8 +62,8 @@ export default function AllTravelDestination({
   }, []);
 
   useEffect(() => {
-    if (myCartData) {
-      const isSaved = myCartData.some(
+    if (myCartData?.data) {
+      const isSaved = myCartData.data.some(
         (item: ICartTravelDestinationResponse) =>
           item.place.placeId === placeId,
       );

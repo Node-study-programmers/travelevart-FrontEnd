@@ -8,7 +8,6 @@ import AuthSession from "./auth/AuthSession";
 import QueryProvider from "./QueryProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { noto } from "./asset/fonts/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",

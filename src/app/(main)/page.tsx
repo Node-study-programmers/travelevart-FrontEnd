@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import test1 from "@/app/asset/img/test1.png";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import { logoFont } from "../asset/fonts/fonts";
+import intro from "@/app/asset/img/mockup/intro.png";
 import recommend1 from "@/app/asset/img/mockup/recommend1.png";
 import recommend2 from "@/app/asset/img/mockup/recommend2.png";
 import travelroute1 from "@/app/asset/img/mockup/travelroute1.png";
@@ -110,8 +110,8 @@ export default function Home() {
           </span>
         </div>
         <Image
-          src={test1.src}
-          alt="test1"
+          src={intro.src}
+          alt="intro"
           width={300}
           height={0}
           className="w-[150px] lg:w-[300px]"

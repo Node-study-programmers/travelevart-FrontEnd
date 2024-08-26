@@ -1,29 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { logoFont } from "@/app/asset/fonts/fonts";
 import useLogin from "@/app/hooks/auth/useLogin";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FiShare } from "react-icons/fi";
 import { toast } from "react-toastify";
+import { TRAVEL_REGION_GROUP } from "@/constant";
 
 export default function RecommendTripIntro() {
   const { userData } = useLogin();
   const router = useRouter();
 
-  const handleShareLink = () => {
-    const currentUrl = window.location.href;
+  const [currentImage, setCurrentImage] = useState(0);
 
-    navigator.clipboard
-      .writeText(currentUrl)
-      .then(() => {
-        toast.info("링크가 클립보드에 복사되었습니다!");
-      })
-      .catch(() => {
-        toast.error("링크 복사에 실패했습니다.");
-      });
-  };
+  const representativeRegionImages = TRAVEL_REGION_GROUP.slice(1).map(
+    (item) => item.imageUrl,
+  );
 
   const handlerSetupRecommendTrip = async () => {
     if (!userData) {
@@ -36,8 +30,19 @@ export default function RecommendTripIntro() {
     router.push("/recommend-trip/setup");
   };
 
+  // 이미지 무한 슬라이드
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImage(
+        (prevIndex) => (prevIndex + 1) % representativeRegionImages.length,
+      );
+    }, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [representativeRegionImages.length]);
+
   return (
-    <div className="flex flex-col justify-between min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <div className="flex py-4">
         <div className="flex items-center gap-x-2">
           <Link href="/">
@@ -46,31 +51,41 @@ export default function RecommendTripIntro() {
           <p className={`${logoFont.className} text-xs`}>여행지 추천</p>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-start flex-grow py-8">
-        <div className="flex flex-col gap-y-2">
-          <p className="text-2xl font-semibold text-center">
+      <div className="flex flex-col items-center justify-start flex-grow mt-12 py-8">
+        <div className="flex flex-col gap-y-2 text-center">
+          <p className="text-2xl font-semibold">
             사용자 취향에 맞는 여행지 일정을
             <br /> 생성해 드려요!
           </p>
-          <p className="text-sm text-rgb-secondary text-center">
+          <p className="text-sm text-rgb-secondary">
             여행 일정 고민을 해결해보세요!
           </p>
         </div>
-        <div className="mt-20">
-          <Image
-            src="https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
-            alt="dummy image"
-            width={500}
-            height={500}
-          />
+        <div className="relative w-full max-w-2xl h-[50vh] overflow-hidden mt-24 flex items-center justify-center">
+          {representativeRegionImages.map((image, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentImage ? "opacity-100" : "opacity-0"}`}
+            >
+              <Image
+                src={image}
+                alt={`Slide ${idx}`}
+                layout="fill"
+                objectFit="cover"
+                className="w-full h-screen rounded-full"
+              />
+            </div>
+          ))}
         </div>
       </div>
-      <button
-        className="bg-primary text-white px-4 py-2 rounded-lg mb-8 hover:cursor-pointer"
-        onClick={handlerSetupRecommendTrip}
-      >
-        추천받기
-      </button>
+      <div className="flex justify-center">
+        <button
+          className="bg-primary text-white px-4 py-2 rounded-lg mb-8 hover:cursor-pointer w-40"
+          onClick={handlerSetupRecommendTrip}
+        >
+          추천받기
+        </button>
+      </div>
     </div>
   );
 }

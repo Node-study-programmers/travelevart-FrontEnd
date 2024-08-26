@@ -3,6 +3,7 @@
 import useGetDetailCustomData from "@/app/hooks/custom/useGetCustomData";
 import usePatchDetailData from "@/app/hooks/custom/usePatchDetailData";
 import usePostCustomData from "@/app/hooks/custom/usePostCustomData";
+import SEO from "@/app/seo/SEO";
 import LoadingModal from "@/app/ui/common/LoadingModal";
 import CustomSearch from "@/app/ui/customTravel/CustomSearch";
 import DragAndDrop from "@/app/ui/customTravel/DragAndDrop";
@@ -148,23 +149,26 @@ export default function DetailCustomPage({
   console.log(items);
 
   return (
-    <div className="flex justify-center min-h-screen bg-gray-200">
-      <div className="flex w-full max-w-screen-xl">
-        <DragAndDrop
-          dateRange={dateRange}
-          items={items}
-          setItems={setItems}
-          travelRouteBaseInfo={travelRoute}
-          setOpenSearch={setOpenSearch}
-          handleSubmit={handleSubmit}
-        />
-        <CustomSearch
-          openSearch={openSearch}
-          setOpenSearch={setOpenSearch}
-          items={items}
-          setItems={setItems}
-        />
+    <>
+      <SEO title="CUSTOM" description="나의 여행을 직접 만들어 보세요." />
+      <div className="flex justify-center min-h-screen bg-gray-200">
+        <div className="flex w-full max-w-screen-xl">
+          <DragAndDrop
+            dateRange={dateRange}
+            items={items}
+            setItems={setItems}
+            travelRouteBaseInfo={travelRoute}
+            setOpenSearch={setOpenSearch}
+            handleSubmit={handleSubmit}
+          />
+          <CustomSearch
+            openSearch={openSearch}
+            setOpenSearch={setOpenSearch}
+            items={items}
+            setItems={setItems}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

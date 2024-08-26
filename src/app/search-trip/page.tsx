@@ -18,6 +18,7 @@ import useGetRegionCode, {
 import { useRouter } from "next/navigation";
 import NotFoundTravelDestiantion from "../ui/travelDestination/NotFoundTravelDestination";
 import TravelRegionBanner from "../ui/travelDestination/TravelRegionBanner";
+import SEO from "../seo/SEO";
 
 const filterGroup = [
   { id: "view", title: "조회 순" },
@@ -101,117 +102,120 @@ export default function SearchTripPage() {
   };
 
   return (
-    <div>
-      {/* 전체 지역 선택 시 핫한 행사 케러셀 그 외 지역 이미지 배너 */}
-      <div className="relative mb-10">
-        {regionCode ? (
-          <TravelRegionBanner regionCode={regionCode} />
-        ) : BannerIsLoading ? (
-          <CarouselSkeleton />
-        ) : (
-          <Carousel contents={bannerData?.events || []} />
-        )}
-      </div>
-
-      <PageContainer className="relative">
-        <div
-          style={{ transition: "top 0.3s ease" }}
-          className="sticky w-full max-w-2xl z-[101] lg:h-16 flex -top-0 mx-auto transition-all duration-1000 bg-white h-[56px]"
-        >
-          <Select
-            className="h-full"
-            placeholder="검색할 지역 선택"
-            label="지역"
-            defaultValue={regionData?.regions[0]?.region || ""}
-            items={regionData?.regions.map((item) => item.region) || []}
-            onChange={(selectedRegion) => {
-              const selectedRegionData = regionData?.regions.find(
-                (region: TregionResponse) => region.region === selectedRegion,
-              );
-              if (selectedRegionData) {
-                setRegionCode(selectedRegionData.id);
-                setSearchName(searchInputRef.current?.value || "");
-                searchInputRef.current!.value = ""; // 입력 필드 초기화
-              }
-            }}
-          />
-          <form
-            className="flex-grow h-full flex shadow-xl p-2 rounded-r-full"
-            onSubmit={handleSearch}
-          >
-            <input
-              className="flex-grow h-full outline-none text-base lg:text-lg p-4"
-              placeholder="여행지를 검색하세요!"
-              ref={searchInputRef}
-            />
-            <button
-              className="bg-primary h-full w-12 rounded-full flex items-center justify-center text-white text-xl lg:text-2xl cursor-pointer"
-              onClick={handleSearch}
-              type="submit"
-            >
-              <FaSearch />
-            </button>
-          </form>
+    <>
+      <SEO title="SEARCH TRIP" description="여행지 검색을 위한 페이지입니다." />
+      <div>
+        {/* 전체 지역 선택 시 핫한 행사 케러셀 그 외 지역 이미지 배너 */}
+        <div className="relative mb-10">
+          {regionCode ? (
+            <TravelRegionBanner regionCode={regionCode} />
+          ) : BannerIsLoading ? (
+            <CarouselSkeleton />
+          ) : (
+            <Carousel contents={bannerData?.events || []} />
+          )}
         </div>
-        <div className="pb-2 lg:pb-5 text-2xl font-bold mt-10">여행지</div>
-        {status === "success" && !travelDestinationData.length ? (
-          <NotFoundTravelDestiantion
-            reloadTravelDestination={handleResetSearchTripPage}
-          /> // 검색결과 없을 떄
-        ) : (
-          <>
-            <div className="flex justify-end gap-x-2 pb-2">
-              {filterGroup.map((filter) => (
-                <button
-                  key={filter.id}
-                  className={`${
-                    filter.id === focusFilter
-                      ? "text-black"
-                      : "text-rgb-primary"
-                  } text-sm transition-all duration-300 ease-in-out`}
-                  onClick={() => handleSortingFilter(filter.id)}
-                >
-                  {filter.title}
-                </button>
-              ))}
-            </div>
 
-            {/* 검색 결과 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
-              {travelDestinationData.map((destination) => (
-                <Link
-                  href={`/search-trip/${destination.id}`}
-                  key={destination.id}
-                >
-                  <AllTravelDestination
-                    representativeImg={destination.image}
-                    address={destination.address}
-                    title={destination.title}
-                    placeId={destination.id}
-                    rating={destination.averageRating}
-                  />
-                </Link>
-              ))}
-              <div ref={moreRef} />
-            </div>
-            {currentPage >= 10 && hasNextPage && (
-              <div className="flex justify-center">
-                <button
-                  className={`text-center bg-primary rounded-full py-4 px-8 text-white cursor-pointer outline-none mb-12`}
-                  onClick={handleMoreTravelDestination}
-                >
-                  더보기
-                </button>
+        <PageContainer className="relative">
+          <div
+            style={{ transition: "top 0.3s ease" }}
+            className="sticky w-full max-w-2xl z-[101] lg:h-16 flex -top-0 mx-auto transition-all duration-1000 bg-white h-[56px]"
+          >
+            <Select
+              className="h-full"
+              placeholder="검색할 지역 선택"
+              label="지역"
+              defaultValue={regionData?.regions[0]?.region || ""}
+              items={regionData?.regions.map((item) => item.region) || []}
+              onChange={(selectedRegion) => {
+                const selectedRegionData = regionData?.regions.find(
+                  (region: TregionResponse) => region.region === selectedRegion,
+                );
+                if (selectedRegionData) {
+                  setRegionCode(selectedRegionData.id);
+                  setSearchName(searchInputRef.current?.value || "");
+                  searchInputRef.current!.value = ""; // 입력 필드 초기화
+                }
+              }}
+            />
+            <form
+              className="flex-grow h-full flex shadow-xl p-2 rounded-r-full"
+              onSubmit={handleSearch}
+            >
+              <input
+                className="flex-grow h-full outline-none text-base lg:text-lg p-4"
+                placeholder="여행지를 검색하세요!"
+                ref={searchInputRef}
+              />
+              <button
+                className="bg-primary h-full w-12 rounded-full flex items-center justify-center text-white text-xl lg:text-2xl cursor-pointer"
+                onClick={handleSearch}
+                type="submit"
+              >
+                <FaSearch />
+              </button>
+            </form>
+          </div>
+          <div className="pb-2 lg:pb-5 text-2xl font-bold mt-10">여행지</div>
+          {status === "success" && !travelDestinationData.length ? (
+            <NotFoundTravelDestiantion
+              reloadTravelDestination={handleResetSearchTripPage}
+            /> // 검색결과 없을 떄
+          ) : (
+            <>
+              <div className="flex justify-end gap-x-2 pb-2">
+                {filterGroup.map((filter) => (
+                  <button
+                    key={filter.id}
+                    className={`${
+                      filter.id === focusFilter
+                        ? "text-black"
+                        : "text-rgb-primary"
+                    } text-sm transition-all duration-300 ease-in-out`}
+                    onClick={() => handleSortingFilter(filter.id)}
+                  >
+                    {filter.title}
+                  </button>
+                ))}
               </div>
-            )}
 
-            {/* 다음 페이지 로딩 스켈레톤 */}
-            {(status === "pending" || isFetchingNextPage) && (
-              <TravelDestinationSkeletons />
-            )}
-          </>
-        )}
-      </PageContainer>
-    </div>
+              {/* 검색 결과 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+                {travelDestinationData.map((destination) => (
+                  <Link
+                    href={`/search-trip/${destination.id}`}
+                    key={destination.id}
+                  >
+                    <AllTravelDestination
+                      representativeImg={destination.image}
+                      address={destination.address}
+                      title={destination.title}
+                      placeId={destination.id}
+                      rating={destination.averageRating}
+                    />
+                  </Link>
+                ))}
+                <div ref={moreRef} />
+              </div>
+              {currentPage >= 10 && hasNextPage && (
+                <div className="flex justify-center">
+                  <button
+                    className={`text-center bg-primary rounded-full py-4 px-8 text-white cursor-pointer outline-none mb-12`}
+                    onClick={handleMoreTravelDestination}
+                  >
+                    더보기
+                  </button>
+                </div>
+              )}
+
+              {/* 다음 페이지 로딩 스켈레톤 */}
+              {(status === "pending" || isFetchingNextPage) && (
+                <TravelDestinationSkeletons />
+              )}
+            </>
+          )}
+        </PageContainer>
+      </div>
+    </>
   );
 }

@@ -93,7 +93,7 @@ async function interceptorResponseRejected(err: AxiosError) {
     window.location.replace("/");
   }
 
-  return Promise.reject(new Error(err.message));
+  return Promise.reject(err); // 에러 객체를 그대로 반환
 }
 
 instance.interceptors.response.use(

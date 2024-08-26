@@ -49,17 +49,6 @@ export default function IconButtons({
     }
   }, [myCartData, placeId, likeNum]);
 
-  useEffect(() => {
-    if (myCartData?.data) {
-      const cartItem = myCartData.data.find(
-        (item: ICartTravelDestinationResponse) =>
-          item.place.placeId === placeId,
-      );
-
-      setIsAddedCart(!!cartItem);
-      setTotalSaveCount(cartItem ? cartItem.place.totalSaveCount : likeNum);
-    }
-  }, [myCartData, placeId, likeNum]);
 
   const handleAddCartTravelDestination = async (
     e: MouseEvent<HTMLOrSVGElement>,

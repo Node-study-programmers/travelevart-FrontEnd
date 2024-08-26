@@ -21,14 +21,19 @@ export default function CarouselContent({ content }: ICarouselContentProps) {
       {/* 이미지 컨테이너 */}
       <div className="absolute inset-0 overflow-hidden">
         <Image
-          fill
           src={content.image}
           alt={content.title}
-          className="object-cover"
+          layout="fill"
+          objectFit="cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+          priority={true}
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,...base64-encoded-data..."
           style={{
-            filter: "brightness(70%)", // 이미지 어두운 정도 조정
-            objectPosition: "center", // 이미지 위치 중앙으로 조정
+            filter: "brightness(70%)",
+            objectPosition: "center",
           }}
+          className="absolute inset-0"
         />
         <div
           className="absolute inset-0 bg-gradient-to-r from-transparent to-gray-900"

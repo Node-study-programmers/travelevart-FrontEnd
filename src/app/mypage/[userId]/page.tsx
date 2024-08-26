@@ -35,7 +35,7 @@ export default function UserPage({
           {focusTab === 0 && <MyPageSave userId={userId} />}
           <div className="mt-4 flex justify-end">
             {focusTab === 1 && (
-              <MyPageTravelRoute userId={userId} isNotMypage />
+              <MyPageTravelRoute userId={userId} isNotMypage={true} />
             )}
           </div>
           {focusTab === 2 && <MypageWritePost userId={userId} />}

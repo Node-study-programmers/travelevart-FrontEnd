@@ -14,10 +14,14 @@ export default function TravelRegionBanner({
         alt={TRAVEL_REGION_GROUP[regionCode].region}
         layout="fill"
         objectFit="cover"
+        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+        priority={true}
+        placeholder="blur"
+        blurDataURL="data:image/svg+xml;base64,...base64-encoded-data..."
         className="absolute inset-0"
       />
       <h1
-        className={`absolute inset-0 flex items-center justify-center text-white text-7xl lg:text-9xl ${logoFont.className}`}
+        className={`absolute font-bold inset-0 flex items-center justify-center text-white text-5xl lg:text-7xl ${logoFont.className}`}
       >
         {TRAVEL_REGION_GROUP[regionCode].region}
       </h1>

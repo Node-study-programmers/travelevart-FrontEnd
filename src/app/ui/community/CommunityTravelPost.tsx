@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PostBottoms, PostBottomsInPost } from "./PostBottoms";
 import Carousel from "../common/carousel/Carousel";
-import useGetDetailTravelData from "@/app/hooks/custom/useGetDetailTravelData";
 
 export interface PostContent {
   id: number;

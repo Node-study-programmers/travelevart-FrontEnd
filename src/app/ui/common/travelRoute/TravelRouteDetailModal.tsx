@@ -146,7 +146,10 @@ export default function TravelRouteDetailModal({
               </button>
             </Tooltip>
             <Tooltip content="공유하기" direction="bottom">
-              <button className="text-gray-600 hover:text-gray-800 p-2">
+              <button
+                className="text-gray-600 hover:text-gray-800 p-2"
+                onClick={() => router.push("/community/travel/newpost")}
+              >
                 <FaShareAlt size={20} />
               </button>
             </Tooltip>
@@ -169,7 +172,7 @@ export default function TravelRouteDetailModal({
         </div>
 
         <div className="mt-4 flex flex-col px-2 lg:px-8">
-          {data.items.map((day, dayIndex) => (
+          {data?.items?.map((day, dayIndex) => (
             <div
               id={day.date}
               key={day.date}

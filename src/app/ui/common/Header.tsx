@@ -6,7 +6,6 @@ import { NotifyDrawer } from "./Drawer";
 import { useState } from "react";
 import Tooltip from "./Tooltip";
 import useLogin from "@/app/hooks/auth/useLogin";
-import { IoMdNotificationsOutline } from "react-icons/io";
 import { MdLogin, MdLogout } from "react-icons/md";
 import { signIn } from "next-auth/react";
 import { logoFont } from "@/app/asset/fonts/fonts";

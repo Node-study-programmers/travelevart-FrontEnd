@@ -23,7 +23,7 @@ export default function Loading() {
           backgroundColor: "transparent",
           textAlign: "center",
           width: "100%",
-          maxWidth: "1000px",
+          maxWidth: "100vw",
           fontWeight: "bold",
           display: "flex",
           justifyContent: "center",

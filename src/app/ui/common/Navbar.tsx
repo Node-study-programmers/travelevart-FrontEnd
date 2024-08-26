@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RiCloseFill } from "react-icons/ri";
 import Link from "next/link";
@@ -24,6 +24,11 @@ export default function Navbar() {
   const handleShowMenu = () => {
     setOpen(!open);
   };
+
+  // 페이지가 바뀔 때마다 메뉴 닫기
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   // 특정 경로에서 Navbar를 숨김
   if (

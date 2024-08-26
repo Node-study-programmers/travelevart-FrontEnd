@@ -1,6 +1,5 @@
 "use client";
-import Image from "next/image";
-import dummyimg from "../../asset/img/mainBackground.jpg";
+
 import { PiNotePencil } from "react-icons/pi";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { TFocusBoard } from "@/lib/types";
@@ -75,8 +74,6 @@ export default function CommunityPage({ board }: CommunityPageProps) {
     fetchNextPage();
   };
 
-  console.log(postData);
-
   return (
     <PageContainer>
       <CategoryTabs
@@ -95,13 +92,14 @@ export default function CommunityPage({ board }: CommunityPageProps) {
             className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-lg rounded-xl"
             href={`/community/${focusBoard === "Stories" ? "travel" : "free"}/newpost`}
           >
-            <Image
+            {/* <Image
               src={dummyimg}
               alt="hi"
+              sizes="10px"
               width={40}
               height={40}
               className="rounded-full border-[1px] border-transparent w-10 h-10"
-            />
+            /> */}
             <span className="text-left break-all flex-grow overflow-hidden text-base lg:text-lg text-gray-500">
               {focusBoard === "Stories"
                 ? "나의 여행을 공유해보세요!"

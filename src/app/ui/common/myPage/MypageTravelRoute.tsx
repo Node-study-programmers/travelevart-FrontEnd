@@ -72,10 +72,6 @@ export default function MyPageTravelRoute({
     }
   };
 
-  if (!data) {
-    return <MyPageNotfound categoryTabs={"Travel route"} />;
-  }
-
   return (
     <div className="w-full flex flex-col gap-5 mb-10">
       {!isNotMypage && (
@@ -89,7 +85,6 @@ export default function MyPageTravelRoute({
           <div className="w-full h-[1px] bg-gray-300"></div>
         </>
       )}
-
       {isLoading ? (
         <div className="text-center">
           <LoadingModal />

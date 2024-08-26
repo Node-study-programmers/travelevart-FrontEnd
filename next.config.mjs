@@ -1,4 +1,3 @@
-import { withNextVideo } from "next-video/process";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -18,9 +17,8 @@ const nextConfig = {
       "encrypted-tbn0.gstatic.com",
       "img1.kakaocdn.net",
       "source.unsplash.com",
-      "img1.kakaocdn.net",
     ],
   },
 };
 
-export default withNextVideo(nextConfig);
+export default nextConfig;

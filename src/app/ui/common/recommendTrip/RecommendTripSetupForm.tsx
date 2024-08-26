@@ -182,7 +182,7 @@ export default function RecommendTripSetupForm() {
 
   // 추천 일정 응답 받을 경우 해당 일정 상세 페이지로 이동
   useEffect(() => {
-    if (!isLoading && data) {
+    if (!isLoading && data && isReadyRecommend) {
       dispatch(setRecommendTrip(data));
       handleResetForm();
       router.replace("/recommend-trip/schedule");

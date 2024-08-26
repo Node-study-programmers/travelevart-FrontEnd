@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { travelRegionGroup } from "../../travelDestination/TravelRegionBanner";
 import { FaCar, FaTrain } from "react-icons/fa";
 import {
   ISetupFormValues,
@@ -20,6 +19,7 @@ import TravelPlaceDetailModal from "./RecommendTripDetailModal";
 import { IRouteDetail } from "@/redux/slices/recommendTripSlice";
 import { TravelDetailResponse } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
 import { get } from "@/lib/api";
+import { TRAVEL_REGION_GROUP } from "@/constant";
 
 export default function RecommendTripSchedule() {
   const [focusDay, setFocusDay] = useState(0);
@@ -133,8 +133,6 @@ export default function RecommendTripSchedule() {
     }
   };
 
-  console.log(recommendTripDatas);
-
   return (
     <div className="flex flex-col">
       <div className="py-4">
@@ -149,7 +147,7 @@ export default function RecommendTripSchedule() {
         <div className="flex flex-col items-center gap-y-4">
           {/* 추천 지역 대표 이미지 */}
           <Image
-            src={travelRegionGroup[recommendTripDatas.regions[0].id].imageUrl}
+            src={TRAVEL_REGION_GROUP[recommendTripDatas.regions[0].id].imageUrl}
             alt="dummy image"
             width={100}
             height={100}
@@ -169,14 +167,14 @@ export default function RecommendTripSchedule() {
       {/* 날짜별 여행 루트 보여줄 지도 */}
       <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl mt-12">
         <DynamicNaverMap
-          mapx={recommendTripDatas.routes[focusDay].detail[0].mapx} // 첫 번째 지점의 x 좌표
-          mapy={recommendTripDatas.routes[focusDay].detail[0].mapy} // 첫 번째 지점의 y 좌표
-          address={recommendTripDatas.routes[focusDay].detail[0].address} // 첫 번째 지점의 주소
+          mapx={recommendTripDatas.routes[focusDay].detail[0].mapx}
+          mapy={recommendTripDatas.routes[focusDay].detail[0].mapy}
+          address={recommendTripDatas.routes[focusDay].detail[0].address}
           points={recommendTripDatas.routes[focusDay].detail.map(
             (dayDetailData, idx) => ({
               mapx: dayDetailData.mapx,
               mapy: dayDetailData.mapy,
-              stepNumber: idx + 1, // 스텝 번호 추가
+              stepNumber: idx + 1,
             }),
           )}
         />

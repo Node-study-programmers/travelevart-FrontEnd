@@ -49,6 +49,7 @@ export default function IconButtons({
     }
   }, [myCartData, placeId, likeNum]);
 
+
   const handleAddCartTravelDestination = async (
     e: MouseEvent<HTMLOrSVGElement>,
   ) => {

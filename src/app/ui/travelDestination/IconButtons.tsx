@@ -38,8 +38,8 @@ export default function IconButtons({
   );
 
   useEffect(() => {
-    if (myCartData) {
-      const cartItem = myCartData.find(
+    if (myCartData?.data) {
+      const cartItem = myCartData.data.find(
         (item: ICartTravelDestinationResponse) =>
           item.place.placeId === placeId,
       );
@@ -50,8 +50,8 @@ export default function IconButtons({
   }, [myCartData, placeId, likeNum]);
 
   useEffect(() => {
-    if (myCartData) {
-      const cartItem = myCartData.find(
+    if (myCartData?.data) {
+      const cartItem = myCartData.data.find(
         (item: ICartTravelDestinationResponse) =>
           item.place.placeId === placeId,
       );

@@ -4,6 +4,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 
 const instance = axios.create({
@@ -31,6 +32,7 @@ function interceptorResponseFulfilled(res: AxiosResponse) {
     return res.data;
   }
 
+  console.log(res.status);
   return Promise.reject(res.data);
 }
 
@@ -56,7 +58,7 @@ async function interceptorResponseRejected(err: AxiosError) {
     const refreshToken = localStorage.getItem(LOCAL_STORAGE_KEY.refreshToken);
 
     if (!refreshToken) {
-      window.location.replace("/login");
+      window.location.replace("/auth/login");
       return Promise.reject(new Error("No refresh token available"));
     }
 
@@ -68,6 +70,7 @@ async function interceptorResponseRejected(err: AxiosError) {
       // 원래 요청을 새로운 accessToken으로 다시 시도
       if (err.config) {
         err.config.headers.Authorization = `Bearer ${newAccessToken}`;
+
         return axios(err.config);
       } else {
         return Promise.reject(
@@ -77,7 +80,7 @@ async function interceptorResponseRejected(err: AxiosError) {
     } catch (tokenError) {
       localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
       localStorage.removeItem(LOCAL_STORAGE_KEY.refreshToken);
-      window.location.replace("/login");
+      window.location.replace("/auth/login");
       return Promise.reject(tokenError);
     }
   }

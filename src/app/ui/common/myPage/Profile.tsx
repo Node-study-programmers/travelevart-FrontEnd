@@ -26,7 +26,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="relative flex flex-col items-start w-full md:w-[30%] md:justify-center bg-white rounded-xl shadow-md p-6 lg:mt-5 md:mt-0">
+    <div className="relative flex flex-col items-center w-full md:w-[30%] md:justify-center bg-white rounded-xl shadow-md p-6 lg:mt-5 md:mt-0">
       {profileImg ? (
         <Image
           src={profileImg}
@@ -38,8 +38,8 @@ export default function Profile() {
       ) : (
         <div className="w-20 h-20 rounded-full bg-gray-200 mb-4" />
       )}
-      <p className="text-base font-semibold">닉네임</p>
-      <p className="text-sm text-rgb-secondary">{userName}</p>
+      {/* <p className="text-base font-semibold">닉네임</p> */}
+      <p className="text-base text-black font-semibold">{userName}</p>
       <button
         className="cursor-pointer bg-primary text-white rounded-lg py-2 px-4 mt-4 w-full md:text-sm"
         onClick={() => {

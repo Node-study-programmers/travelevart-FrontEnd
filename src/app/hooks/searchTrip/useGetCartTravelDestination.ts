@@ -16,10 +16,13 @@ export interface ICartTravelDestinationResponse {
   place: ICartPlace;
 }
 
-export default function useGetCartTravelDestintaion(enabled: boolean) {
+export default function useGetCartTravelDestintaion(
+  enabled: boolean,
+  userId: number | undefined,
+) {
   return useQuery<ICartTravelDestinationResponse[]>({
     queryKey: ["cartTravelDestination"],
-    queryFn: () => get(`${process.env.NEXT_PUBLIC_BASE_URL}/carts`),
+    queryFn: () => get(`${process.env.NEXT_PUBLIC_BASE_URL}/carts/${userId}`),
     enabled,
   });
 }

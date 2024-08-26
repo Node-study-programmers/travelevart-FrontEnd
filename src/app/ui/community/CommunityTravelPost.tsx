@@ -11,6 +11,7 @@ export interface PostContent {
   text: string;
   image: string;
   detailtravel_id: number;
+  title: string;
 }
 
 export interface ICommunityTravelPostProps {

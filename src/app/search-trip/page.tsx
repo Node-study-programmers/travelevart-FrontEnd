@@ -140,7 +140,7 @@ export default function SearchTripPage() {
             onSubmit={handleSearch}
           >
             <input
-              className="flex-grow h-full outline-none text-base lg:text-lg"
+              className="flex-grow h-full outline-none text-base lg:text-lg p-4"
               placeholder="여행지를 검색하세요!"
               ref={searchInputRef}
             />

@@ -31,25 +31,37 @@ export default function DetailCustomPage({
   const { mutate: postMutate, isPending: isPosting } = usePostCustomData(
     params.id,
   );
-  const { mutate: patchMutate } = usePatchDetailData(params.id);
-  const [items, setItems] = useState<ITravelItems>({});
-  const { data, isLoading, isError, error } = useGetDetailCustomData(params.id);
-  const [openSearch, setOpenSearch] = useState(false);
-  const router = useRouter();
-
-  // setup 페이지에서 설정한 옵션 불러오기
   const travelRoute = useSelector((state: RootState) => state.travelRoute);
 
   const dateRange = generateDateRange(
     travelRoute.startDate,
     travelRoute.endDate,
   );
+  const { mutate: patchMutate } = usePatchDetailData(params.id);
+  const [items, setItems] = useState<ITravelItems>({});
+  const { data, isLoading, isError, error } = useGetDetailCustomData(
+    params.id,
+    travelRoute.startDate,
+    travelRoute.endDate,
+  );
+  const [openSearch, setOpenSearch] = useState(false);
+  const router = useRouter();
 
   function transformData(apiResponse: { items: ITravelItem[] }): ITravelItems {
     const transformed: ITravelItems = {};
-    apiResponse.items.forEach((item) => {
-      transformed[item.date] = item.details;
+
+    // dateRange의 모든 날짜에 대해 빈 배열을 초기화합니다
+    dateRange.forEach((date) => {
+      transformed[date] = [];
     });
+
+    // API 응답의 항목으로 배열을 채웁니다
+    apiResponse.items.forEach((item) => {
+      if (transformed[item.date]) {
+        transformed[item.date] = item.details;
+      }
+    });
+
     return transformed;
   }
 
@@ -60,7 +72,7 @@ export default function DetailCustomPage({
 
     let currentDate = start;
     while (currentDate <= end) {
-      dates.push(currentDate.toISOString().split("T")[0]); // Format YYYY-MM-DD
+      dates.push(currentDate.toISOString().split("T")[0]);
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
@@ -96,7 +108,6 @@ export default function DetailCustomPage({
     if (window.confirm("변경 사항을 저장하시겠습니까?")) {
       const formattedData = formatItems();
 
-      // 조건에 따라 적절한 mutate 함수 선택
       const mutateFunction = isError ? postMutate : patchMutate;
 
       mutateFunction(
@@ -115,13 +126,6 @@ export default function DetailCustomPage({
   };
 
   useEffect(() => {
-    if (data) {
-      const transformedItems = transformData(data);
-      setItems(transformedItems);
-    }
-  }, [data, isLoading]);
-
-  useEffect(() => {
     if (Object.keys(items).length === 0 && dateRange.length > 0) {
       const initialItems: ITravelItems = {};
       dateRange.forEach((date) => {
@@ -129,11 +133,19 @@ export default function DetailCustomPage({
       });
       setItems(initialItems);
     }
-  }, [dateRange]);
+  }, [dateRange, items]);
+
+  useEffect(() => {
+    if (data) {
+      const transformedItems = transformData(data);
+      setItems(transformedItems);
+    }
+  }, [data, isLoading]);
 
   if (isLoading) {
     return <LoadingModal />;
   }
+  console.log(items);
 
   return (
     <div className="flex justify-center min-h-screen bg-gray-200">

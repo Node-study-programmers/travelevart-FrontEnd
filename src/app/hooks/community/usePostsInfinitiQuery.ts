@@ -46,13 +46,9 @@ export default function usePostInfinitiQuery({
   ): Promise<PostResponseData> {
     try {
       const response = await get<PostResponseData>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/posts?target=${focusBoard}&searchName=${searchName}&page=${pageParam}&pageSize=3`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
+        `${process.env.NEXT_PUBLIC_BASE_URL}/posts?target=${focusBoard}&searchName=${searchName}&page=${pageParam}&pageSize=5`,
       );
+
       return response;
     } catch (error) {
       const errorMessage =

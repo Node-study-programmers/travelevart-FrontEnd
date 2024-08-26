@@ -7,9 +7,10 @@ import CommunityCarousel from "./CommunityCarousel";
 
 interface ICarouselProps {
   contents: ICarouselContents[] | PostContent[];
+  travelRoute_id?: string;
 }
 
-export default function Carousel({ contents }: ICarouselProps) {
+export default function Carousel({ contents, travelRoute_id }: ICarouselProps) {
   const [currentActiveContent, setCurrentActiveContent] = useState(0);
 
   const handlePrevContent = (event?: React.MouseEvent) => {

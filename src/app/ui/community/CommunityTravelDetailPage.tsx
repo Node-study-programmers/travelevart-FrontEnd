@@ -10,9 +10,11 @@ import { BiFork } from "react-icons/bi";
 import useForkPost from "@/app/hooks/community/useForkPost";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingModal from "../common/LoadingModal";
+import { IContent } from "./CommunityPopularPost";
 
 interface ICommunityTravelDetailProps {
-  contents: PostContent[];
+  contents: IContent[];
   travelRoute_id: number;
 }
 
@@ -25,7 +27,7 @@ export default function CommunityTravelDetailPage({
   const [showMore, setShowMore] = useState<boolean[]>([]);
 
   if (isLoading) {
-    return <Loading />;
+    return <LoadingModal />;
   }
 
   if (!data) {
@@ -74,11 +76,11 @@ export default function CommunityTravelDetailPage({
                   key={detailIndex}
                   className="relative flex flex-col lg:mb-20"
                 >
-                  <div className="absolute top-4 right-4 bg-gray-800 text-white text-xs px-2 py-1 rounded-lg shadow-md">
+                  <div className="absolute top-4 right-4 bg-secondary text-white text-xs px-2 py-1 rounded-lg shadow-md">
                     {detailIndex + 1}
                   </div>
 
-                  <div className="bg-gray-50 shadow-lg rounded-t-lg overflow-hidden flex flex-col sm:flex-row lg:pb-10">
+                  <div className="bg-gray-50 shadow-lg rounded-t-lg overflow-hidden flex flex-col sm:flex-row lg:pb-10 lg:p-6">
                     <div className="relative w-full sm:w-1/2 h-0 pb-[56.25%]">
                       <Image
                         src={
@@ -107,10 +109,11 @@ export default function CommunityTravelDetailPage({
 
                   {/* Content section */}
                   {matchingContent && (
-                    <div className="bg-gray-50 shadow-lg rounded-b-lg p-6">
-                      <h2 className="text-xl font-semibold mb-4">여행 기록</h2>
+                    <div className="bg-gray-50 shadow-lg rounded-b-lg p-6 mb-5">
+                      <h2 className="text-xl font-semibold">여행 기록</h2>
+                      <div className="w-full h-[1px] bg-gray-300 my-3"></div>
                       {matchingContent.image && (
-                        <div className="relative w-full h-0 pb-[56.25%] mb-4 rounded-lg overflow-hidden">
+                        <div className="relative w-full h-0 pb-[56.25%] mb-4 rounded-lg overflow-hidden mt-4">
                           <Image
                             priority
                             src={

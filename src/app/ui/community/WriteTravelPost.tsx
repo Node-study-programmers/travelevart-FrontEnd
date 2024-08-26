@@ -7,6 +7,7 @@ import useUserGetTravelRoute, {
   TravelRoutes,
 } from "@/app/hooks/mypage/useGetTravelRoute";
 import Pagination from "../common/Pagination";
+import LoadingModal from "../common/LoadingModal";
 
 export default function WriteTravelPost() {
   const { data: userData } = useSession();
@@ -62,7 +63,7 @@ export default function WriteTravelPost() {
       {/* 여행 경로 리스트 */}
       <div className="space-y-4 mt-6">
         {isLoading ? (
-          <div className="text-center">로딩 중...</div>
+          <LoadingModal />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
             {data?.routes.map((route) => (

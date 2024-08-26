@@ -32,9 +32,9 @@ export default function CommunityPopularPost({
 }: ICommunityPopularPostProps) {
   const getLinkPath = () => {
     switch (focusBoard) {
-      case "자유게시판":
+      case "Questions":
         return `/community/free/${id}`;
-      case "여행게시판":
+      case "Stories":
         return `/community/travel/${id}`;
       default:
         return "/";

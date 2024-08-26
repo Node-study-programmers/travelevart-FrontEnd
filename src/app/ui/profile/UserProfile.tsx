@@ -33,7 +33,7 @@ export default function UserProfile({ userId }: { userId: number }) {
   }
 
   return (
-    <div className="relative flex flex-col items-start w-full md:w-[30%] md:justify-center bg-white rounded-xl shadow-md p-6 lg:mt-5 md:mt-0">
+    <div className="relative flex flex-col items-center w-full md:w-[30%] md:justify-center bg-white rounded-xl shadow-md p-6 lg:mt-5 md:mt-0">
       {profileImg && (
         <Image
           src={profileImg}
@@ -43,8 +43,8 @@ export default function UserProfile({ userId }: { userId: number }) {
           height={80}
         />
       )}
-      <p className="text-base font-semibold">닉네임</p>
-      <p className="text-sm text-rgb-secondary">{userName}</p>
+      {/* <p className="text-base font-semibold">닉네임</p> */}
+      <p className="text-base text-black font-semibold">{userName}</p>
       {isMyProfile && (
         <button
           className="cursor-pointer bg-primary text-white rounded-lg py-2 px-4 mt-4 w-full md:text-sm"

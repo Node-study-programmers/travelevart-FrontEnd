@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import useGetCartTravelDestintaion, {
   ICartTravelDestinationResponse,
 } from "@/app/hooks/searchTrip/useGetCartTravelDestination";
+import { useSession } from "next-auth/react";
 
 interface IconButtonsProps {
   likeNum: number;
@@ -30,7 +31,11 @@ export default function IconButtons({
   const [totalSaveCount, setTotalSaveCount] = useState(likeNum);
   const [isAddedCart, setIsAddedCart] = useState(isSaved);
   const isLogin = Boolean(localStorage.getItem("accessToken"));
-  const { data: myCartData } = useGetCartTravelDestintaion(isLogin);
+  const { data: userData } = useSession();
+  const { data: myCartData } = useGetCartTravelDestintaion(
+    isLogin,
+    userData?.user?.userId,
+  );
 
   useEffect(() => {
     if (myCartData) {

@@ -2,16 +2,18 @@
 
 import { logoFont } from "@/app/asset/fonts/fonts";
 import useLogin from "@/app/hooks/auth/useLogin";
-
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { RiKakaoTalkFill } from "react-icons/ri";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoginError, setIsLoginError] = useState(false);
   const { handleLogin } = useLogin();
+  const router = useRouter();
 
   const {
     register,
@@ -31,6 +33,13 @@ export default function LoginPage() {
         ...data,
         redirect: false,
       });
+
+      if (!result?.ok) {
+        setIsLoginError(true); // 로그인 에러 발생
+      } else {
+        setIsLoginError(false);
+        router.push("/");
+      }
     } catch (error) {
       console.error("Login error:", error);
     } finally {
@@ -88,6 +97,7 @@ export default function LoginPage() {
                     })}
                     disabled={isLoading}
                     className="border border-gray-300 p-2 w-full rounded-lg py-3"
+                    autoComplete="off"
                   />
                   {errors.password && (
                     <p className="text-red-500 text-sm">
@@ -96,6 +106,13 @@ export default function LoginPage() {
                   )}
                 </div>
 
+                <div className="flex justify-center">
+                  {isLoginError && (
+                    <p className="text-red-500 text-sm">
+                      아이디 또는 비밀번호를 다시 확인해주세요.
+                    </p>
+                  )}
+                </div>
                 <button
                   type="submit"
                   disabled={isLoading}

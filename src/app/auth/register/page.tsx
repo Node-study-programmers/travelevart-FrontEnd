@@ -1,13 +1,12 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import useLogin from "@/app/hooks/auth/useLogin";
-
 import { RiKakaoTalkFill } from "react-icons/ri";
 import Link from "next/link";
 import { post } from "@/lib/api";
+import { toast } from "react-toastify";
 import { logoFont } from "@/app/asset/fonts/fonts";
 
 interface SignupFormInputs {
@@ -18,6 +17,7 @@ interface SignupFormInputs {
 }
 
 export default function SignupPage() {
+  const [signUpErrorMessage, setSignUpErrormessage] = useState("");
   const { handleLogin } = useLogin();
   const router = useRouter();
   const {
@@ -36,14 +36,18 @@ export default function SignupPage() {
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (body) => {
     try {
-      await post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/local/join`, body, {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      });
-      router.push("/auth/login");
+      const response = await post<SignupFormInputs>(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/local/join`,
+        body,
+      );
+
+      setSignUpErrormessage("");
+
+      toast.info("회원가입 완료되었습니다.", { autoClose: 1500 });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      router.replace("/");
     } catch (error) {
-      console.log(error);
+      setSignUpErrormessage("이미 사용중인 이메일입니다.");
     }
   };
 
@@ -110,6 +114,9 @@ export default function SignupPage() {
                 {errors.email && (
                   <p className="text-red-500">{errors.email.message}</p>
                 )}
+                {signUpErrorMessage.length > 0 && (
+                  <p className="text-red-500">{signUpErrorMessage}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="password" className="block pb-2">
@@ -143,6 +150,7 @@ export default function SignupPage() {
                       "비밀번호가 일치하지 않습니다.",
                   })}
                   className="border border-gray-300 p-2 w-full rounded-lg py-3"
+                  autoComplete="off"
                 />
                 {errors.confirmPassword && (
                   <p className="text-red-500">

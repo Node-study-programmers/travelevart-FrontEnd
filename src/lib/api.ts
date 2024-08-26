@@ -67,8 +67,16 @@ async function interceptorResponseRejected(err: AxiosError) {
 
       // 원래 요청을 새로운 accessToken으로 다시 시도
       if (err.config) {
-        err.config.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axios(err.config);
+        const updatedConfig = {
+          ...err.config,
+          headers: {
+            ...err.config.headers,
+            Authorization: `Bearer ${newAccessToken}`,
+          },
+        };
+
+        // 재요청
+        return axios(updatedConfig);
       } else {
         return Promise.reject(
           new Error("Original request config is not available"),
@@ -90,7 +98,7 @@ async function interceptorResponseRejected(err: AxiosError) {
     window.location.replace("/");
   }
 
-  return Promise.reject(new Error(err.message));
+  return Promise.reject(err); // 에러 객체를 그대로 반환
 }
 
 instance.interceptors.response.use(

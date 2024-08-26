@@ -165,7 +165,7 @@ export default function RecommendTripSchedule() {
         </div>
       </div>
       {/* 날짜별 여행 루트 보여줄 지도 */}
-      <div className="w-full h-64 lg:h-96 bg-gray-300 rounded-2xl mt-12">
+      <div className="w-full h-40 sm:h-48 md:h-64 lg:h-96 bg-gray-300 rounded-2xl mt-12">
         <DynamicNaverMap
           mapx={recommendTripDatas.routes[focusDay].detail[0].mapx}
           mapy={recommendTripDatas.routes[focusDay].detail[0].mapy}
@@ -182,7 +182,7 @@ export default function RecommendTripSchedule() {
       {/* 날짜별 추천 여행지 */}
       <div className="py-8 px-4">
         {/* Day */}
-        <div className="flex flex-wrap gap-x-2 gap-y-4 mb-4">
+        <div className="flex flex-wrap gap-x-2 gap-y-4 pt-32 my-4 lg:pt-0 lg:mt-0">
           {recommendTripDatas.routes.map((recommenTripData, idx) => (
             <div
               key={recommenTripData.day}

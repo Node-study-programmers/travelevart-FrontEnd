@@ -4,7 +4,7 @@ interface INaverMapProps {
   mapx: number;
   mapy: number;
   address: string;
-  points?: { mapx: number; mapy: number; stepNumber: number }[]; // 스텝 번호 추가
+  points?: { mapx: number; mapy: number; stepNumber: number }[]; // 스텝 번호
 }
 
 export default function NaverMap({
@@ -46,10 +46,9 @@ export default function NaverMap({
             window.open(naverMapLink, "_blank");
           });
 
-          // 기본 중심으로 지도를 조정
           map.setCenter(new naver.maps.LatLng(mapy, mapx));
         } else {
-          // 좌표가 있을 때, 모든 마커와 경로를 추가
+          // 좌표가 있을 때, 모든 경로 표시
           let swLat = Infinity;
           let swLng = Infinity;
           let neLat = -Infinity;
@@ -58,7 +57,7 @@ export default function NaverMap({
           points.forEach((point) => {
             const { mapx, mapy, stepNumber } = point;
             const latLng = new naver.maps.LatLng(mapy, mapx);
-            const color = stepColors[stepNumber] || "#FFFFFF"; // 기본 색상 설정
+            const color = stepColors[stepNumber] || "#FFFFFF";
 
             // LatLngBounds 범위 계산
             if (mapy < swLat) swLat = mapy;
@@ -76,13 +75,13 @@ export default function NaverMap({
             });
           });
 
-          // LatLngBounds 객체 생성
+          // LatLngBounds
           bounds = new naver.maps.LatLngBounds(
             new naver.maps.LatLng(swLat, swLng),
             new naver.maps.LatLng(neLat, neLng),
           );
 
-          // Polyline 생성
+          // Polyline
           const pathCoordinates = points.map(
             (point) => new naver.maps.LatLng(point.mapy, point.mapx),
           );
@@ -96,13 +95,10 @@ export default function NaverMap({
             strokeStyle: "dash",
           });
 
-          // 모든 마커를 포함하도록 지도를 조정합니다.
           if (bounds) {
             map.fitBounds(bounds);
           }
         }
-
-        // 스타일을 설정하기 위해 추가하는 방식
         const existingStyle = document.getElementById("step-number-style");
         if (!existingStyle) {
           const style = document.createElement("style");

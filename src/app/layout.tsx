@@ -8,6 +8,7 @@ import AuthSession from "./auth/AuthSession";
 import QueryProvider from "./QueryProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SEO from "./seo/SEO";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,6 +25,7 @@ export default async function RootLayout({
       <SessionWrapper>
         <AuthSession>
           <html lang="en">
+            {/* <SEO /> */}
             <body className="font-noto">
               <ToastContainer
                 position="top-center"

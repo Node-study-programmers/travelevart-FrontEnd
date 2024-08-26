@@ -66,9 +66,9 @@ export default function Header() {
       <div className="max-w-[1280px] w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-5">
         <Link
           href="/"
-          className={`${logoFont.className} text-3xl flex items-center gap-2 cursor-pointer text-blue-500`}
+          className={`${logoFont.className} text-3xl flex items-center gap-2 cursor-pointer`}
         >
-          <IoEarthOutline className="text-blue-500" />
+          <IoEarthOutline className="" />
           TravelevarT
         </Link>
         <div className="flex gap-5 items-center">

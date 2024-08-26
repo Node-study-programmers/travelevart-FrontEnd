@@ -25,11 +25,6 @@ export default function usePopularPost({ focusBoard }: IPopularPostProps) {
     try {
       const response = await get<PopularPostResponse>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/posts/popular?target=${focusBoard}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
       );
 
       return response;

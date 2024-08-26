@@ -62,7 +62,9 @@ export default function Select({
           type="button"
           onClick={handleToggleList}
         >
-          <label className="absolute z-10 pointer-events-none cursor-pointer top-2 left-5 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-primary">
+          <label
+            className={`absolute top-1/2 -translate-y-1/2 left-5 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-primary transition-transform duration-200 ${selectValue ? "transform -translate-y-4 scale-75" : ""}`}
+          >
             {label}
           </label>
 
@@ -72,7 +74,7 @@ export default function Select({
             {selectValue || placeholder}
           </div>
           <div
-            className={`absolute right-3 w-4 h-4 text-primary transition-transform duration-200 ${listOpen ? "rotate-180" : ""}`}
+            className={`hidden lg:block lg:absolute right-3 w-4 h-4 text-primary transition-transform duration-200 ${listOpen ? "rotate-180" : ""}`}
           >
             <MdKeyboardArrowDown />
           </div>

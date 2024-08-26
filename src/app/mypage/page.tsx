@@ -8,6 +8,7 @@ import MyPageTravelRoute from "../ui/common/myPage/MypageTravelRoute";
 import { useSession } from "next-auth/react";
 import MyPageSave from "../ui/common/myPage/MypageSave";
 import MypageWritePost from "../ui/common/myPage/MypageWritePost";
+import getCurrentUser from "@/util/getCurrentUser";
 
 const categories = [
   { id: 0, title: "찜" },
@@ -31,7 +32,12 @@ export default function MyPage() {
           />
           {focusTab === 0 && <MyPageSave userId={data?.user.userId} />}
           <div className="mt-4 flex justify-end">
-            {focusTab === 1 && <MyPageTravelRoute userId={data?.user.userId} />}
+            {focusTab === 1 && (
+              <MyPageTravelRoute
+                userId={data?.user.userId}
+                isNotMypage={false}
+              />
+            )}
           </div>
           {focusTab === 2 && <MypageWritePost userId={data?.user.userId} />}
         </div>

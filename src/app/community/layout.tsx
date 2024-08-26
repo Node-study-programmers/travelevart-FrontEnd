@@ -1,4 +1,3 @@
-import SEO from "../seo/SEO";
 import Header from "../ui/common/Header";
 
 interface LayoutProps {

@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import WriteTravelPostSecondStep from "./WriteTravelPostSecondStep";
 import { useSession } from "next-auth/react";
@@ -8,6 +9,7 @@ import useUserGetTravelRoute, {
 } from "@/app/hooks/mypage/useGetTravelRoute";
 import Pagination from "../common/Pagination";
 import LoadingModal from "../common/LoadingModal";
+import Link from "next/link";
 
 export default function WriteTravelPost() {
   const { data: userData } = useSession();
@@ -64,9 +66,9 @@ export default function WriteTravelPost() {
       <div className="space-y-4 mt-6">
         {isLoading ? (
           <LoadingModal />
-        ) : (
+        ) : data?.routes?.length ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
-            {data?.routes.map((route) => (
+            {data.routes.map((route) => (
               <div
                 key={route.id}
                 className={`relative h-40 bg-white border rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-shadow ${
@@ -94,6 +96,16 @@ export default function WriteTravelPost() {
                 </div>
               </div>
             ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-500">
+            <p>여행 경로가 없습니다.</p>
+            <Link
+              href="/travel-route/setup"
+              className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-colors"
+            >
+              여행 경로 만들러 가기
+            </Link>
           </div>
         )}
       </div>

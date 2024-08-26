@@ -32,7 +32,6 @@ export default function SearchTripPage() {
   const [focusFilter, setFocusFilter] = useState<string>("view");
   const [regionCode, setRegionCode] = useState<number>(0);
   const [searchName, setSearchName] = useState<string>("");
-  const [regionImage, setRegionImage] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -50,7 +49,7 @@ export default function SearchTripPage() {
   const { data: regionData } = useGetRegionCode();
 
   useEffect(() => {
-    if (currentPage >= 10) setIsDefaultLoadedPage(true); // 10페이지까지 자동 무한스크롤
+    if (currentPage >= 10) setIsDefaultLoadedPage(true);
   }, [currentPage]);
 
   // URL 쿼리 파라미터 업데이트
@@ -119,7 +118,7 @@ export default function SearchTripPage() {
         <PageContainer className="relative">
           <div
             style={{ transition: "top 0.3s ease" }}
-            className="sticky w-full max-w-2xl z-[101] lg:h-16 flex -top-0 mx-auto transition-all duration-1000 bg-white h-[56px]"
+            className="sticky w-full max-w-2xl z-[120] lg:h-16 flex top-0 mx-auto transition-all duration-1000 bg-white h-[56px]"
           >
             <Select
               className="h-full"
@@ -156,7 +155,7 @@ export default function SearchTripPage() {
               </button>
             </form>
           </div>
-          <div className="pb-2 lg:pb-5 text-2xl font-bold mt-10">여행지</div>
+          <div className="pb-2 lg:pb-5 text-2xl font-bold mt-20">여행지</div>
           {status === "success" && !travelDestinationData.length ? (
             <NotFoundTravelDestiantion
               reloadTravelDestination={handleResetSearchTripPage}

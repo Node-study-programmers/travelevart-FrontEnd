@@ -34,5 +34,6 @@ export default function useUserGetTravelRoute({
       get<TravelRoutes>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/travelroutes/${userId}?page=${page}&pageSize=${pageSize}`,
       ),
+    retry: 0,
   });
 }

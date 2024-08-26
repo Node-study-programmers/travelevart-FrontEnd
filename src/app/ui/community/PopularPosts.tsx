@@ -14,7 +14,7 @@ export default function PopularPosts({
   focusBoard,
   handleNavigateToList,
 }: PopularPostsProps) {
-  const { data: popularPostData = [], isLoading: isPopularPostLoading } =
+  const { data: popularPostData, isLoading: isPopularPostLoading } =
     usePopularPost({ focusBoard });
 
   return (

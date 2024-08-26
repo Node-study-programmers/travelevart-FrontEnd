@@ -1,7 +1,9 @@
 "use client";
-
 import { LOCAL_STORAGE_KEY } from "@/constant";
+
+import getCurrentUser from "@/util/getCurrentUser";
 import { useSession } from "next-auth/react";
+
 import React, { useEffect } from "react";
 
 interface AuthSessionProps {
@@ -9,8 +11,8 @@ interface AuthSessionProps {
 }
 
 export default function AuthSession({ children }: AuthSessionProps) {
-  const { status, data } = useSession();
-
+  // const currentUser = await getCurrentUser();
+  const { data, status } = useSession();
   useEffect(() => {
     if (status === "authenticated" && data.user) {
       localStorage.setItem(

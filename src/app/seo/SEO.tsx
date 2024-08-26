@@ -11,14 +11,13 @@ export default function SEO({ title, description }: SEOProps) {
     <head>
       <title>{TITLE}</title>
       <meta name="description" content={DESCRIPTION} />
-      <meta property="og:type" content="website" />
       <meta property="og:title" content={TITLE} />
       <meta property="og:description" content={DESCRIPTION} />
       {/* url */}
       <meta property="og:url" content="" />
       <meta property="og:locale" content="ko_KR" />
       {/* image */}
-      <meta property="og:image" content="" />
+      <meta property="og:image" content="/favicon.ico" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="apple-touch-icon" href="/favicon.ico" />
     </head>

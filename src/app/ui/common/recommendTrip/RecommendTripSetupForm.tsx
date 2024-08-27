@@ -287,6 +287,7 @@ export default function RecommendTripSetupForm() {
                   <DateRangePicker
                     label=""
                     isRequired
+                    minValue={parseDate(initialStartDate)}
                     defaultValue={{
                       start: parseDate(dateRange.startDate),
                       end: parseDate(dateRange.endDate),
@@ -296,14 +297,19 @@ export default function RecommendTripSetupForm() {
                     onChange={handleDateRange}
                     calendarProps={{
                       classNames: {
-                        base: "bg-[whitesmoke] shadow-md rounded-lg",
+                        base: "bg-white shadow-md rounded-lg",
                         headerWrapper: "py-4",
                         cellButton: [
-                          "data-[today=true]:bg-primary rounded-md",
-                          "data-[range-start=true]:bg-primary text-white rounded-l-md",
-                          "data-[range-end=true]:bg-primary text-white rounded-r-md",
-                          "data-[range-selection=true]:bg-primary text-primary-dark",
+                          "data-[today=true]:bg-[#00A9FF] text-white rounded-md",
+                          "data-[range-start=true]:bg-[#00A9FF] text-white rounded-l-md",
+                          "data-[range-end=true]:bg-[#00A9FF] text-white rounded-r-md",
+                          "data-[range-selection=true]:bg-[#89CFF3] text-[#00A9FF]",
+                          "data-[range-selection=true]:bg-[#A0E9FF] text-[#00A9FF]",
+                          "data-[range-selection=true]:bg-[#CDF5FD] text-[#00A9FF]",
+                          "data-[today=true]:text-white",
+                          "data-[range-selection=true]:text-[#00A9FF]",
                         ],
+                        cell: "hover:bg-[#CDF5FD] hover:text-[#00A9FF]",
                       },
                     }}
                   />
@@ -366,6 +372,7 @@ export default function RecommendTripSetupForm() {
                       placeholder="함께 갈 인원 수 입력"
                       className="w-full p-4 bg-white shadow-xl rounded-xl outline-none"
                       value={people || ""}
+                      min={1}
                       onChange={(e) =>
                         setPeople(
                           e.target.value ? parseInt(e.target.value) : null,

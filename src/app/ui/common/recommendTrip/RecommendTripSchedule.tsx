@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { FaCar, FaTrain } from "react-icons/fa";
 import {
@@ -20,6 +20,7 @@ import { IRouteDetail } from "@/redux/slices/recommendTripSlice";
 import { TravelDetailResponse } from "@/app/hooks/searchTrip/useGetDetailTravelPage";
 import { get } from "@/lib/api";
 import { TRAVEL_REGION_GROUP } from "@/constant";
+import { toast } from "react-toastify";
 
 export default function RecommendTripSchedule() {
   const [focusDay, setFocusDay] = useState(0);
@@ -37,6 +38,7 @@ export default function RecommendTripSchedule() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<Pick<ISetupFormValues, "travelRouteName" | "travelRouteRange">>({
     defaultValues: {
@@ -78,10 +80,19 @@ export default function RecommendTripSchedule() {
     recommendTripDatas.routes[recommendTripDatas.routes.length - 1].detail[0]
       .day;
 
+  // travelRouteRange 최신화
+  useEffect(() => {
+    setValue("travelRouteRange", travelRouteRange);
+  }, [travelRouteRange, setValue]);
+
   // 추천 데이터 travleroute 저장
   const handleSaveRecommendTrip = (
     data: Pick<ISetupFormValues, "travelRouteName" | "travelRouteRange">,
   ) => {
+    console.log("Form data:", data);
+
+    toast.success("TravelRoute에 추가되었습니다.");
+
     const transformedDetailRoute = recommendTripDatas.routes.flatMap((route) =>
       route.detail.map((dayDetailData) => ({
         placeId: dayDetailData.placeId,
@@ -98,7 +109,8 @@ export default function RecommendTripSchedule() {
     mutate({
       travelName: data.travelRouteName,
       travelrouteRange: data.travelRouteRange,
-      transportOption: recommendTripDatas.transportOption,
+      transportOption:
+        recommendTripDatas.transportOption === "대중교통" ? "public" : "car",
       detailRoute: transformedDetailRoute,
     });
 

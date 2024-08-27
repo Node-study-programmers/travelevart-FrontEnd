@@ -118,7 +118,7 @@ export default function SearchTripPage() {
         <PageContainer className="relative">
           <div
             style={{ transition: "top 0.3s ease" }}
-            className="sticky w-full max-w-2xl z-[120] lg:h-16 flex top-0 mx-auto transition-all duration-1000 bg-white h-[56px]"
+            className="sticky w-full max-w-2xl z-[120] lg:h-16 flex justify-center top-0 mx-auto transition-all duration-1000 bg-white h-[56px]"
           >
             <Select
               className="h-full"
@@ -138,7 +138,7 @@ export default function SearchTripPage() {
               }}
             />
             <form
-              className="flex-grow h-full flex shadow-xl p-2 rounded-r-full"
+              className="h-full flex shadow-xl p-2 rounded-r-full"
               onSubmit={handleSearch}
             >
               <input

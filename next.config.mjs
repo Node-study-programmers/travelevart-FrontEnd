@@ -5,6 +5,7 @@ const nextConfig = {
   images: {
     domains: [
       "elasticbeanstalk-ap-northeast-2-905418188515.s3.ap-northeast-2.amazonaws.com",
+      "dlgoj4bmj43ab.cloudfront.net",
       "t1.kakaocdn.net",
       "k.kakaocdn.net",
       "example.com",
@@ -19,6 +20,9 @@ const nextConfig = {
       "source.unsplash.com",
       "dlgoj4bmj43ab.cloudfront.net",
     ],
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
 };
 

@@ -53,7 +53,6 @@ export default function AllTravelDestination({
     userData?.user?.userId,
   );
   const router = useRouter();
-
   // 여행지 애니메이션
   useEffect(() => {
     setTimeout(() => {
@@ -62,9 +61,10 @@ export default function AllTravelDestination({
   }, []);
 
   useEffect(() => {
-    if (myCartData?.data) {
-      const isSaved = myCartData.data.some(
-        (item) => item.place.placeId === placeId,
+    if (myCartData) {
+      const isSaved = myCartData.some(
+        (item: ICartTravelDestinationResponse) =>
+          item.place.placeId === placeId,
       );
       setIsAdded(isSaved);
     }

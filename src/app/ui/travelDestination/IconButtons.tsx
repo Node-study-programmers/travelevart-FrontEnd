@@ -24,7 +24,6 @@ export default function IconButtons({
   view,
   isSaved,
   placeId,
-  refetch,
 }: IconButtonsProps) {
   const router = useRouter();
   const { addCartMutation, deleteCartMutation } = useCartTravelDestination();
@@ -32,14 +31,14 @@ export default function IconButtons({
   const [isAddedCart, setIsAddedCart] = useState(isSaved);
   const isLogin = Boolean(localStorage.getItem("accessToken"));
   const { data: userData } = useSession();
-  const { data: myCartData } = useGetCartTravelDestintaion(
+  const { data: myCartData, refetch } = useGetCartTravelDestintaion(
     isLogin,
     userData?.user?.userId,
   );
 
   useEffect(() => {
-    if (myCartData?.data) {
-      const cartItem = myCartData.data.find(
+    if (myCartData) {
+      const cartItem = myCartData.find(
         (item: ICartTravelDestinationResponse) =>
           item.place.placeId === placeId,
       );
@@ -48,7 +47,6 @@ export default function IconButtons({
       setTotalSaveCount(cartItem ? cartItem.place.totalSaveCount : likeNum);
     }
   }, [myCartData, placeId, likeNum]);
-
 
   const handleAddCartTravelDestination = async (
     e: MouseEvent<HTMLOrSVGElement>,
@@ -60,24 +58,23 @@ export default function IconButtons({
       return;
     }
 
-    // optimistic update
     if (isAddedCart) {
+      setIsAddedCart(false);
+      setTotalSaveCount((prev) => prev - 1);
       deleteCartMutation.mutate(placeId, {
-        onSuccess: () => {
-          setIsAddedCart(false);
-          setTotalSaveCount((prev) => prev - 1);
-        },
         onError: () => {
+          setIsAddedCart(true);
+          setTotalSaveCount((prev) => prev + 1);
           toast.error("찜 삭제에 실패했습니다.");
         },
       });
     } else {
+      setIsAddedCart(true);
+      setTotalSaveCount((prev) => prev + 1);
       addCartMutation.mutate(placeId, {
-        onSuccess: () => {
-          setIsAddedCart(true);
-          setTotalSaveCount((prev) => prev + 1);
-        },
         onError: () => {
+          setIsAddedCart(false);
+          setTotalSaveCount((prev) => prev - 1);
           toast.error("찜 추가에 실패했습니다.");
         },
       });

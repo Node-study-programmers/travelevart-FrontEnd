@@ -23,22 +23,22 @@ export default async function RootLayout({
   return (
     <QueryProvider>
       <SessionWrapper>
-        {/* <AuthSession> */}
-        <html lang="en">
-          <body className="font-noto">
-            <ToastContainer
-              position="top-center"
-              closeOnClick
-              autoClose={3000}
-            />
-            <StoreProvider>
-              <Navbar />
-              {children}
-              <Footer />
-            </StoreProvider>
-          </body>
-        </html>
-        {/* </AuthSession> */}
+        <AuthSession>
+          <html lang="en">
+            <body className="font-noto">
+              <ToastContainer
+                position="top-center"
+                closeOnClick
+                autoClose={3000}
+              />
+              <StoreProvider>
+                <Navbar />
+                {children}
+                <Footer />
+              </StoreProvider>
+            </body>
+          </html>
+        </AuthSession>
       </SessionWrapper>
     </QueryProvider>
   );

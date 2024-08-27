@@ -15,7 +15,7 @@ export interface IDetailRoute {
 interface ISaveRecommendTripRequest {
   travelName: string;
   travelrouteRange: number;
-  transportOption: "대중교통" | "자차";
+  transportOption: string;
   detailRoute: IDetailRoute[];
 }
 

@@ -22,7 +22,6 @@ export default function useGetCartTravelDestintaion(
   enabled: boolean,
   userId: number | undefined,
 ) {
-
   if (!userId) {
     return { data: undefined };
   }

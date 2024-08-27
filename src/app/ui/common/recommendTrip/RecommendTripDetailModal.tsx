@@ -72,13 +72,15 @@ export default function TravelPlaceDetailModal({
           <Image
             src={
               place.placeImage ||
-              "https://cdn.pixabay.com/photo/2019/06/24/16/43/mountain-4296464_640.jpg"
+              "https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png"
             }
             alt={place.placeTitle}
-            width={200}
-            height={200}
+            width={800}
+            height={400}
+            quality={85}
             className="w-full h-[400px] object-cover rounded-lg mt-4"
           />
+
           <div className="flex flex-col justify-center gap-y-4">
             <div className="mt-8 flex gap-x-2 items-center">
               <FaMapMarkerAlt className="text-xl" />

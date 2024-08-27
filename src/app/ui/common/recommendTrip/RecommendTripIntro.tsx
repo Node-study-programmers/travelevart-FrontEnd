@@ -68,11 +68,12 @@ export default function RecommendTripIntro() {
               className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentImage ? "opacity-100" : "opacity-0"}`}
             >
               <Image
+                priority
                 src={image}
                 alt={`Slide ${idx}`}
-                layout="fill"
-                objectFit="cover"
-                className="w-full h-screen rounded-full"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="w-full h-screen rounded-full object-cover"
               />
             </div>
           ))}

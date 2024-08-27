@@ -63,7 +63,7 @@ export default function Select({
           onClick={handleToggleList}
         >
           <label
-            className={`absolute top-1/2 -translate-y-1/2 left-5 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-primary transition-transform duration-200 ${selectValue ? "transform -translate-y-4 scale-75" : ""}`}
+            className={`absolute top-1/2 -translate-y-1/2  left-5 text-xs max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-primary transition-transform duration-200 ${selectValue ? "transform -translate-y-4 scale-75" : ""}`}
           >
             {label}
           </label>
@@ -71,7 +71,7 @@ export default function Select({
           <div
             className={`inline-flex h-full items-end text-xs gap-1.5 box-border lg:text-base ${!selectValue && "hidden lg:inline-flex"} text-primary overflow-hidden text-ellipsis whitespace-nowrap font-bold`}
           >
-            {selectValue || placeholder}
+            {selectValue}
           </div>
           <div
             className={`hidden lg:block lg:absolute right-3 w-4 h-4 text-primary transition-transform duration-200 ${listOpen ? "rotate-180" : ""}`}

@@ -149,10 +149,12 @@ export default function RecommendTripSchedule() {
           <Image
             src={TRAVEL_REGION_GROUP[recommendTripDatas.regions[0].id].imageUrl}
             alt="dummy image"
-            width={100}
-            height={100}
-            className="w-[200px] h-[200px] rounded-full"
+            width={400}
+            height={400}
+            quality={85}
+            className="w-[200px] h-[200px] rounded-full object-cover"
           />
+
           <p className="text-2xl font-semibold text-center">
             {`${totalNight > 0 ? totalNight + "박 " + totalDay + "일" : "당일치기"}`}
             <br />
@@ -269,7 +271,7 @@ export default function RecommendTripSchedule() {
                 >
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Image
-                      src={`${dayDetailData.placeImage === "" || dayDetailData.placeImage === null ? "https://cdn.pixabay.com/photo/2019/06/24/16/43/mountain-4296464_640.jpg" : dayDetailData.placeImage}`}
+                      src={`${dayDetailData.placeImage === "" || dayDetailData.placeImage === null ? "https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png" : dayDetailData.placeImage}`}
                       alt="dummy image"
                       width={100}
                       height={100}

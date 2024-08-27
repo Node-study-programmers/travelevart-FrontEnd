@@ -24,7 +24,7 @@ export default function MyPageSave({ userId }: { userId: number | undefined }) {
           <Image
             src={
               save.place.image ||
-              `https://cdn.pixabay.com/photo/2019/06/24/16/43/mountain-4296464_640.jpg`
+              `https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png`
             }
             alt={save.place.title}
             priority

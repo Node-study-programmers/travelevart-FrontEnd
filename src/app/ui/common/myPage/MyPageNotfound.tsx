@@ -8,8 +8,8 @@ export default function MyPageNotfound({
   const router = useRouter();
 
   return (
-    <div className="h-[700px] mb-10 flex flex-col justify-center items-center gap-y-8">
-      <h1 className="text-3xl text-rgb-secondary">
+    <div className="h-[500px] mb-10 flex flex-col justify-center items-center gap-y-8">
+      <h1 className="text-xl text-rgb-secondary">
         {categoryTabs} 목록이 비어있습니다.
       </h1>
       {/* <button

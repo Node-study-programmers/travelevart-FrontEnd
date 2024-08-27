@@ -137,7 +137,7 @@ export default function DetailCustomPage({
   }, [dateRange, items]);
 
   useEffect(() => {
-    if (data) {
+    if (data?.items) {
       const transformedItems = transformData(data);
       setItems(transformedItems);
     }
@@ -146,7 +146,6 @@ export default function DetailCustomPage({
   if (isLoading) {
     return <LoadingModal />;
   }
-  console.log(items);
 
   return (
     <>

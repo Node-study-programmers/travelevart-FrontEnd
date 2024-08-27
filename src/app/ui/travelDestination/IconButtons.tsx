@@ -54,7 +54,7 @@ export default function IconButtons({
     if (!isLogin) {
       toast.info("로그인 후 이용 가능합니다.", { autoClose: 1500 });
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.replace("/auth/login");
+      router.push("/auth/login");
       return;
     }
 

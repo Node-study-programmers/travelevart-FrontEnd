@@ -28,11 +28,6 @@ export default function useReviewsInfiniteQuery(placeId: number) {
     try {
       const response = await get<ReviewResponseData>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/places/${placeId}/rating?page=${pageParam}&limit=3`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
       );
       return response;
     } catch (error) {

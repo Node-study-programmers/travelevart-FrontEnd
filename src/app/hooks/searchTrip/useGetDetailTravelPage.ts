@@ -27,11 +27,6 @@ export default function useGetDetailTravelPage(id: string) {
     queryFn: () =>
       get<TravelDetailResponse>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/places/${id}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
       ),
   });
 }

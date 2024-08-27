@@ -22,6 +22,8 @@ import {
 } from "./skeleton/CommunityPostSkeleton";
 import PopularPosts from "./PopularPosts";
 import Link from "next/link";
+import useLogin from "@/app/hooks/auth/useLogin";
+import Image from "next/image";
 
 const categories = [
   { id: 0, title: "Stories", path: "travel" },
@@ -36,6 +38,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
   const router = useRouter();
   const inputRef = useRef(null);
   const focusTab = board === "free" ? 1 : 0;
+  const { userData } = useLogin();
   const [searchName, setSearchName] = useState<string | null>("");
   const focusBoard = categories[focusTab].title as TFocusBoard;
   const { postData, fetchNextPage, hasNextPage, status, isFetchingNextPage } =
@@ -57,7 +60,18 @@ export default function CommunityPage({ board }: CommunityPageProps) {
     if (!hasNextPage) return;
     fetchNextPage();
   };
+  const handleClickNewPost = async () => {
+    if (!userData) {
+      router.push("/auth/login");
+      return;
+    } else {
+      router.push(
+        `/community/${focusBoard === "Stories" ? "travel" : "free"}/newpost`,
+      );
+    }
 
+    router.push("/recommend-trip/setup");
+  };
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputRef.current) {
@@ -88,12 +102,12 @@ export default function CommunityPage({ board }: CommunityPageProps) {
         {/* 글 목록 보여줄 곳 */}
         <div className="relative lg:pr-12 flex flex-col gap-5 py-8">
           {/* 글 쓰는 페이지 이동 */}
-          <Link
+          <button
             className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-lg rounded-xl"
-            href={`/community/${focusBoard === "Stories" ? "travel" : "free"}/newpost`}
+            onClick={handleClickNewPost}
           >
             {/* <Image
-              src={dummyimg}
+              src={userData?.profileImg}
               alt="hi"
               sizes="10px"
               width={40}
@@ -106,7 +120,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
                 : "여행 질문,정보를 공유해보세요!"}
             </span>
             <PiNotePencil className="text-2xl text-gray-500" />
-          </Link>
+          </button>
           {/* post 보여주는 곳 */}
           <div className="overflow-scroll scroll-none">
             {postData?.map(

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RiCloseFill } from "react-icons/ri";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import useLogin from "@/app/hooks/auth/useLogin";
 
@@ -12,12 +12,13 @@ const menuItems = [
   { path: "/", label: "홈" },
   { path: "/search-trip", label: "여행지검색" },
   { path: "/community/travel", label: "커뮤니티" },
-  // { path: "/mytrip", label: "여행일기" },
   { path: "/recommend-trip", label: "여행지추천" },
+  { path: "/travel-route/setup", label: "TravelRoute" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { status, userData } = useLogin();
 
@@ -25,12 +26,19 @@ export default function Navbar() {
     setOpen(!open);
   };
 
-  // 페이지가 바뀔 때마다 메뉴 닫기
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // 특정 경로에서 Navbar를 숨김
+  // Specific path redirection if user is not logged in
+  const handleNavigation = (path: string) => {
+    if (path === "/travel-route/setup" && !userData) {
+      router.push("/auth/login");
+    } else {
+      router.push(path);
+    }
+  };
+
   if (
     pathname.startsWith("/travel-route/") ||
     pathname === "/recommend-trip" ||
@@ -69,8 +77,9 @@ export default function Navbar() {
           <li
             key={item.path}
             className={`flex justify-center items-center cursor-pointer whitespace-nowrap tracking-widest relative`}
+            onClick={() => handleNavigation(item.path)}
           >
-            <Link href={item.path}>{item.label}</Link>
+            {item.label}
             {(pathname === item.path ||
               (item.path === "/community/travel" &&
                 pathname.startsWith("/community"))) && (

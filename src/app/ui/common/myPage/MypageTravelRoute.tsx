@@ -101,7 +101,7 @@ export default function MyPageTravelRoute({
                 <Image
                   src={
                     route.detailtravelImage ||
-                    `https://cdn.pixabay.com/photo/2019/06/24/16/43/mountain-4296464_640.jpg`
+                    `https://cdn.pixabay.com/photo/2024/02/21/08/44/woman-8587090_1280.png`
                   }
                   alt={route.travelName}
                   width={640}
@@ -116,15 +116,17 @@ export default function MyPageTravelRoute({
                     {route.startDate} ~ {route.endDate}
                   </p>
                 </div>
-                <button
-                  className="absolute bottom-2 right-2 bg-primary text-white p-2 rounded-full hover:bg-primary transition-all duration-150"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteClick(route.id);
-                  }}
-                >
-                  <FaTrash size={20} />
-                </button>
+                {!isNotMypage && (
+                  <button
+                    className="absolute bottom-2 right-2 bg-primary text-white p-2 rounded-full hover:bg-primary transition-all duration-150"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteClick(route.id);
+                    }}
+                  >
+                    <FaTrash size={20} />
+                  </button>
+                )}
               </div>
             ))}
           </div>

@@ -14,11 +14,13 @@ import LoadingModal from "../common/LoadingModal";
 import { IContent } from "./CommunityPopularPost";
 
 interface ICommunityTravelDetailProps {
+  isMyPost: boolean;
   contents: IContent[];
   travelRoute_id: number;
 }
 
 export default function CommunityTravelDetailPage({
+  isMyPost,
   contents,
   travelRoute_id,
 }: ICommunityTravelDetailProps) {
@@ -159,13 +161,15 @@ export default function CommunityTravelDetailPage({
       </div>
 
       {/* Fork Button */}
-      <div
-        className="bg-primary text-white p-3 rounded-full shadow-lg gap-2 cursor-pointer mt-8 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
-        onClick={handleForkPost}
-      >
-        <BiFork className="text-lg sm:text-xl" />
-        <span className="text-xs sm:text-sm ml-2">Fork</span>
-      </div>
+      {!isMyPost && (
+        <div
+          className="bg-primary text-white p-3 rounded-full shadow-lg gap-2 cursor-pointer mt-8 flex items-center justify-center hover:opacity-80 transition-opacity duration-300"
+          onClick={handleForkPost}
+        >
+          <BiFork className="text-lg sm:text-xl" />
+          <span className="text-xs sm:text-sm ml-2">Fork</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { RootState } from "@/redux";
 import usePatchCustomData from "@/app/hooks/custom/usePatchCustomData";
 import { logoFont } from "@/app/asset/fonts/fonts";
 import LoadingModal from "../LoadingModal";
+import { toast } from "react-toastify";
 
 export interface ISetupFormValues {
   travelRouteName: string;
@@ -100,17 +101,15 @@ export default function TravelRouteSetUpForm({
   };
 
   const handleCustomizing = (data: ISetupFormValues) => {
-    setIsLoading(true); // 로딩 시작
+    setIsLoading(true);
 
     if (routeId) {
       patchData(
         {
-          reqData: {
-            travelName: data.travelRouteName,
-            travelrouteRange: travelRouteRange,
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate,
-          },
+          travelRouteName: data.travelRouteName,
+          travelRouteRange: travelRouteRange,
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
         },
         {
           onSuccess: () => {
@@ -127,7 +126,11 @@ export default function TravelRouteSetUpForm({
             );
             router.push(`/travel-route/custom/${routeId}`);
             reset();
-            setIsLoading(false); // 로딩 종료
+            setIsLoading(false);
+          },
+          onError: (error) => {
+            setIsLoading(false);
+            toast.error(error.message);
           },
         },
       );

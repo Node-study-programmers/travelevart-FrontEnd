@@ -66,7 +66,7 @@ export function PostBottomsInPost({
   };
 
   return (
-    <div className="flex justify-around gap-3 text-lg w-full h-10">
+    <div className="flex justify-around gap-3 text-base lg:text-lg w-full h-10">
       <Tooltip direction="top" content="댓글">
         <div className="flex gap-2 items-center text-gray-500 cursor-pointer">
           <FaCommentAlt /> {commentCount}

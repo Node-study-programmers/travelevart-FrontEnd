@@ -184,6 +184,7 @@ export default function CommunityDetailPage({
             <div>
               {travelRoute_id ? (
                 <CommunityTravelDetailPage
+                  isMyPost={userData?.user.userId === authorId}
                   contents={contents}
                   travelRoute_id={travelRoute_id}
                 />

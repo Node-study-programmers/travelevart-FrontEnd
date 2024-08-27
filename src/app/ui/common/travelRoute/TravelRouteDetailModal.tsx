@@ -16,9 +16,11 @@ interface TravelRouteDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   route: TravelRoute | null;
+  isNotMypage?: boolean;
 }
 
 export default function TravelRouteDetailModal({
+  isNotMypage,
   isOpen,
   onClose,
   route,
@@ -136,36 +138,38 @@ export default function TravelRouteDetailModal({
           {/* <div className="absolute left-2 top-1 text-primary">
             By. TravelevarT
           </div> */}
-          <div className="absolute -bottom-2 lg:bottom-2 right-2 flex gap-1 lg:gap-4 items-end">
-            <Tooltip content="수정하기" direction="bottom">
-              <button
-                className="text-gray-600 hover:text-gray-800 p-2"
-                onClick={handleEditRoute}
-              >
-                <FaEdit size={20} />
-              </button>
-            </Tooltip>
-            <Tooltip content="공유하기" direction="bottom">
-              <button
-                className="text-gray-600 hover:text-gray-800 p-2"
-                onClick={() => router.push("/community/travel/newpost")}
-              >
-                <FaShareAlt size={20} />
-              </button>
-            </Tooltip>
-            <Tooltip content="저장하기" direction="bottom">
-              <button
-                id="download-button"
-                className="text-gray-600 hover:text-gray-800 p-2"
-                onClick={() => {
-                  //로딩 컴포넌트 필요
-                  printPdf(data ? data.items : null, route?.travelName);
-                }}
-              >
-                <FaSave size={20} />
-              </button>
-            </Tooltip>
-          </div>
+          {!isNotMypage && (
+            <div className="absolute -bottom-2 lg:bottom-2 right-2 flex gap-1 lg:gap-4 items-end">
+              <Tooltip content="수정하기" direction="bottom">
+                <button
+                  className="text-gray-600 hover:text-gray-800 p-2"
+                  onClick={handleEditRoute}
+                >
+                  <FaEdit size={20} />
+                </button>
+              </Tooltip>
+              <Tooltip content="공유하기" direction="bottom">
+                <button
+                  className="text-gray-600 hover:text-gray-800 p-2"
+                  onClick={() => router.push("/community/travel/newpost")}
+                >
+                  <FaShareAlt size={20} />
+                </button>
+              </Tooltip>
+              <Tooltip content="저장하기" direction="bottom">
+                <button
+                  id="download-button"
+                  className="text-gray-600 hover:text-gray-800 p-2"
+                  onClick={() => {
+                    //로딩 컴포넌트 필요
+                    printPdf(data ? data.items : null, route?.travelName);
+                  }}
+                >
+                  <FaSave size={20} />
+                </button>
+              </Tooltip>
+            </div>
+          )}
         </div>
         <div className="text-sm flex justify-between py-4 px-4 lg:px-8 bg-white border-b-2 border-gray-300 items-center">
           {/* 추가 정보가 필요하다면 여기에 추가 */}

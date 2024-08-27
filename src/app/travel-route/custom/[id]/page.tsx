@@ -12,6 +12,7 @@ import { RootState } from "@/redux";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export interface ITravelCustomData {
   travel_name: string;
@@ -115,7 +116,7 @@ export default function DetailCustomPage({
         { reqData: formattedData },
         {
           onSuccess: (res) => {
-            window.alert("Success");
+            toast.info("완료 되었습니다.");
             router.push("/mypage");
           },
           onError: (error) => {

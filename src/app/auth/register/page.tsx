@@ -46,7 +46,7 @@ export default function SignupPage() {
 
       toast.info("회원가입 완료되었습니다.", { autoClose: 1500 });
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.replace("/");
+      router.push("/");
     } catch (error) {
       setSignUpErrormessage("이미 사용중인 이메일입니다.");
     }

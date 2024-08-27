@@ -185,7 +185,7 @@ export default function RecommendTripSetupForm() {
     if (!isLoading && data && isReadyRecommend) {
       dispatch(setRecommendTrip(data));
       handleResetForm();
-      router.replace("/recommend-trip/schedule");
+      router.push("/recommend-trip/schedule");
     }
   }, [isLoading, data, isReadyRecommend]);
 

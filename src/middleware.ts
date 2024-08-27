@@ -41,13 +41,13 @@ export default async function middleware(req: NextRequest) {
   }
 
   // 게시글
-  if (pathname.startsWith("/community")) {
-    if (method !== "GET") {
-      const referer = req.headers.get("referer") || "/";
+  // if (pathname.startsWith("/community")) {
+  //   if (method !== "GET") {
+  //     const referer = req.headers.get("referer") || "/";
 
-      return NextResponse.redirect(new URL(referer, req.url));
-    }
-  }
+  //     return NextResponse.redirect(new URL(referer, req.url));
+  //   }
+  // }
 
   // if (pathname.startsWith("/community/") && !session) {
   //   const referer = req.headers.get("referer") || "/";

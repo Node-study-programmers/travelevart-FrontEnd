@@ -15,7 +15,6 @@ import { RootState } from "@/redux";
 import usePatchCustomData from "@/app/hooks/custom/usePatchCustomData";
 import { logoFont } from "@/app/asset/fonts/fonts";
 import LoadingModal from "../LoadingModal";
-import { toast } from "react-toastify";
 
 export interface ISetupFormValues {
   travelRouteName: string;
@@ -74,22 +73,16 @@ export default function TravelRouteSetUpForm({
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
   } = useForm<ISetupFormValues>({
     defaultValues: {
       travelRouteName: routeId ? travelRoute.travelRouteName : "",
       travelRouteRange: 0,
-      startDate: initialStartDate,
-      endDate: initialEndDate,
+      startDate: routeId ? travelRoute.startDate : initialStartDate,
+      endDate: routeId ? travelRoute.endDate : initialEndDate,
     },
   });
-
-  // travelRouteRange 최신화
-  useEffect(() => {
-    setValue("travelRouteRange", travelRouteRange);
-  }, [travelRouteRange, setValue]);
 
   const handleDateRange = (range: RangeValue<CalendarDate>) => {
     if (range.start && range.end) {
@@ -101,15 +94,17 @@ export default function TravelRouteSetUpForm({
   };
 
   const handleCustomizing = (data: ISetupFormValues) => {
-    setIsLoading(true);
+    setIsLoading(true); // 로딩 시작
 
     if (routeId) {
       patchData(
         {
-          travelRouteName: data.travelRouteName,
-          travelRouteRange: travelRouteRange,
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate,
+          reqData: {
+            travelName: data.travelRouteName,
+            travelrouteRange: travelRouteRange,
+            startDate: dateRange.startDate,
+            endDate: dateRange.endDate,
+          },
         },
         {
           onSuccess: () => {
@@ -126,11 +121,7 @@ export default function TravelRouteSetUpForm({
             );
             router.push(`/travel-route/custom/${routeId}`);
             reset();
-            setIsLoading(false);
-          },
-          onError: (error) => {
-            setIsLoading(false);
-            toast.error(error.message);
+            setIsLoading(false); // 로딩 종료
           },
         },
       );
@@ -272,8 +263,12 @@ export default function TravelRouteSetUpForm({
                   isRequired
                   minValue={parseDate(initialStartDate)}
                   defaultValue={{
-                    start: parseDate(dateRange.startDate),
-                    end: parseDate(dateRange.endDate),
+                    start: routeId
+                      ? parseDate(travelRoute.startDate)
+                      : parseDate(dateRange.startDate),
+                    end: routeId
+                      ? parseDate(travelRoute.endDate)
+                      : parseDate(dateRange.endDate),
                   }}
                   className="w-full border-2 border-stone-200 rounded-xl"
                   variant="bordered"

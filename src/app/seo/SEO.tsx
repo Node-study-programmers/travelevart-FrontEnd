@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 interface SEOProps {
   title?: string;
   description?: string;
@@ -8,7 +10,7 @@ export default function SEO({ title, description }: SEOProps) {
   const DESCRIPTION = description || "여행지 추천 서비스";
 
   return (
-    <head>
+    <Head>
       <title>{TITLE}</title>
       <meta name="description" content={DESCRIPTION} />
       <meta property="og:title" content={TITLE} />
@@ -20,6 +22,6 @@ export default function SEO({ title, description }: SEOProps) {
       <meta property="og:image" content="/favicon.ico" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="apple-touch-icon" href="/favicon.ico" />
-    </head>
+    </Head>
   );
 }

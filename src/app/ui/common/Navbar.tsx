@@ -13,7 +13,7 @@ const menuItems = [
   { path: "/search-trip", label: "여행지검색" },
   { path: "/community/travel", label: "커뮤니티" },
   { path: "/recommend-trip", label: "여행지추천" },
-  { path: "/travel-route/setup", label: "TravelRoute" },
+  { path: "/travel-route/setup", label: "나의여행" },
 ];
 
 export default function Navbar() {

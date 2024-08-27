@@ -315,10 +315,10 @@ export default function RecommendTripSchedule() {
               </div>
               <div className="w-full py-8 flex flex-col gap-y-8">
                 <div>
-                  <p className="pb-2">TravelRoute</p>
+                  <p className="pb-2">여행 이름</p>
                   <input
                     type="name"
-                    placeholder="TravelRoute 입력"
+                    placeholder="여행 이름 입력"
                     className="border border-gray-300 p-2 w-full rounded-lg py-3 outline-none"
                     {...register("travelRouteName", {
                       required: "travelroute 입력은 필수입니다.",

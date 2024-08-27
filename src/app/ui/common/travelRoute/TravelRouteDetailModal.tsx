@@ -211,10 +211,10 @@ export default function TravelRouteDetailModal({
                           className="w-12 h-12 lg:w-16 lg:h-16 object-cover rounded-lg"
                         />
                         <div>
-                          <h5 className="font-semibold text-sm lg:text-base text-nowrap line-clamp-1">
+                          <h5 className="font-semibold text-sm lg:text-base line-clamp-1 overflow-hidden">
                             {item.placeTitle}
                           </h5>
-                          <p className="text-[10px] lg:text-xs text-gray-600 line-clamp-2">
+                          <p className="text-[10px] lg:text-xs text-gray-600 overflow-hidden line-clamp-2">
                             {item.address}
                           </p>
                         </div>

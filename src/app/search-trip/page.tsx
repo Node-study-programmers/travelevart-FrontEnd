@@ -105,7 +105,7 @@ export default function SearchTripPage() {
       <SEO title="SEARCH TRIP" description="여행지 검색을 위한 페이지입니다." />
       <div>
         {/* 전체 지역 선택 시 핫한 행사 케러셀 그 외 지역 이미지 배너 */}
-        <div className="relative mb-10">
+        <div className="relative mb-2 lg:mb-10">
           {regionCode ? (
             <TravelRegionBanner regionCode={regionCode} />
           ) : BannerIsLoading ? (

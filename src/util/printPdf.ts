@@ -31,9 +31,8 @@ export const printPdf = async (
   });
 
   const nameTag = document.getElementById("travel-name") as HTMLElement;
-  const dayTag = document.getElementById("travel-day") as HTMLElement;
 
-  tags.unshift(nameTag, dayTag);
+  tags.unshift(nameTag);
 
   const imgPromise = tags.map((tag) =>
     htmlToImage
@@ -65,22 +64,22 @@ export const printPdf = async (
     const imgWidth = pageWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    if (index > 2 && fillHeigth + imgHeight > pageHeight) {
+    if (index > 0 && fillHeigth + imgHeight > pageHeight) {
       pdf.addPage();
       fillHeigth = 0;
       y = 0;
     }
 
-    if (index === 0 || index === 1) {
+    if (index === 0) {
       y += 10;
       pdf.addImage(canvas, "png", 10, y, pageWidth, imgHeight);
       fillHeigth += imgHeight;
 
-      index === 1 ? (y += imgHeight + 10) : (y += imgHeight);
+      y += imgHeight + 10;
       return;
-    } else {
-      pdf.addImage(canvas, "png", x, y, pageWidth, imgHeight);
     }
+
+    pdf.addImage(canvas, "png", x, y, pageWidth, imgHeight);
 
     if (index === canvasArray.length - 1) {
       pdf.text(logo, (pageWidth - logoWidth) / 2, pageHeight - 10);

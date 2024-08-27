@@ -57,9 +57,9 @@ export default function TravelRouteSetUpForm({
   const endDate = new Date(currentDate);
   endDate.setDate(currentDate.getDate() + 7);
   const initialEndDate = endDate.toISOString().split("T")[0];
-  const { mutate: patchData, isPending: isPatchLoading } = routeId
-    ? usePatchCustomData(routeId)
-    : { mutate: () => {}, isPending: false };
+  const { mutate: patchData, isPending: isPatchLoading } = usePatchCustomData(
+    routeId || "",
+  );
   const [travelRouteRange, setTravelRouteRange] = useState(0);
   const [travelRouteTransport, setTravelRouteTransport] = useState(0);
   const [dateRange, setDateRange] = useState({

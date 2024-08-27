@@ -8,6 +8,7 @@ const nextConfig = {
       "dlgoj4bmj43ab.cloudfront.net",
       "t1.kakaocdn.net",
       "k.kakaocdn.net",
+      "img1.kakaocdn.net",
       "example.com",
       "tong.visitkorea.or.kr",
       "cdn.pixabay.com",
@@ -16,9 +17,7 @@ const nextConfig = {
       "www.iusm.co.kr",
       "lh3.googleusercontent.com",
       "encrypted-tbn0.gstatic.com",
-      "img1.kakaocdn.net",
       "source.unsplash.com",
-      "dlgoj4bmj43ab.cloudfront.net",
     ],
   },
   typescript: {

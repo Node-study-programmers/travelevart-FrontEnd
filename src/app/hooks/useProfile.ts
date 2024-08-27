@@ -57,7 +57,7 @@ export function useProfile(userId: number) {
     mutationFn: (formData: FormData) => updateProfile(formData),
     onSuccess: () => {
       toast.info("프로필이 수정되었습니다.");
-      router.replace("/mypage");
+      router.push("/mypage");
     },
     onError: (err) => {
       console.log("프로필 업데이트 실패", err);

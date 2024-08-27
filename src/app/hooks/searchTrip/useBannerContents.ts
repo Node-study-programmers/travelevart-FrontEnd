@@ -20,14 +20,7 @@ export default function useBannerContents() {
   return useQuery<EventsResponse>({
     queryKey: ["bannerContents"],
     queryFn: () => {
-      return get<EventsResponse>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/events/`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
-      );
+      return get<EventsResponse>(`${process.env.NEXT_PUBLIC_BASE_URL}/events/`);
     },
   });
 }

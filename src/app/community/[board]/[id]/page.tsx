@@ -84,22 +84,14 @@ export default function CommunityDetailPage({
 
   const handleDeleteComments = async (commentId: number) => {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      await del(`${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}`, {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      });
+      await del(`${process.env.NEXT_PUBLIC_BASE_URL}/comments/${commentId}`);
       refetch();
     }
   };
 
   const handleDeletePost = async () => {
     if (window.confirm("게시글을 삭제하시겠습니까?")) {
-      await del(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${postId}`, {
-        headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
-      });
+      await del(`${process.env.NEXT_PUBLIC_BASE_URL}/posts/${postId}`);
       router.push("/community/travel");
     }
   };

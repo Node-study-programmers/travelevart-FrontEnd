@@ -4,6 +4,9 @@ import { PiEyesFill } from "react-icons/pi";
 import Tooltip from "../common/Tooltip";
 import useLikePost from "@/app/hooks/community/useLikePost";
 import { useState } from "react";
+import useLogin from "@/app/hooks/auth/useLogin";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface IPostBottomsProps {
   commentCount: number;
@@ -46,8 +49,14 @@ export function PostBottomsInPost({
   const [localIsPostLiked, setLocalIsPostLiked] = useState(isPostLiked);
   const [localLikeCount, setLocalLikeCount] = useState(like);
   const { likeMutation, unlikeMutation } = useLikePost(postId!);
-
+  const { userData } = useLogin();
+  const router = useRouter();
   const handleLikeClick = () => {
+    if (!userData) {
+      toast.info("로그인 후 이용 가능 합니다.");
+
+      return;
+    }
     if (localIsPostLiked) {
       unlikeMutation.mutate(undefined, {
         onSuccess: () => {

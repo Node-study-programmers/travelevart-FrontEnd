@@ -8,11 +8,6 @@ export default function useGetDetailFestival(festivalId: string) {
     queryFn: () =>
       get<IGetFestivalResponse>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/events/${festivalId}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        },
       ),
   });
 }

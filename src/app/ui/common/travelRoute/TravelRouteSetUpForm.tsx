@@ -157,7 +157,7 @@ export default function TravelRouteSetUpForm({
             );
             router.push(`/travel-route/custom/${res.id}`);
             reset();
-            setIsLoading(false); // 로딩 종료
+            setIsLoading(false);
           },
         },
       );

@@ -139,6 +139,7 @@ export default function MyPageTravelRoute({
       )}
       {selectedRoute && (
         <TravelRouteDetailModal
+          isNotMypage={isNotMypage}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           route={selectedRoute}

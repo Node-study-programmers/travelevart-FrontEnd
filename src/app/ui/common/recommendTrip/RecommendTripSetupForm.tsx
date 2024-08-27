@@ -74,6 +74,7 @@ export default function RecommendTripSetupForm() {
   const [people, setPeople] = useState<number | null>(null);
   const [isReadyRecommend, setIsReadyRecommend] = useState(false);
   const [requestQuery, setRequestQuery] = useState<IRecommendTripRequest>();
+  const [isNavigating, setIsNavigating] = useState(false); // 로딩 이후 페이지 리다이렉션
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -90,6 +91,7 @@ export default function RecommendTripSetupForm() {
 
   // 선택 옵션 초기화
   useEffect(() => {
+    setIsNavigating(false);
     handleResetForm();
   }, []);
 
@@ -119,6 +121,14 @@ export default function RecommendTripSetupForm() {
 
     if (dateDiff > 10) {
       setIsDateRangeOver(true);
+    } else {
+      setIsDateRangeOver(false);
+    }
+
+    // 여행 기간이 하루일 경우 지역 초기화
+    if (dateDiff === 0 && selectedRegion.length > 1) {
+      setSelectedRegion([selectedRegion[0]]);
+      setIsRegionFullSelected(false);
     }
   }, [dateRange.startDate, dateRange.endDate]);
 
@@ -127,20 +137,42 @@ export default function RecommendTripSetupForm() {
       (selected) => selected.id === regionCode,
     );
 
-    if (isAlreadySelected) {
-      const updatedRegions = selectedRegion.filter(
-        (region) => region.id !== regionCode,
-      );
-      setSelectedRegion(updatedRegions);
-      if (updatedRegions.length < 3) {
+    const startDate = new Date(dateRange.startDate);
+    const endDate = new Date(dateRange.endDate);
+    const dateDiff =
+      (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24);
+
+    // 하루 여행일 때 지역 선택 제한
+    if (dateDiff === 0) {
+      if (isAlreadySelected) {
+        const updatedRegions = selectedRegion.filter(
+          (region) => region.id !== regionCode,
+        );
+        setSelectedRegion(updatedRegions);
         setIsRegionFullSelected(false);
+      } else {
+        setSelectedRegion([{ id: regionCode, region }]);
+        setIsRegionFullSelected(true);
       }
     } else {
-      if (selectedRegion.length < 3) {
-        const updatedRegions = [...selectedRegion, { id: regionCode, region }];
+      if (isAlreadySelected) {
+        const updatedRegions = selectedRegion.filter(
+          (region) => region.id !== regionCode,
+        );
         setSelectedRegion(updatedRegions);
-        if (updatedRegions.length === 3) {
-          setIsRegionFullSelected(true);
+        if (updatedRegions.length < 3) {
+          setIsRegionFullSelected(false);
+        }
+      } else {
+        if (selectedRegion.length < 3) {
+          const updatedRegions = [
+            ...selectedRegion,
+            { id: regionCode, region },
+          ];
+          setSelectedRegion(updatedRegions);
+          if (updatedRegions.length === 3) {
+            setIsRegionFullSelected(true);
+          }
         }
       }
     }
@@ -185,12 +217,18 @@ export default function RecommendTripSetupForm() {
     if (!isLoading && data && isReadyRecommend) {
       dispatch(setRecommendTrip(data));
       handleResetForm();
-      router.push("/recommend-trip/schedule");
+      setIsNavigating(true); // 페이지 이동 상태
     }
   }, [isLoading, data, isReadyRecommend]);
 
+  useEffect(() => {
+    if (isNavigating) {
+      router.push("/recommend-trip/schedule");
+    }
+  }, [isNavigating]);
+
   // 추천 일정 받는 동안 보여줄 로딩 UI
-  if (isLoading) {
+  if (isLoading || isNavigating) {
     return <Loading />;
   }
 
@@ -221,11 +259,17 @@ export default function RecommendTripSetupForm() {
                     <IoIosInformationCircle className="text-xl" />
                   </Tooltip>
                 </div>
-                {isRegionFullSelected && (
+                {dateRange.startDate === dateRange.endDate && (
                   <p className="text-sm text-red-500 mt-2">
-                    지역은 최대 3개까지 선택 가능해요.
+                    당일치기 여행에는 한 지역만 갈 수 있어요.
                   </p>
                 )}
+                {isRegionFullSelected &&
+                  dateRange.startDate !== dateRange.endDate && (
+                    <p className="text-sm text-red-500 mt-2">
+                      지역은 최대 3개까지 선택 가능해요.
+                    </p>
+                  )}
               </div>
               <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 p-4">
                 {travelRegionGroup.map((region) => {
@@ -233,7 +277,9 @@ export default function RecommendTripSetupForm() {
                     region.id,
                   );
                   const isButtonDisabled =
-                    selectedRegion.length >= 3 && !isRegionSelected;
+                    selectedRegion.length >= 3 &&
+                    !isRegionSelected &&
+                    dateRange.startDate !== dateRange.endDate;
 
                   return (
                     <div
@@ -242,7 +288,7 @@ export default function RecommendTripSetupForm() {
                         isRegionSelected
                           ? "bg-primary text-white"
                           : "bg-stone-200 text-gray-500"
-                      } flex justify-center items-center px-4 py-2 rounded-2xl  ${
+                      } flex justify-center items-center px-4 py-2 rounded-2xl ${
                         isButtonDisabled ? "opacity-50" : "cursor-pointer"
                       }`}
                       onClick={() => {

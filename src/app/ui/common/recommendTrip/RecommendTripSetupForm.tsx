@@ -20,6 +20,7 @@ import {
   ISelectedRegion,
   TTransportation,
 } from "@/lib/types";
+import RecommendLoadingModal from "./RecommendLoadingModal";
 
 const travelRegionGroup = [
   { id: 1, region: "서울" },
@@ -229,7 +230,7 @@ export default function RecommendTripSetupForm() {
 
   // 추천 일정 받는 동안 보여줄 로딩 UI
   if (isLoading || isNavigating) {
-    return <Loading />;
+    return <RecommendLoadingModal />;
   }
 
   return (

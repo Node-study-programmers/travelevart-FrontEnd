@@ -86,13 +86,9 @@ export default function RecommendTripSchedule() {
   }, [travelRouteRange, setValue]);
 
   // 추천 데이터 travleroute 저장
-  const handleSaveRecommendTrip = (
+  const handleSaveRecommendTrip = async (
     data: Pick<ISetupFormValues, "travelRouteName" | "travelRouteRange">,
   ) => {
-    console.log("Form data:", data);
-
-    toast.success("TravelRoute에 추가되었습니다.");
-
     const transformedDetailRoute = recommendTripDatas.routes.flatMap((route) =>
       route.detail.map((dayDetailData) => ({
         placeId: dayDetailData.placeId,
@@ -115,6 +111,11 @@ export default function RecommendTripSchedule() {
     });
 
     reset();
+
+    toast.success("TravelRoute에 추가되었습니다.", { autoClose: 1500 });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    router.push("/");
   };
 
   // 모달 핸들링 함수

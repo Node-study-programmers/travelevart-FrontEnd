@@ -105,12 +105,10 @@ export default function TravelRouteSetUpForm({
     if (routeId) {
       patchData(
         {
-          reqData: {
-            travelName: data.travelRouteName,
-            travelrouteRange: travelRouteRange,
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate,
-          },
+          travelRouteName: data.travelRouteName,
+          travelRouteRange: travelRouteRange,
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
         },
         {
           onSuccess: () => {

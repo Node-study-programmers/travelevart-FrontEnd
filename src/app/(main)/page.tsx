@@ -55,7 +55,8 @@ export default function Home() {
     };
 
     const handleTimeUpdate = () => {
-      if (videoElement.currentTime >= videoElement.duration - 10) {
+      if (videoElement.currentTime >= videoElement.duration - 14) {
+        // 비디오 재생 3초 이후 로고 표시
         setShowLogo(true);
       } else {
         setShowLogo(false);
@@ -63,16 +64,22 @@ export default function Home() {
     };
 
     const handleLoadedData = () => {
-      setIsLoading(false); // 비디오가 로드되면 로딩 상태를 false로 설정
+      setIsLoading(false); // 비디오가 로드시 로딩 상태 false
+    };
+
+    const handleEnded = () => {
+      videoElement.play(); // 비디오가 끝난 후 자동으로 재생
     };
 
     videoElement.addEventListener("loadedmetadata", handleLoadedMetadata);
     videoElement.addEventListener("loadeddata", handleLoadedData);
+    videoElement.addEventListener("ended", handleEnded);
 
     return () => {
       videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       videoElement.removeEventListener("loadedmetadata", handleLoadedMetadata);
       videoElement.removeEventListener("loadeddata", handleLoadedData);
+      videoElement.removeEventListener("ended", handleEnded);
     };
   }, []);
 
@@ -80,16 +87,22 @@ export default function Home() {
     <>
       <SEO />
       <main className="min-h-screen">
-        {/* 로딩 화면 */}
+        {/* 비디오 렌더링 이전 배경 이미지 */}
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <Loading />
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url('/videos/thumbnail.png')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
           </div>
         )}
         {/* 비디오 */}
         <div className="relative h-screen">
           <video
-            preload="metadata"
             autoPlay
             loop
             muted

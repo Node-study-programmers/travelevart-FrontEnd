@@ -73,6 +73,7 @@ export default function TravelRouteSetUpForm({
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<ISetupFormValues>({
@@ -83,6 +84,11 @@ export default function TravelRouteSetUpForm({
       endDate: routeId ? travelRoute.endDate : initialEndDate,
     },
   });
+
+  // travelRouteRange 최신화
+  useEffect(() => {
+    setValue("travelRouteRange", travelRouteRange);
+  }, [travelRouteRange, setValue]);
 
   const handleDateRange = (range: RangeValue<CalendarDate>) => {
     if (range.start && range.end) {

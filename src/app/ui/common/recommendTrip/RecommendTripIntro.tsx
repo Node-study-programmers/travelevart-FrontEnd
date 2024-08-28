@@ -13,12 +13,6 @@ export default function RecommendTripIntro() {
   const { userData } = useLogin();
   const router = useRouter();
 
-  const [currentImage, setCurrentImage] = useState(0);
-
-  const representativeRegionImages = TRAVEL_REGION_GROUP.slice(1).map(
-    (item) => item.imageUrl,
-  );
-
   const handlerSetupRecommendTrip = async () => {
     if (!userData) {
       toast.info("로그인 후 이용 가능합니다.", { autoClose: 1500 });
@@ -29,6 +23,10 @@ export default function RecommendTripIntro() {
 
     router.push("/recommend-trip/setup");
   };
+  const [currentImage, setCurrentImage] = useState(0);
+  const representativeRegionImages = TRAVEL_REGION_GROUP.slice(1).map(
+    (item) => item.imageUrl,
+  );
 
   // 이미지 무한 슬라이드
   useEffect(() => {

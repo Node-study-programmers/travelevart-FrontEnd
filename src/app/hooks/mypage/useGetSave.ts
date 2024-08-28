@@ -6,6 +6,7 @@ export default function useGetSaves(userId: number) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["key"],
     queryFn: () => get<IUserSaveData>(`carts/${userId}`),
+    retry: 0,
   });
 
   return { data, isLoading, isError };

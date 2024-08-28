@@ -68,7 +68,7 @@ export default function MyPageTravelRoute({
   const handlePageChange = (newPage: number) => {
     if (newPage > 0 && newPage <= totalPages) {
       setPage(newPage);
-      refetch(); // Fetch new page data
+      refetch();
     }
   };
 

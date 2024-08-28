@@ -69,8 +69,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
         `/community/${focusBoard === "Stories" ? "travel" : "free"}/newpost`,
       );
     }
-
-    router.push("/recommend-trip/setup");
+    // router.push("/recommend-trip/setup");
   };
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -115,7 +115,7 @@ export default function RecommendTripSchedule() {
     toast.success("TravelRoute에 추가되었습니다.", { autoClose: 1500 });
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    router.push("/");
+    router.push("/mypage");
   };
 
   // 모달 핸들링 함수

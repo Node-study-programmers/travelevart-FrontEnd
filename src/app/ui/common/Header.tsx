@@ -9,6 +9,7 @@ import useLogin from "@/app/hooks/auth/useLogin";
 import { MdLogin, MdLogout } from "react-icons/md";
 import { signIn } from "next-auth/react";
 import { logoFont } from "@/app/asset/fonts/fonts";
+import { FaCircleUser } from "react-icons/fa6";
 
 // 더미 데이터
 const notifications = [
@@ -60,6 +61,9 @@ const notifications = [
 export default function Header() {
   const { handleLogout, status } = useLogin();
   const [openNotification, setOpenNotification] = useState(false);
+
+  console.log(status);
+
   return (
     <div className="border-b-[1px] border-gray-300 w-full sticky z-[110] top-0 bg-white">
       <div className="max-w-screen-lg w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-5">
@@ -78,14 +82,21 @@ export default function Header() {
               <Tooltip direction="bottom" content="알림">
                 <IoMdNotificationsOutline className="text-3xl" />
               </Tooltip>
-            </div>
+            </div>c
             {notifications && (
               <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 flex justify-center items-center w-4 h-4 text-xs">
                 {notifications.length}
               </div>
             )}
           </div> */}
-          <div className="text-2xl">
+          <div className="flex items-center gap-x-4 text-2xl">
+            {status === "authenticated" && (
+              <Link href={`/mypage`}>
+                <Tooltip direction="bottom" content="마이페이지">
+                  <FaCircleUser />
+                </Tooltip>
+              </Link>
+            )}
             {status === "authenticated" && (
               <Tooltip direction="bottom" content="로그아웃">
                 <MdLogout onClick={() => handleLogout({ callbackUrl: "/" })} />

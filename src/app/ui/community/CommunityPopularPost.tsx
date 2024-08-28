@@ -18,7 +18,6 @@ export interface ICommunityPopularPostProps {
   author: string;
   title: string;
   profileImg: string;
-  contents: IContent[];
 }
 
 export default function CommunityPopularPost({
@@ -28,7 +27,6 @@ export default function CommunityPopularPost({
   author,
   title,
   profileImg,
-  contents,
 }: ICommunityPopularPostProps) {
   const getLinkPath = () => {
     switch (focusBoard) {
@@ -59,15 +57,15 @@ export default function CommunityPopularPost({
             height={20}
             className="rounded-full border-[1px] border-transparent w-7 h-7"
           />
-          <div className="text-sm text-gray-500 line-clamp-1">{author}</div>
+          <div className="text-sm text-gray-800 line-clamp-1">{author}</div>
         </div>
         <div className="flex-grow max-w-full">
           <div className="text-sm font-semibold line-clamp-1 my-1.5">
             {title}
           </div>
-          {contents.length > 0 && (
+          {/* {contents.length > 0 && (
             <div className="text-sm line-clamp-2">{contents[0].text}</div>
-          )}
+          )} */}
         </div>
       </div>
     </Link>

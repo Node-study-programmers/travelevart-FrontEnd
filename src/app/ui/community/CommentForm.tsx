@@ -22,6 +22,7 @@ export default function CommentForm({
     reset,
     formState: { errors },
   } = useForm<CommentFormValues>();
+  console.log(userData);
 
   const handleFormSubmit = (data: CommentFormValues) => {
     onSubmit(data, reset);
@@ -36,7 +37,7 @@ export default function CommentForm({
       <Image
         src={
           status !== "authenticated"
-            ? "http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R640x640"
+            ? "https://img1.kakaocdn.net/thumb/R640x640.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg"
             : userData?.user?.profileImg
         }
         alt="profile"

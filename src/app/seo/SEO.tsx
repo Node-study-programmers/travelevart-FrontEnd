@@ -12,10 +12,12 @@ export default function SEO({ title, description }: SEOProps) {
   return (
     <Head>
       <title>{TITLE}</title>
+      <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       <meta
         name="google-site-verification"
         content="019qHVqmMtsFugh-LeaM_8dxWghXd3bY1Q9jXcH_gHk"
       />
+
       <meta name="description" content={DESCRIPTION} />
       <meta property="og:title" content={TITLE} />
       <meta property="og:description" content={DESCRIPTION} />

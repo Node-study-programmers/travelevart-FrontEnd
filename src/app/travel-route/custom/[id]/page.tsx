@@ -52,10 +52,12 @@ export default function DetailCustomPage({
   function transformData(apiResponse: { items: ITravelItem[] }): ITravelItems {
     const transformed: ITravelItems = {};
 
+    // dateRange의 모든 날짜에 대해 빈 배열을 초기화합니다
     dateRange.forEach((date) => {
       transformed[date] = [];
     });
 
+    // API 응답의 항목으로 배열을 채웁니다
     apiResponse.items.forEach((item) => {
       if (transformed[item.date]) {
         transformed[item.date] = item.details;
@@ -135,14 +137,9 @@ export default function DetailCustomPage({
     }
   }, [dateRange, items]);
 
-  console.log(travelRoute, "travelroute");
-  console.log(items, "items");
-  console.log(data, "data");
-
   useEffect(() => {
     if (data?.items) {
       const transformedItems = transformData(data);
-      console.log(transformedItems, "transformedItems");
       setItems(transformedItems);
     }
   }, [data, isLoading]);

@@ -69,9 +69,7 @@ export default function RecommendTripIntro() {
                 priority
                 src={image}
                 alt={`Slide ${idx}`}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="w-full h-screen rounded-full object-cover"
+                className="w-full h-[400px] sm:h-full rounded-full object-cover"
               />
             </div>
           ))}

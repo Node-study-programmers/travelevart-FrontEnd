@@ -1,6 +1,7 @@
 "use client";
-import Image from "next/image";
+
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import { logoFont } from "../asset/fonts/fonts";
 import intro from "@/app/asset/img/mockup/intro.png";
@@ -10,6 +11,7 @@ import travelroute1 from "@/app/asset/img/mockup/travelroute1.png";
 import travelroute2 from "@/app/asset/img/mockup/travelroute2.png";
 import travelroute3 from "@/app/asset/img/mockup/travelroute3.png";
 import SEO from "../seo/SEO";
+import Loading from "../loading";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -17,6 +19,7 @@ export default function Home() {
   const [isIntroVisible, setIsIntroVisible] = useState(false);
   const [isTravelRouteVisible, setIsTravelRouteVisible] = useState(false);
   const [isRecommendationVisible, setIsRecommendationVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 비디오 로드 상태
 
   const introRef = useIntersectionObserver(
     (entries) => {
@@ -59,11 +62,17 @@ export default function Home() {
       }
     };
 
+    const handleLoadedData = () => {
+      setIsLoading(false); // 비디오가 로드되면 로딩 상태를 false로 설정
+    };
+
     videoElement.addEventListener("loadedmetadata", handleLoadedMetadata);
+    videoElement.addEventListener("loadeddata", handleLoadedData);
 
     return () => {
       videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       videoElement.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      videoElement.removeEventListener("loadeddata", handleLoadedData);
     };
   }, []);
 
@@ -71,16 +80,26 @@ export default function Home() {
     <>
       <SEO />
       <main className="min-h-screen">
+        {/* 로딩 화면 */}
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <Loading />
+          </div>
+        )}
         {/* 비디오 */}
         <div className="relative h-screen">
           <video
-            src="/videos/mainVideo.mp4"
+            preload="metadata"
             autoPlay
             loop
             muted
+            playsInline
             ref={videoRef}
+            poster="/videos/thumbnail.png"
             className="absolute inset-0 object-cover h-screen w-screen"
-          />
+          >
+            <source src="/videos/mainVideo.mp4" type="video/mp4" />
+          </video>
           {showLogo && (
             <div
               className={`text-7xl sm:text-8xl md:text-9xl absolute top-1/3 left-0 right-0 text-center text-white ${showLogo ? "animate-fade-in" : "animate-fade-out"} ${logoFont.className}`}

@@ -20,7 +20,7 @@ interface SocialUser {
 }
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     KakaoProvider({
       clientId: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID as string,

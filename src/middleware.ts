@@ -6,61 +6,30 @@ export default async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const method = req.method;
 
-  // 로그인 페이지 유저 정보가 있을때 접근 못하게 함
+  // 로그인 페이지: 세션이 있는 사용자는 로그인 페이지 접근 불가
   if (pathname.startsWith("/auth") && session) {
-    const referer = req.headers.get("referer") || "/";
-    return NextResponse.redirect(new URL(referer, req.url));
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // 여행지
-  if (pathname.includes("/place/?region=&id=") && !session) {
-    const referer = req.headers.get("referer") || "/";
-
-    return NextResponse.redirect(new URL(referer, req.url));
+  // 여행지: 세션이 없는 사용자는 특정 여행지 페이지 접근 불가
+  if (pathname.includes("/place/") && !session) {
+    return NextResponse.redirect(new URL("/login", req.url)); // 로그인 페이지로 리다이렉션
   }
 
-  // 찜
+  // 찜 목록: 세션이 없는 사용자는 찜 페이지 접근 불가
   if (pathname.startsWith("/carts") && !session) {
-    const referer = req.headers.get("referer") || "/";
-
-    return NextResponse.redirect(new URL(referer, req.url));
+    return NextResponse.redirect(new URL("/login", req.url)); // 로그인 페이지로 리다이렉션
   }
 
-  // travel route
+  // 여행 경로 커스터마이즈: 세션이 없는 사용자는 접근 불가
   if (pathname.startsWith("/customs") && !session) {
-    const referer = req.headers.get("referer") || "/";
-
-    return NextResponse.redirect(new URL(referer, req.url));
+    return NextResponse.redirect(new URL("/login", req.url)); // 로그인 페이지로 리다이렉션
   }
 
-  // 일기
-  if (pathname.startsWith("/diaries") && !session) {
-    const referer = req.headers.get("referer") || "/";
-
-    return NextResponse.redirect(new URL(referer, req.url));
+  // 댓글: GET 이외의 요청을 차단
+  if (pathname.startsWith("/comments") && method !== "GET") {
+    return NextResponse.redirect(new URL("/", req.url)); // 홈 페이지로 리다이렉션
   }
 
-  // 게시글
-  // if (pathname.startsWith("/community")) {
-  //   if (method !== "GET") {
-  //     const referer = req.headers.get("referer") || "/";
-
-  //     return NextResponse.redirect(new URL(referer, req.url));
-  //   }
-  // }
-
-  // if (pathname.startsWith("/community/") && !session) {
-  //   const referer = req.headers.get("referer") || "/";
-
-  //   return NextResponse.redirect(new URL("/", req.url));
-  // }
-
-  // 댓글
-  if (pathname.startsWith("/comments")) {
-    if (method !== "GET") {
-      const referer = req.headers.get("referer") || "/";
-
-      return NextResponse.redirect(new URL(referer, req.url));
-    }
-  }
+  return NextResponse.next(); // 기본적으로 요청을 계속 진행
 }

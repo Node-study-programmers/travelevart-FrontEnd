@@ -16,7 +16,7 @@ export default function PopularPosts({
 }: PopularPostsProps) {
   const { data: popularPostData, isLoading: isPopularPostLoading } =
     usePopularPost({ focusBoard });
-
+  console.log(popularPostData);
   return (
     <div className="sticky w-full top-20">
       <h2 className="font-bold text-xl py-3">주간 인기 게시물</h2>
@@ -24,16 +24,10 @@ export default function PopularPosts({
         <PopularPostsSkeleton />
       ) : (
         <>
-          {popularPostData.length > 0 ? (
-            popularPostData.map(
+          {popularPostData?.length > 0 ? (
+            popularPostData?.map(
               (
-                {
-                  id,
-                  author,
-                  title,
-                  profileImg,
-                  contents,
-                }: ICommunityPopularPostProps,
+                { id, author, title, profileImg }: ICommunityPopularPostProps,
                 index: number,
               ) => (
                 <CommunityPopularPost
@@ -44,7 +38,6 @@ export default function PopularPosts({
                   author={author}
                   title={title}
                   profileImg={profileImg}
-                  contents={contents}
                 />
               ),
             )

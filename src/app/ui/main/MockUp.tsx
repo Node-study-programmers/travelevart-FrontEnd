@@ -21,7 +21,7 @@ export default function MockUp() {
       const [entry] = entries;
       setIsIntroVisible(entry.isIntersecting);
     },
-    { threshold: 0.1 },
+    { threshold: 0.25 },
   );
 
   const travelRouteRef = useIntersectionObserver(
@@ -29,7 +29,7 @@ export default function MockUp() {
       const [entry] = entries;
       setIsTravelRouteVisible(entry.isIntersecting);
     },
-    { threshold: 0.1 },
+    { threshold: 0.25 },
   );
 
   const recommendationRef = useIntersectionObserver(
@@ -37,7 +37,7 @@ export default function MockUp() {
       const [entry] = entries;
       setIsRecommendationVisible(entry.isIntersecting);
     },
-    { threshold: 0.1 },
+    { threshold: 0.25 },
   );
 
   return (
@@ -45,10 +45,10 @@ export default function MockUp() {
       {/* intro */}
       <div
         ref={introRef}
-        className={`min-h-screen flex flex-col md:flex-row justify-center items-center gap-x-32 gap-y-8 transition-opacity duration-[2000ms] ease-in-out ${
+        className={`min-h-screen flex flex-col md:flex-row justify-center items-center gap-x-32 gap-y-8 transition-all duration-[2000ms] ease-in-out delay-300 ${
           isIntroVisible
             ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
+            : "opacity-0 translate-y-20"
         }`}
       >
         <div className="flex flex-col items-start gap-y-8">
@@ -77,10 +77,10 @@ export default function MockUp() {
       {/* travelRoute 소개 */}
       <div
         ref={travelRouteRef}
-        className={`min-h-screen bg-[whitesmoke] flex flex-col justify-center items-center gap-y-8 transition-opacity duration-[2000ms] ease-in-out ${
+        className={`min-h-screen bg-[whitesmoke] flex flex-col justify-center items-center gap-y-8 transition-all duration-[2000ms] ease-in-out delay-500 ${
           isTravelRouteVisible
             ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
+            : "opacity-0 translate-y-20"
         }`}
       >
         <div className="flex flex-col items-center py-20 gap-y-8">
@@ -119,10 +119,10 @@ export default function MockUp() {
       {/* 여행지 추천 */}
       <div
         ref={recommendationRef}
-        className={`min-h-screen flex flex-col justify-center items-center gap-y-8 transition-opacity duration-[2000ms] ease-in-out ${
+        className={`min-h-screen flex flex-col justify-center items-center gap-y-8 transition-all duration-[2000ms] ease-in-out delay-500 ${
           isRecommendationVisible
             ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
+            : "opacity-0 translate-y-20"
         }`}
       >
         <div className="flex flex-col items-center gap-y-8">

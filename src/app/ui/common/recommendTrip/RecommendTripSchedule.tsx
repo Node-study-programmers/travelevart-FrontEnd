@@ -74,10 +74,10 @@ export default function RecommendTripSchedule() {
 
   // @박 @일
   const totalNight =
-    recommendTripDatas.routes[recommendTripDatas.routes.length - 1].detail[0]
-      .day - recommendTripDatas.routes[0].detail[0].day;
+    recommendTripDatas.routes[recommendTripDatas.routes?.length - 1]?.detail[0]
+      .day - recommendTripDatas.routes[0]?.detail[0].day;
   const totalDay =
-    recommendTripDatas.routes[recommendTripDatas.routes.length - 1].detail[0]
+    recommendTripDatas.routes[recommendTripDatas.routes?.length - 1]?.detail[0]
       .day;
 
   // travelRouteRange 최신화

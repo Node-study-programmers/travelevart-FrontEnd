@@ -10,6 +10,7 @@ import { ReviewWithStarSkeleton } from "./skeleton/DetailPageSkeleton";
 import useAddReview from "@/app/hooks/searchTrip/useAddReview";
 import { signIn } from "next-auth/react";
 import { toast } from "react-toastify";
+import Tooltip from "../common/Tooltip";
 
 interface FormValues {
   rating: number;
@@ -91,13 +92,21 @@ export default function ReviewWithStar({
         <div className="flex gap-5 pl-2">
           <div className="max-w-[6rem] truncate">{userData.user.name}</div>
 
-          <Controller
-            name="rating"
-            control={control}
-            render={({ field }) => (
-              <StarInput rating={field.value} onRatingChange={field.onChange} />
-            )}
-          />
+          <Tooltip
+            direction="right"
+            content="별점 선택 이후 리뷰 작성 가능합니다."
+          >
+            <Controller
+              name="rating"
+              control={control}
+              render={({ field }) => (
+                <StarInput
+                  rating={field.value}
+                  onRatingChange={field.onChange}
+                />
+              )}
+            />
+          </Tooltip>
         </div>
 
         {/* 리뷰 입력 */}

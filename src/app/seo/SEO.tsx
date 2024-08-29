@@ -10,7 +10,7 @@ export default function SEO({ title, description }: SEOProps) {
   const DESCRIPTION = description || "여행지 추천 서비스";
 
   return (
-    <Head>
+    <head>
       <title>{TITLE}</title>
       <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       <meta
@@ -28,6 +28,6 @@ export default function SEO({ title, description }: SEOProps) {
       <meta property="og:image" content="/favicon.ico" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="apple-touch-icon" href="/favicon.ico" />
-    </Head>
+    </head>
   );
 }

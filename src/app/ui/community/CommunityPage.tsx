@@ -1,9 +1,9 @@
 "use client";
 
 import { PiNotePencil } from "react-icons/pi";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { TFocusBoard } from "@/lib/types";
-import { IoSearch } from "react-icons/io5";
+import { IoSearch, IoCloseCircle } from "react-icons/io5"; // 추가: IoCloseCircle
 import { GrPowerReset } from "react-icons/gr";
 import usePostInfinitiQuery from "@/app/hooks/community/usePostsInfinitiQuery";
 import useIntersectionObserver from "@/app/hooks/useIntersectionObserver";
@@ -21,9 +21,7 @@ import {
   CommunityTravelPostSkeletons,
 } from "./skeleton/CommunityPostSkeleton";
 import PopularPosts from "./PopularPosts";
-import Link from "next/link";
 import useLogin from "@/app/hooks/auth/useLogin";
-import Image from "next/image";
 
 const categories = [
   { id: 0, title: "Stories", path: "travel" },
@@ -36,7 +34,7 @@ interface CommunityPageProps {
 
 export default function CommunityPage({ board }: CommunityPageProps) {
   const router = useRouter();
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null); // input 필드 참조
   const focusTab = board === "free" ? 1 : 0;
   const { userData } = useLogin();
   const [searchName, setSearchName] = useState<string | null>("");
@@ -60,6 +58,7 @@ export default function CommunityPage({ board }: CommunityPageProps) {
     if (!hasNextPage) return;
     fetchNextPage();
   };
+
   const handleClickNewPost = async () => {
     if (!userData) {
       router.push("/auth/login");
@@ -69,8 +68,8 @@ export default function CommunityPage({ board }: CommunityPageProps) {
         `/community/${focusBoard === "Stories" ? "travel" : "free"}/newpost`,
       );
     }
-    // router.push("/recommend-trip/setup");
   };
+
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputRef.current) {
@@ -102,17 +101,9 @@ export default function CommunityPage({ board }: CommunityPageProps) {
         <div className="relative lg:pr-12 flex flex-col gap-5 py-8">
           {/* 글 쓰는 페이지 이동 */}
           <button
-            className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-lg rounded-xl"
+            className="flex items-center justify-between w-full gap-5 px-5 py-3 shadow-xl rounded-xl"
             onClick={handleClickNewPost}
           >
-            {/* <Image
-              src={userData?.profileImg}
-              alt="hi"
-              sizes="10px"
-              width={40}
-              height={40}
-              className="rounded-full border-[1px] border-transparent w-10 h-10"
-            /> */}
             <span className="text-left break-all flex-grow overflow-hidden text-base lg:text-lg text-gray-500">
               {focusBoard === "Stories"
                 ? "나의 여행을 공유해보세요!"
@@ -187,17 +178,24 @@ export default function CommunityPage({ board }: CommunityPageProps) {
           <form className="w-full h-32" onSubmit={handleSearchSubmit}>
             <h2 className="font-bold text-xl py-5 flex items-center gap-2">
               검색
-              <button type="button" onClick={handleSearchReset}>
-                <GrPowerReset className="text-lg" />
-              </button>
             </h2>
-            <div className="flex items-center border-[1px] border-primary rounded-lg overflow-hidden w-full">
+            <div className="flex items-center border-[1px] border-primary rounded-lg overflow-hidden w-full relative">
               <input
                 type="text"
                 ref={inputRef}
                 placeholder="제목, 해시태그를 검색하세요"
                 className="outline-none text-xs p-2 flex-grow"
               />
+              {/* X 버튼 */}
+
+              <button
+                type="button"
+                onClick={handleSearchReset}
+                className="absolute right-10 text-gray-500"
+              >
+                <IoCloseCircle className="text-xl" />
+              </button>
+
               <div className="flex items-center border-l-[1px] border-primary">
                 <button
                   type="submit"

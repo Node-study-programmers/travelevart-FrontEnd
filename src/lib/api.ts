@@ -32,7 +32,6 @@ function interceptorResponseFulfilled(res: AxiosResponse) {
     return res.data;
   }
 
-  console.log(res.status);
   return Promise.reject(res.data);
 }
 

@@ -24,12 +24,6 @@ export interface ITravelPostForm {
   }[];
 }
 
-function logFormData(formData: FormData) {
-  for (let pair of formData.entries()) {
-    console.log(pair[0] + ": " + (pair[1] instanceof File ? "File" : pair[1]));
-  }
-}
-
 export default function WriteTravelPostSecondStep({
   selectedRoute,
   onBack,
@@ -142,7 +136,6 @@ export default function WriteTravelPostSecondStep({
       },
       onError: (error) => {
         toast.error("게시글 등록에 실패했습니다.");
-        console.error(error);
       },
     });
   };

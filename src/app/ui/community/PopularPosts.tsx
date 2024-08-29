@@ -16,7 +16,6 @@ export default function PopularPosts({
 }: PopularPostsProps) {
   const { data: popularPostData, isLoading: isPopularPostLoading } =
     usePopularPost({ focusBoard });
-  console.log(popularPostData);
   return (
     <div className="sticky w-full top-20">
       <h2 className="font-bold text-xl py-3">주간 인기 게시물</h2>

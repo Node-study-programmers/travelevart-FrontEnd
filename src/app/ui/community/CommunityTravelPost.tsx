@@ -41,8 +41,7 @@ export default function CommunityTravelPost({
   isLiked,
 }: ICommunityTravelPostProps) {
   const router = useRouter();
-  // const { data, isLoading } = useGetDetailTravelData(travelRoute_id);
-  // console.log(data);
+
   // 클릭 시 디테일 페이지로 이동
   const handleClick = () => {
     router.push(`/community/travel/${id}`);

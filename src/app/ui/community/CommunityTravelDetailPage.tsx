@@ -111,7 +111,7 @@ export default function CommunityTravelDetailPage({
 
                   {/* Content section */}
                   {matchingContent && (
-                    <div className="bg-gray-50 shadow-lg rounded-b-lg p-6 mb-5">
+                    <div className="bg-gray-50 shadow-xl rounded-b-lg p-6 mb-5">
                       <h2 className="text-xl font-semibold">여행 기록</h2>
                       <div className="w-full h-[1px] bg-gray-300 my-3"></div>
                       {matchingContent.image && (

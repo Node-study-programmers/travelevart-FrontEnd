@@ -22,7 +22,6 @@ export default function CommentForm({
     reset,
     formState: { errors },
   } = useForm<CommentFormValues>();
-  console.log(userData);
 
   const handleFormSubmit = (data: CommentFormValues) => {
     onSubmit(data, reset);

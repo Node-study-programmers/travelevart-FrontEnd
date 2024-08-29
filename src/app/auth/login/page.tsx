@@ -42,7 +42,6 @@ export default function LoginPage() {
         router.push("/");
       }
     } catch (error) {
-      console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }

@@ -54,7 +54,6 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
         } catch (error) {
-          console.log("Authorization Error:", error);
           return null;
         }
       },
@@ -92,9 +91,7 @@ export const authOptions: NextAuthOptions = {
           delete token.name;
           delete token.picture;
           delete token.sub;
-        } catch (err) {
-          console.log(err);
-        }
+        } catch (err) {}
       } else if (user) {
         token.user = {
           userId: (user as CustomUser).userInfo?.userId,

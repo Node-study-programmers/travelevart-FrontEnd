@@ -7,7 +7,6 @@ export default function useForkPost(postId: number) {
       try {
         await post(`/travelroutes/fork/${postId}`);
       } catch (error) {
-        console.error("Error forking post:", error);
         throw error;
       }
     },

@@ -41,9 +41,6 @@ export default function TravelRouteDetailModal({
     };
   }, [isOpen]);
 
-  console.log(data);
-  // 공개범위 수정 안되는거 달력 범위 이상하게 나오는거 수정
-
   const handleClose = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (event.target === event.currentTarget) {

@@ -41,7 +41,6 @@ export function useProfile(userId: number) {
         },
       });
     } catch (err) {
-      console.log("프로필 업데이트 실패", err);
       throw err;
     }
   }
@@ -59,9 +58,7 @@ export function useProfile(userId: number) {
       toast.info("프로필이 수정되었습니다.");
       router.push("/mypage");
     },
-    onError: (err) => {
-      console.log("프로필 업데이트 실패", err);
-    },
+    onError: (err) => {},
   });
 
   return { isLoading, data, updateProfileMutation };

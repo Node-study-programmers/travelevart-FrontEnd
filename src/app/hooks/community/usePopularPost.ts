@@ -31,7 +31,6 @@ export default function usePopularPost({ focusBoard }: IPopularPostProps) {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
-      console.error("Failed to fetch popular posts", error);
       throw new Error(`Failed to fetch popular posts: ${errorMessage}`);
     }
   }

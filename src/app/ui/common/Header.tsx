@@ -62,8 +62,6 @@ export default function Header() {
   const { handleLogout, status } = useLogin();
   const [openNotification, setOpenNotification] = useState(false);
 
-  console.log(status);
-
   return (
     <div className="border-b-[1px] border-gray-300 w-full sticky z-[110] top-0 bg-white">
       <div className="max-w-screen-lg w-auto mx-auto flex items-center h-16 min-h-3 justify-between px-5">

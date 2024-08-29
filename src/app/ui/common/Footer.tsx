@@ -1,9 +1,6 @@
 "use client";
 
 import { IoEarthOutline } from "react-icons/io5";
-import { RiNotionFill } from "react-icons/ri";
-import { FaGithub } from "react-icons/fa";
-import Link from "next/link";
 import FeedbackForm from "./FeedbackForm";
 import { usePathname } from "next/navigation";
 import { logoFont } from "@/app/asset/fonts/fonts";
@@ -42,20 +39,6 @@ export default function Footer() {
           <span className="text-[0.65rem] text-rgb-secondary">
             ⓒ 2024. TravelevarT. All rights reserved
           </span>
-          <div className="flex justify-center items-center gap-2">
-            <Link
-              href="https://living-flower-b1f.notion.site/cab58e81efe649b8bfa3a275e2d654e7"
-              target="_blank"
-            >
-              <RiNotionFill className="text-3xl" />
-            </Link>
-            <Link
-              href="https://github.com/orgs/Node-study-programmers/repositories"
-              target="_blank"
-            >
-              <FaGithub className="text-3xl" />
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

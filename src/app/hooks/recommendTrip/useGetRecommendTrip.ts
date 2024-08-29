@@ -6,7 +6,7 @@ export default function useGetRecommendTrip(
   requestQuery: IRecommendTripRequest,
   isReadyRecommend: boolean,
 ) {
-  return useQuery<IRecommendTripResponse>({
+  return useQuery<{ data: IRecommendTripResponse }>({
     queryKey: ["recommendations", requestQuery],
     queryFn: async () => {
       const query = new URLSearchParams({
@@ -20,7 +20,7 @@ export default function useGetRecommendTrip(
         people: requestQuery.people ? requestQuery.people.toString() : "",
       });
 
-      return get<IRecommendTripResponse>(
+      return get<{ data: IRecommendTripResponse }>(
         `/places/recommendations?${query.toString()}`,
       );
     },

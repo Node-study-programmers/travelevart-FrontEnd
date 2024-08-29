@@ -51,7 +51,6 @@ export default function WriteFreePost() {
       },
       onError: (error) => {
         toast.error("게시글 등록에 실패했습니다.");
-        console.error(error);
       },
     });
   };

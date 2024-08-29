@@ -58,9 +58,7 @@ export default function MyPageTravelRoute({
           window.alert("삭제되었습니다.");
           refetch();
         },
-        onError: (error) => {
-          console.error("Error deleting travel route:", error);
-        },
+        onError: (error) => {},
       });
     }
   };

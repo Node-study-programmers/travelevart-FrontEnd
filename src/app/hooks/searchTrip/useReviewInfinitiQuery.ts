@@ -33,7 +33,6 @@ export default function useReviewsInfiniteQuery(placeId: number) {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
-      console.error("Failed to fetch reviews", error);
       throw new Error(`Failed to fetch reviews: ${errorMessage}`);
     }
   }

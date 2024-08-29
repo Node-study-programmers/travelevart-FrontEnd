@@ -6,12 +6,14 @@ import { logoFont } from "@/app/asset/fonts/fonts";
 
 export default function MainVideo() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const thumbnailRef = useRef<HTMLDivElement | null>(null); // 썸네일을 관리할 ref
   const [showLogo, setShowLogo] = useState(false); // 비디오에 보여줄 로고
   const [isLoading, setIsLoading] = useState(true); // 비디오 로드 상태
 
   useEffect(() => {
     const videoElement = videoRef.current;
-    if (!videoElement) return;
+    const thumbnailElement = thumbnailRef.current;
+    if (!videoElement || !thumbnailElement) return;
 
     const handleLoadedMetadata = () => {
       videoElement.addEventListener("timeupdate", handleTimeUpdate);
@@ -27,6 +29,7 @@ export default function MainVideo() {
 
     const handleLoadedData = () => {
       setIsLoading(false); // 비디오 로드가 완료되면 로딩 상태 false
+      thumbnailElement.style.opacity = "0"; // 비디오가 로드되면 썸네일 숨김
     };
 
     const handlePlay = () => {
@@ -54,20 +57,20 @@ export default function MainVideo() {
   return (
     <div className="relative h-screen">
       {/* 비디오 로드 전 썸네일 이미지 */}
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Image
-            src="/videos/thumbnail.png"
-            alt="Video Thumbnail"
-            layout="fill"
-            objectFit="cover"
-            quality={100}
-            priority
-            className="transition-opacity duration-500"
-            style={{ opacity: isLoading ? 1 : 0 }}
-          />
-        </div>
-      )}
+      <div
+        ref={thumbnailRef} // ref로 썸네일 관리
+        className="absolute inset-0 flex items-center justify-center transition-opacity duration-500"
+      >
+        <Image
+          src="/videos/thumbnail.png"
+          alt="Video Thumbnail"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+          priority
+        />
+      </div>
+
       {/* 비디오 */}
       <video
         autoPlay

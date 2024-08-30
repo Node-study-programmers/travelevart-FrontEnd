@@ -215,7 +215,7 @@ export default function RecommendTripSetupForm() {
 
   // 추천 일정 응답 받을 경우 해당 일정 상세 페이지로 이동
   useEffect(() => {
-    if (!isLoading && data?.data.routes && isReadyRecommend) {
+    if (!isLoading && data?.data?.routes && isReadyRecommend) {
       dispatch(setRecommendTrip(data.data)); // 리덕스에 추천 여행지 저장
       handleResetForm();
       setIsNavigating(true); // 페이지 이동 상태

@@ -122,7 +122,6 @@ node app.js
 <img src="https://img.shields.io/badge/Nginx--009639?logo=nginx">  
 <img src="https://img.shields.io/badge/Docker--2496ED?logo=docker">  
 <img src="https://img.shields.io/badge/AWS%20RDS--527FFF?logo=amazon-aws">  
-<img src="https://img.shields.io/badge/AWS%20EC2--
 
 </div>
 

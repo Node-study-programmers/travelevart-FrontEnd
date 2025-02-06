@@ -1,8 +1,8 @@
-<div>
+<div align="center">
 
 <h1>Travelevart 🚃</h1>
 
-![화이트 오렌지 깔끔한 온라인 포트폴리오](/Users/tngur0716/Downloads/화이트 오렌지 깔끔한 온라인 포트폴리오.png)
+![Image](https://github.com/user-attachments/assets/f5caa1ea-837a-4c80-9dfd-79ab52c72b4e)
 
 <h3> 나만의 여행 계획 작성 서비스 </h3>
 
@@ -26,32 +26,25 @@ pw : qweqwe
 
 <br />
 
+# 목차
 
-# 프로젝트 제목: Travelevart
+### [1. 프로젝트 소개](#%EF%B8%8F-프로젝트-소개)
 
-## 목차  
+- [<Travelevart>를 만들게 된 계기](#Travelevart를-만들게-된-계기)
+- [주요 기능 설명](#주요-기능-설명)
+- [프로젝트 실행 방법](#프로젝트-실행-방법)
 
-### 1. 프로젝트 소개  
-- [Travelevart를 만들게 된 계기](#travelevart를-만들게-된-계기)  
-- [주요 기능 설명](#주요-기능-설명)  
-- [프로젝트 실행 방법](#프로젝트-실행-방법)  
+### [2. 기술 스택](#%EF%B8%8F-기술-스택)
 
-### 2. 기술 스택  
+### [3. 기술적 경험](#-기술적-경험)
 
-### 3. 기술적 경험 & 트러블 슈팅  
-- [Frontend](#frontend)  
-- [Backend](#backend)  
+- [FE](#FE)
 
-### 4. 주요 기능 설명  
-- [AI 기반 여행지 추천 서비스](#ai-기반-여행지-추천-서비스)  
-- [여행지 검색](#여행지-검색)  
-- [여행지 리뷰, 찜하기](#여행지-리뷰-찜하기)  
-- [여행지 공유 및 QnA 커뮤니티](#여행지-공유-및-qna-커뮤니티)  
-- [나만의 여행 일정 만들기](#나만의-여행일정-만들기)  
-- [여행 일정 수정, 공유 및 저장](#여행-일정-수정-공유-및-저장)  
+- [BE](#BE)
 
-### 5. 팀원 소개  
+### [4. 팀원 소개](#%EF%B8%8F-팀원-소개)
 
+<br />
 
 # ⭐️ 프로젝트 소개
 
@@ -65,11 +58,11 @@ pw : qweqwe
 
 ## 사용한 API
 
-![Screenshot 2025-02-06 at 2.53.04 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 2.53.04 PM.png)
+![Image](https://github.com/user-attachments/assets/b945333d-52b1-4d1e-b639-6dc7d448c93a)
 
 ## 프로젝트 수행 절차 및 방법
 
-![Screenshot 2025-02-06 at 2.54.01 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 2.54.01 PM.png)
+![Image](https://github.com/user-attachments/assets/e2586f8b-2541-4648-8f67-bd02c8aa246c)
 
 
 
@@ -93,11 +86,11 @@ node app.js
 
 ## 인프라 아키텍쳐
 
-![Screenshot 2025-02-06 at 2.39.32 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 2.39.32 PM.png)
+![Image](https://github.com/user-attachments/assets/5ebc6787-6ff0-4740-af06-b7ade189ab72)
 
 ### Frontend
 
-<div>
+<div align="center">
   <img src="https://img.shields.io/badge/Next.js-14.2.4-000000?logo=next.js">  
 <img src="https://img.shields.io/badge/Typescript-5.0-3178C6?logo=typescript">  
 <img src="https://img.shields.io/badge/Axios-1.7.2-5A29E4?logo=axios">  
@@ -112,7 +105,7 @@ node app.js
 
 ### Backend
 
-<div>
+<div align="center">
   <img src="https://img.shields.io/badge/NestJS--E0234E?logo=nestjs">  
 <img src="https://img.shields.io/badge/Typescript-5.0-3178C6?logo=typescript">  
 <img src="https://img.shields.io/badge/TypeORM--FF5733?logo=typeorm">  
@@ -124,7 +117,7 @@ node app.js
 
 ### Database & Cloud & DevOps
 
-<div>
+<div align="center">
   <img src="https://img.shields.io/badge/Jenkins--D24939?logo=jenkins">  
 <img src="https://img.shields.io/badge/Nginx--009639?logo=nginx">  
 <img src="https://img.shields.io/badge/Docker--2496ED?logo=docker">  
@@ -178,7 +171,7 @@ node app.js
 
 ### 5. SEO
 
-![Screenshot 2025-02-06 at 3.32.26 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.32.26 PM.png)
+![Image](https://github.com/user-attachments/assets/2a131d64-a153-48e1-9d56-1fd82a5ebd6d)
 
 - SEO component를 만들어서 각 페이지마다 제목과 설명을 보여줌
 
@@ -194,7 +187,7 @@ https://github.com/Node-study-programmers/travelevart-FrontEnd/blob/1db67895ce55
 
 ​	<br/>
 
-![Screenshot 2025-02-06 at 3.42.51 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.42.51 PM.png)
+![Image](https://github.com/user-attachments/assets/11adb005-586f-4da3-9d3e-342b8f4b1587)
 
 <b>performance 부분에서 처음 약 60점 -> 약 90점 으로 향상시킬 수 있었다.</b>
 
@@ -204,7 +197,7 @@ https://github.com/Node-study-programmers/travelevart-FrontEnd/blob/1db67895ce55
 
 
 
-![Screenshot 2025-02-06 at 3.34.23 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.34.23 PM.png)
+![Image](https://github.com/user-attachments/assets/03eb5c2c-ea33-4319-b632-94a615de5a3a)
 
 
 
@@ -220,11 +213,11 @@ https://github.com/Node-study-programmers/travelevart-FrontEnd/blob/1db67895ce55
 
 ## BE
 
-![Screenshot 2025-02-06 at 2.48.06 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 2.48.06 PM.png)
+![Image](https://github.com/user-attachments/assets/03bcc7cf-a249-4565-8898-e2e8e93e33d6)
 
 
 
-![Screenshot 2025-02-06 at 2.47.08 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 2.47.08 PM.png)
+![Image](https://github.com/user-attachments/assets/1be6ae60-2bfe-4d1c-b102-61e66c53f594)
 
 
 
@@ -242,7 +235,7 @@ https://github.com/Node-study-programmers/travelevart-FrontEnd/blob/1db67895ce55
 
 ### [ AI 기반 여행지 추천 서비스 ]
 
-![Screenshot 2025-02-06 at 2.55.37 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 2.55.37 PM.png)
+![Image](https://github.com/user-attachments/assets/65e86301-2147-4f5d-a464-197ccccba265)
 
 - 지역과 기간, 이동수단, 연령대 등을 선택해서 AI 에게 여행지 일정을 지도와 함께 추천받을 수 있습니다.
 
@@ -250,16 +243,16 @@ https://github.com/Node-study-programmers/travelevart-FrontEnd/blob/1db67895ce55
 
 ### [ 여행지 검색 ]
 
-![Screenshot 2025-02-06 at 2.59.58 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 2.59.58 PM.png)
+![Image](https://github.com/user-attachments/assets/a736df18-ebe7-4bf8-a27a-a2aad5bc9193)
 
 - Tour API 를 사용해 대한민국의 다양한 여행지들을 검색 할 수 있습니다.
 - 지역을 골라 필터링해 특정 지역에 대한 관광지만을 볼 수 있습니다.
 
 ### [ 여행지 리뷰, 찜하기 ]
 
-![Screenshot 2025-02-06 at 3.03.44 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.03.44 PM.png)
+![Image](https://github.com/user-attachments/assets/177bff91-6a98-45a7-9760-d63be45d2ab8)
 
-![Screenshot 2025-02-06 at 3.04.15 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.04.15 PM.png)
+![Image](https://github.com/user-attachments/assets/026c4ca8-4662-438a-a5cc-da0e9eb51a87)
 
 - 여행지 상세보기에서 여행지 찜하기 버튼을 눌러 마이페이지에 등록할 수 있습니다.
 - 네이버 지도 API 를 통해 관광지의 상세 위치를 볼 수 있습니다.
@@ -267,9 +260,9 @@ https://github.com/Node-study-programmers/travelevart-FrontEnd/blob/1db67895ce55
 
 ### [ 여행지 공유 및 QnA 커뮤니티 ]
 
-![Screenshot 2025-02-06 at 3.07.42 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.07.42 PM.png)
+![Image](https://github.com/user-attachments/assets/9bcf682d-36d0-4df0-9998-19d9705fa788)
 
-![Screenshot 2025-02-06 at 3.09.54 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.09.54 PM.png)
+![Image](https://github.com/user-attachments/assets/68a76939-bcfa-45b5-b379-dd4b63ef7f8f)
 
 
 
@@ -279,16 +272,16 @@ https://github.com/Node-study-programmers/travelevart-FrontEnd/blob/1db67895ce55
 
 ### [ 나만의 여행일정 만들기 ]
 
-![Screenshot 2025-02-06 at 3.13.06 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.13.06 PM.png)
+![Image](https://github.com/user-attachments/assets/e9250b53-226d-4229-8def-0cae4b2ff1f5)
 
 - 나만의 여행을 기간, 이름과 함께 만들 수 있습니다
 - 여행지를 우측에서 검색 해서 각 날짜에 담아 Drag and Drop 기능을 활용해서 쉽게 커스텀할 수 있습니다.
 
 ### [ 여행일정 수정,공유 및 저장 ]
 
-![Screenshot 2025-02-06 at 3.15.12 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.15.12 PM.png)
+![Image](https://github.com/user-attachments/assets/db3786ec-ded7-43a5-8c31-466734ee06cb)
 
-![Screenshot 2025-02-06 at 3.16.22 PM](/Users/tngur0716/Library/Application Support/typora-user-images/Screenshot 2025-02-06 at 3.16.22 PM.png)
+![Image](https://github.com/user-attachments/assets/06155353-c7dc-483f-b1f5-cbce63575ee3)
 
 - 내가 만든 여행 혹은 커뮤니티에서 가져온 다른 유저의 여행을 수정, 공유 및 저장을 할 수 있습니다.
 

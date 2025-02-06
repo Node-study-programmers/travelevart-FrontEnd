@@ -124,9 +124,9 @@ node app.js
 <img src="https://img.shields.io/badge/AWS%20RDS--527FFF?logo=amazon-aws">  
 <img src="https://img.shields.io/badge/AWS%20EC2--
 
-</div><br>
+</div>
 
-<br>
+<br/>
 
 # 💪🏻 기술적 경험 & 트러블 슈팅
 
@@ -134,7 +134,7 @@ node app.js
 
 <br />
 
-### 1. **Next-Auth 이용한 로컬, 소셜로그인** 
+### 1. Next-Auth 이용한 로컬, 소셜로그인
 
 - Next auth 를 통한 kakao , 소셜 로그인을 구현함
 

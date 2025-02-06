@@ -1,4 +1,4 @@
-<div align="center">
+<div>
 
 <h1>Travelevart 🚃</h1>
 
@@ -90,7 +90,7 @@ node app.js
 
 ### Frontend
 
-<div align="center">
+<div>
   <img src="https://img.shields.io/badge/Next.js-14.2.4-000000?logo=next.js">  
 <img src="https://img.shields.io/badge/Typescript-5.0-3178C6?logo=typescript">  
 <img src="https://img.shields.io/badge/Axios-1.7.2-5A29E4?logo=axios">  
@@ -105,7 +105,7 @@ node app.js
 
 ### Backend
 
-<div align="center">
+<div>
   <img src="https://img.shields.io/badge/NestJS--E0234E?logo=nestjs">  
 <img src="https://img.shields.io/badge/Typescript-5.0-3178C6?logo=typescript">  
 <img src="https://img.shields.io/badge/TypeORM--FF5733?logo=typeorm">  
@@ -117,7 +117,7 @@ node app.js
 
 ### Database & Cloud & DevOps
 
-<div align="center">
+<div>
   <img src="https://img.shields.io/badge/Jenkins--D24939?logo=jenkins">  
 <img src="https://img.shields.io/badge/Nginx--009639?logo=nginx">  
 <img src="https://img.shields.io/badge/Docker--2496ED?logo=docker">  

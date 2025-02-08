@@ -6,8 +6,8 @@ import SEO from "@/app/seo/SEO";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { RiKakaoTalkFill } from "react-icons/ri";
 
 export default function LoginPage() {
@@ -36,7 +36,28 @@ export default function LoginPage() {
       });
 
       if (!result?.ok) {
-        setIsLoginError(true); // 로그인 에러 발생
+        setIsLoginError(true);
+      } else {
+        setIsLoginError(false);
+        router.push("/");
+      }
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    setIsLoading(true);
+    try {
+      const result = await signIn("credentials", {
+        email: "test@naver.com",
+        password: "qweqwe",
+        redirect: false,
+      });
+
+      if (!result?.ok) {
+        setIsLoginError(true);
       } else {
         setIsLoginError(false);
         router.push("/");
@@ -121,6 +142,14 @@ export default function LoginPage() {
                     className="bg-blue-500 text-white py-2 px-4 rounded-lg"
                   >
                     {isLoading ? "Loading..." : "Login"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleGuestLogin}
+                    disabled={isLoading}
+                    className="bg-green-500 text-white py-2 px-4 rounded-lg"
+                  >
+                    Guest 로그인
                   </button>
                   <div className="w-full h-[1px] bg-gray-300 my-6"></div>
                   <div

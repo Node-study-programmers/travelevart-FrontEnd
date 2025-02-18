@@ -4,13 +4,13 @@ export const noto = localFont({
   src: "./NotoSansKR-VariableFont_wght.woff",
   display: "swap",
   weight: "400",
-  preload: false,
+  preload: true,
   variable: "--noto-weight",
 });
 
 export const logoFont = localFont({
   src: "./ProtestStrike-Regular.woff",
   display: "swap",
-  preload: false,
+  preload: true,
   variable: "--logo-font",
 });

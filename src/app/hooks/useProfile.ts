@@ -1,14 +1,10 @@
-import { get, patch } from "@/lib/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+// 🔥 hooks/useProfile.ts
+
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-
-interface IUserInfo {
-  userId: number;
-  userName: string;
-  email: string;
-  profileImg: string;
-}
+import { patch } from "@/lib/api";
+import { getUserInfo, IUserInfo } from "./mypage/useProfilePrefetch";
 
 interface IUpdateProfileResponse {
   message: string;
@@ -19,23 +15,9 @@ interface IUpdateProfileResponse {
 export function useProfile(userId: number) {
   const router = useRouter();
 
-  async function getUserInfo(userId: number) {
-    try {
-      if (!userId) {
-        throw new Error("Unauthorized!!!");
-      }
-
-      const response = await get<IUserInfo>(`/users/${userId}`);
-
-      return response;
-    } catch (err) {
-      throw new Error("Failed to get user profile");
-    }
-  }
-
   async function updateProfile(formData: FormData) {
     try {
-      const response = await patch<IUpdateProfileResponse>("/users", formData, {
+      return await patch<IUpdateProfileResponse>("/users", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -50,6 +32,7 @@ export function useProfile(userId: number) {
   >({
     queryKey: ["userProfile", userId],
     queryFn: () => getUserInfo(userId),
+    staleTime: 60 * 5 * 1000,
   });
 
   const updateProfileMutation = useMutation({
@@ -58,7 +41,6 @@ export function useProfile(userId: number) {
       toast.info("프로필이 수정되었습니다.");
       router.push("/mypage");
     },
-    onError: (err) => {},
   });
 
   return { isLoading, data, updateProfileMutation };

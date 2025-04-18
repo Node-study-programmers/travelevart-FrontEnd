@@ -14,6 +14,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { DetailTravelPageSkeleton } from "@/app/ui/travelDestination/skeleton/DetailPageSkeleton";
 import useGetDetailTravelPage from "@/app/hooks/searchTrip/useGetDetailTravelPage";
 import SEO from "@/app/seo/SEO";
+import { toast } from "react-toastify";
 
 const categories = [
   { id: 0, title: "전체" },

@@ -17,14 +17,12 @@ export default function CommunityCarousel({
           }
           alt={content?.text}
           fill
-          priority
           className="absolute inset-0 object-cover"
           sizes="
             (max-width: 640px) 100vw, 
             (max-width: 768px) 75vw, 
             (max-width: 1024px) 50vw, 
             33vw"
-          // sizes 속성 추가
         />
         {/* 제목 박스 */}
         {content?.title && (
